@@ -9,6 +9,8 @@ public:
 	simpl(int numvar, int numconstr); //custom constructor
 	~simpl(); //destructor
 	bool changeValue(float value, int row, int col);
+	void returnTableau(float** tableauLoc);
+	bool pivot(int row, int col);
 private:
 	float** tableau;
 	string* indepVar;
@@ -58,6 +60,18 @@ bool simpl::changeValue (float value, int row, int col) {
 	return true;
 }
 
+void simpl::returnTableau(float** tableauLoc) {
+	int i,j;
+	for (i = 0; i <= numconstraint; i++) {
+		for (j = 0; j <= numvariable; j++) {
+			tableauLoc[i][j] = tableau[i][j];
+		}
+	}
+}
+
+bool simpl::pivot(int row, int col) {
+	return false;
+}
 //private methods
 
 void simpl::constructTab(const int numvar,const int numconstr) {
