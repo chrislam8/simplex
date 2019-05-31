@@ -9,8 +9,13 @@ public:
 	simpl(int numvar, int numconstr); //custom constructor
 	~simpl(); //destructor
 	bool changeValue(float value, int row, int col);
+	//This method is intended for users to be able to see the tableau (mainly for debugging purposes)
 	void returnTableau(float** tableauLoc);
+	//These methods are not yet coded
 	bool pivot(int row, int col);
+	bool simplex(float* xValuePtr, float* optimalValue); 
+	/* xValuePtr is meant as a pointer to return the optimal x values for the problem
+	optimalValue is meant as a pointer to where the optimal value will be placed */
 private:
 	float** tableau;
 	string* indepVar;
@@ -70,6 +75,10 @@ void simpl::returnTableau(float** tableauLoc) {
 }
 
 bool simpl::pivot(int row, int col) {
+	return false;
+}
+
+bool simpl::simplex(float* xValuePtr, float* optimalValue) {
 	return false;
 }
 //private methods
