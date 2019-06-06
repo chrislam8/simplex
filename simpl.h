@@ -13,9 +13,15 @@ public:
 	void returnTableau(float** tableauLoc);
 	//These methods are not yet coded
 	bool pivot(int row, int col);
-	bool simplex(float* xValuePtr, float* optimalValue); 
+	int simplex(float* xValuePtr, float* optimalValue); 
 	/* xValuePtr is meant as a pointer to return the optimal x values for the problem
-	optimalValue is meant as a pointer to where the optimal value will be placed */
+	optimalValue is meant as a pointer to where the optimal value will be placed 
+	return values:
+		0 - successful
+		1 - no feasible solution
+		2 - unbounded problem (no optimal solution)
+		other - error in algorithm
+	*/
 private:
 	float** tableau;
 	string* indepVar;
@@ -75,11 +81,96 @@ void simpl::returnTableau(float** tableauLoc) {
 }
 
 bool simpl::pivot(int row, int col) {
-	return false;
+	int i,j;
+	float pivotval;
+	float rowval;
+	float colval;
+	float slotval;
+	float newval;
+	if (row <= 0 || row > numconstraint || col <= 0 || col > numvariable) {
+		return false;
+	}
+	pivotval = tableau[row-1][col-1];
+	for (i = 0; i <= numconstraint; i++) {
+		for (j = 0; j <= numvariable; j++) {
+			if (i != (row-1) && j != (col-1)) {
+				rowval = tableau[row-1][j];
+				colval = tableau[i][col-1];
+				slotval = tableau[i][j];
+				newval = (slotval*pivotval - rowval*colval)/pivotval;
+				tableau[i][j] = newval;
+			}
+		}
+	}
+	for (i = 0; i <= numconstraint; i++) {
+		if (i != (row-1)) {
+			slotval = tableau[i][col-1];
+			newval = -1*slotval/pivotval;
+			tableau[i][col-1] = newval;
+		}
+	}
+	for (j = 0; j <= numvariable; j++) {
+		if (j != (col-1)) {
+			slotval = tableau[row-1][j];
+			newval = slotval/pivotval;
+			tableau[row-1][j] = newval;
+		}
+	}
+	newval = 1/pivotval;
+	tableau[row-1][col-1] = newval;
+	return true;
 }
 
-bool simpl::simplex(float* xValuePtr, float* optimalValue) {
-	return false;
+int simpl::simplex(float* xValuePtr, float* optimalValue) {
+	bool simplexdone = false;
+	int i,j;
+	int colnum;
+	int rownum;
+	float minval;
+	if (xValuePtr == NULL || optimalValue == NULL) {
+		return 3;
+	}
+	//This first loop is to check for feasibility (are there any possible solutions?)
+	while (!simplexdone) {
+		simplexdone = true;
+		for (i = 0; i < numconstraint; i++) {
+			if (tableau[i][numvariable] < 0) {
+				simplexdone = false;
+				rownum = i;
+			}
+		}
+		if (simplexdone) {
+			break;
+		}
+		simplexdone = true;
+		for (i = 0; i < numvariable; i++) {
+			if (tableau[rownum][i] < 0) {
+				simplexdone = false;
+				colnum = i;
+			}
+		}
+		if (simplexdone) {
+			return 1; //no feasible solution
+		}
+		if (rownum < (numconstraint-1)) {
+			minval = tableau[rownum][colnum];
+			for (i = rownum; i < numconstraint; i++) {
+				if (tableau[i][colnum] < minval) {
+					minval = tableau[i][colnum];
+					rownum = i;
+				}
+			}
+		}
+		if (!(pivot((rownum+1),(colnum+1)))) {
+			return 4;
+		}
+	}
+	simplexdone = false;
+	//This second loop is to actually solve the problem
+	while (!simplexdone) {
+		simplexdone = true;
+	}
+	return 0;
 }
 //private methods
 
