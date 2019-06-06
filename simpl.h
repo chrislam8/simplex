@@ -170,7 +170,7 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 	while (!simplexdone) {
 		simplexdone = true;
 	}
-	return 0;
+	return 5;
 }
 //private methods
 
