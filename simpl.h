@@ -118,6 +118,7 @@ bool simpl::pivot(int row, int col) {
 	}
 	newval = 1/pivotval;
 	tableau[row-1][col-1] = newval;
+	canchangevalue = false;
 	return true;
 }
 
@@ -170,7 +171,7 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 	while (!simplexdone) {
 		simplexdone = true;
 	}
-	return 5;
+	return 0;
 }
 //private methods
 

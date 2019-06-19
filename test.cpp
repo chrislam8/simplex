@@ -32,6 +32,16 @@ int main () {
 			cout << "Value in row " << (i+1) << " and column " << (j+1) << " is " << tableauCheck[i][j] << endl;
 		}
 	}
+	if (!(test->pivot(1,1))) {
+		cout << "Error: pivot returned false when it should return true" << endl;
+		isErr = true;
+	}
+	test->returnTableau(tableauCheck);
+	for (i = 0; i < 3; i++) {
+		for (j = 0; j < 3; j++) {
+			cout << "Value in row " << (i+1) << " and column " << (j+1) << " is " << tableauCheck[i][j] << endl;
+		}
+	}
 	if (!isErr) {
 		cout << "All tests successfully passed" << endl;
 	}
