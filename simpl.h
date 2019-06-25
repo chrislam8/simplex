@@ -3,6 +3,11 @@
 
 using namespace std;
 
+struct variableName {
+	bool indep;
+	int number;
+};
+
 class simpl {
 public:
 	simpl(); //basic constructor
@@ -10,9 +15,9 @@ public:
 	~simpl(); //destructor
 	bool changeValue(float value, int row, int col);
 	//This method is intended for users to be able to see the tableau (mainly for debugging purposes)
-	void returnTableau(float** tableauLoc);
-	//These methods are not yet coded
+	void returnTableau(float** tableauLoc);	
 	bool pivot(int row, int col);
+	//This method is not yet fully tested
 	int simplex(float* xValuePtr, float* optimalValue); 
 	/* xValuePtr is meant as a pointer to return the optimal x values for the problem
 	optimalValue is meant as a pointer to where the optimal value will be placed 
@@ -24,8 +29,8 @@ public:
 	*/
 private:
 	float** tableau;
-	string* indepVar;
-	string* depVar;
+	variableName* indepVar;
+	variableName* depVar;
 	int numconstraint; //also numrows - 1
 	int numvariable; //also numcols - 1
 	bool canchangevalue;
@@ -41,14 +46,6 @@ simpl::simpl() {
 }
 
 simpl::simpl(int numvar, int numconstr) {
-	if (numvar > 9) {
-		cout << "WARNING: Too many variables, changing to 9" << endl;
-		numvar = 9;
-	}
-	if (numconstr > 9) {
-		cout << "WARNING: Too many constraints, changing to 9" << endl;
-		numconstr = 9;
-	}
 	constructTab(numvar,numconstr);
 }
 
@@ -87,6 +84,7 @@ bool simpl::pivot(int row, int col) {
 	float colval;
 	float slotval;
 	float newval;
+	variableName tempVar;
 	if (row <= 0 || row > numconstraint || col <= 0 || col > numvariable) {
 		return false;
 	}
@@ -118,6 +116,12 @@ bool simpl::pivot(int row, int col) {
 	}
 	newval = 1/pivotval;
 	tableau[row-1][col-1] = newval;
+	tempVar.indep = (indepVar[col-1]).indep;
+	tempVar.number = (indepVar[col-1]).number;
+	(indepVar[col-1]).indep = (depVar[row-1]).indep;
+	(indepVar[col-1]).number = (depVar[row-1]).number;
+	(depVar[row-1]).indep = tempVar.indep;
+	(depVar[row-1]).number = tempVar.number;
 	canchangevalue = false;
 	return true;
 }
@@ -128,6 +132,7 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 	int colnum;
 	int rownum;
 	float minval;
+	float tempval;
 	if (xValuePtr == NULL || optimalValue == NULL) {
 		return 3;
 	}
@@ -141,7 +146,7 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 			}
 		}
 		if (simplexdone) {
-			break;
+			break; //there are feasible solutions
 		}
 		simplexdone = true;
 		for (i = 0; i < numvariable; i++) {
@@ -153,6 +158,7 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 		if (simplexdone) {
 			return 1; //no feasible solution
 		}
+		//determine where to pivot
 		if (rownum < (numconstraint-1)) {
 			minval = tableau[rownum][colnum];
 			for (i = rownum; i < numconstraint; i++) {
@@ -163,13 +169,66 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 			}
 		}
 		if (!(pivot((rownum+1),(colnum+1)))) {
-			return 4;
+			return 4; //pivot failed for some reason (presumed to be a logic bug)
 		}
 	}
 	simplexdone = false;
 	//This second loop is to actually solve the problem
 	while (!simplexdone) {
 		simplexdone = true;
+		for (j = 0; j < numvariable; j++) {
+			if (tableau[numconstraint][j] > 0) {
+				simplexdone = false;
+				colnum = j;
+			}
+		}
+		if (simplexdone) {
+			//an optimal solution has been found
+			*optimalValue = tableau[numconstraint][numvariable];
+			for (i = 0; i < numvariable; i++) {
+				xValuePtr[i] = -1;
+			}
+			for (i = 0; i < numvariable; i++) {
+				if ((indepVar[i]).indep) {
+					j = (indepVar[i]).number;
+					xValuePtr[j-1] = 0;
+				}
+			}
+			for (i = 0; i < numconstraint; i++) {
+				if ((depVar[i]).indep) {
+					j = (depVar[i]).number;
+					xValuePtr[j-1] = tableau[i][numvariable];
+				}
+			}
+			for (i = 0; i < numvariable; i++) {
+				if (xValuePtr[i] < -0.5) {
+					return 5; //some logic error caused a variable to be negative
+				}
+			}
+			return 0; //success
+		}
+		simplexdone = true;
+		minval = -1;
+		for (i = 0; i < numconstraint; i++) {
+			if (tableau[i][colnum] > 0) {
+				simplexdone = false;
+				tempval = tableau[i][numvariable]/tableau[i][colnum];
+				if (minval < 0) {
+					minval = tempval;
+					rownum = i;
+				}
+				if (minval > tempval) {
+					minval = tempval;
+					rownum = i;
+				}
+			}
+		}
+		if (simplexdone) {
+			return 2; //problem is unbounded
+		}
+		if (!(pivot((rownum+1),(colnum+1)))) {
+			return 4; //pivot failed for some reason (presumed to be a logic bug)
+		}
 	}
 	return 0;
 }
@@ -177,27 +236,22 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 
 void simpl::constructTab(const int numvar,const int numconstr) {
 	int i;
-	char numArr[9] = {'1','2','3','4','5','6','7','8','9'};
-	string startIndep = "x";
-	string startDep = "t";
-	string tempStr;
+	
 	numvariable = numvar;
 	numconstraint = numconstr;
-	indepVar = new string[numvar];
-	depVar = new string[numconstr];
+	indepVar = new variableName[numvar];
+	depVar = new variableName[numconstr];
 	tableau = new float*[numconstr+1];
 	for (i = 0; i <= numconstr; i++) {
 		tableau[i] = new float[numvar+1];
 	}
 	for (i = 0; i < numvar; i++) {
-		tempStr = startIndep;
-		tempStr += numArr[i];
-		indepVar[i] = tempStr;
+		(indepVar[i]).indep = true;
+		(indepVar[i]).number = (i+1);
 	}
 	for (i = 0; i < numconstr; i++) {
-		tempStr = startDep;
-		tempStr += numArr[i];
-		depVar[i] = tempStr;
+		(depVar[i]).indep = true;
+		(depVar[i]).number = (i+1);
 	}
 	canchangevalue = true;
 }
