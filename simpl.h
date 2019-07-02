@@ -15,7 +15,7 @@ public:
 	~simpl(); //destructor
 	bool changeValue(float value, int row, int col);
 	//This method is intended for users to be able to see the tableau (mainly for debugging purposes)
-	void returnTableau(float** tableauLoc);	
+	bool prTableau();	
 	bool pivot(int row, int col);
 	//This method is not yet fully tested
 	int simplex(float* xValuePtr, float* optimalValue); 

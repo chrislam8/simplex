@@ -1,3 +1,4 @@
+#include <iostream>
 #include "simpl.h"
 
 
@@ -30,13 +31,25 @@ bool simpl::changeValue(float value, int row, int col) {
 	return true;
 }
 
-void simpl::returnTableau(float** tableauLoc) {
+bool simpl::prTableau() {
 	int i, j;
 	for (i = 0; i <= numconstraint; i++) {
 		for (j = 0; j <= numvariable; j++) {
-			tableauLoc[i][j] = tableau[i][j];
+			printf("%.2f\t",tableau[i][j]);
+			if (j == (numvariable - 1)) {
+				cout << "|\t";
+			}
+		}
+		cout << endl;
+		if (i == (numconstraint - 1)) {
+			for (j = 0; j <= (numvariable+1); j++) {
+				cout << "-----\t";
+			}
+			cout << endl;
 		}
 	}
+	cout << "Tableau printed" << endl << endl;
+	return false;
 }
 
 bool simpl::pivot(int row, int col) {
