@@ -33,6 +33,16 @@ bool simpl::changeValue(float value, int row, int col) {
 
 bool simpl::prTableau() {
 	int i, j;
+	for (j = 0; j < numvariable; j++) {
+		if (indepVar[j].indep) {
+			cout << "x";
+		}
+		else {
+			cout << "t";
+		}
+		cout << indepVar[j].number << "\t";
+	}
+	cout << endl;
 	for (i = 0; i <= numconstraint; i++) {
 		for (j = 0; j <= numvariable; j++) {
 			printf("%.2f\t",tableau[i][j]);
@@ -40,13 +50,38 @@ bool simpl::prTableau() {
 				cout << "|\t";
 			}
 		}
-		cout << endl;
+		
 		if (i == (numconstraint - 1)) {
+			cout << "=";
+			if (depVar[i].indep) {
+				cout << "x";
+			}
+			else {
+				cout << "t";
+			}
+			cout << depVar[i].number;
+			cout << endl;
 			for (j = 0; j <= (numvariable+1); j++) {
 				cout << "-----\t";
 			}
 			cout << endl;
+			
 		}
+		else if (i < numconstraint) {
+			cout << "=";
+			if (depVar[i].indep) {
+				cout << "x";
+			}
+			else {
+				cout << "t";
+			}
+			cout << depVar[i].number;
+			cout << endl;
+		}
+		else {
+			cout << endl;
+		}
+		
 	}
 	cout << "Tableau printed" << endl << endl;
 	return false;
@@ -91,11 +126,20 @@ bool simpl::pivot(int row, int col) {
 	}
 	newval = 1 / pivotval;
 	tableau[row - 1][col - 1] = newval;
-	tempVar.indep = (indepVar[col - 1]).indep;
+	if ((indepVar[col - 1]).indep && !((depVar[row - 1]).indep)) {
+		cout << "changing indep variables" << endl;
+		(indepVar[col - 1]).indep = false;
+		(depVar[row - 1]).indep = true;
+	} else if (!((indepVar[col - 1]).indep) && (depVar[row - 1]).indep) {
+		cout << "changing indep variables 2" << endl;
+		(indepVar[col - 1]).indep = true;
+		(depVar[row - 1]).indep = false;
+	}
+	//tempVar.indep = (indepVar[col - 1]).indep;
 	tempVar.number = (indepVar[col - 1]).number;
-	(indepVar[col - 1]).indep = (depVar[row - 1]).indep;
+	//(indepVar[col - 1]).indep = (depVar[row - 1]).indep;
 	(indepVar[col - 1]).number = (depVar[row - 1]).number;
-	(depVar[row - 1]).indep = tempVar.indep;
+	//(depVar[row - 1]).indep = tempVar.indep;
 	(depVar[row - 1]).number = tempVar.number;
 	canchangevalue = false;
 	return true;
@@ -159,7 +203,7 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 		}
 		if (simplexdone) {
 			//an optimal solution has been found
-			*optimalValue = tableau[numconstraint][numvariable];
+			*optimalValue = -1*tableau[numconstraint][numvariable];
 			for (i = 0; i < numvariable; i++) {
 				xValuePtr[i] = -1;
 			}
@@ -225,7 +269,7 @@ void simpl::constructTab(const int numvar, const int numconstr) {
 		(indepVar[i]).number = (i + 1);
 	}
 	for (i = 0; i < numconstr; i++) {
-		(depVar[i]).indep = true;
+		(depVar[i]).indep = false;
 		(depVar[i]).number = (i + 1);
 	}
 	canchangevalue = true;
