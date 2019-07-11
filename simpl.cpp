@@ -33,6 +33,10 @@ bool simpl::changeValue(float value, int row, int col) {
 
 bool simpl::prTableau() {
 	int i, j;
+	if (numvariable == 0) {
+		cout << "Attempting to print blank tableau" << endl;
+		return false;
+	}
 	for (j = 0; j < numvariable; j++) {
 		if (indepVar[j].indep) {
 			cout << "x";
@@ -84,7 +88,7 @@ bool simpl::prTableau() {
 		
 	}
 	cout << "Tableau printed" << endl << endl;
-	return false;
+	return true;
 }
 
 bool simpl::pivot(int row, int col) {
@@ -255,6 +259,15 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 
 void simpl::constructTab(const int numvar, const int numconstr) {
 	int i;
+	if (numvar <= 0 || numconstr <= 0) {
+		tableau = NULL;
+		indepVar = NULL;
+		depVar = NULL;
+		numvariable = 0;
+		numconstraint = 0;
+		canchangevalue = false;
+		return;
+	}
 
 	numvariable = numvar;
 	numconstraint = numconstr;
@@ -277,6 +290,9 @@ void simpl::constructTab(const int numvar, const int numconstr) {
 
 void simpl::destroyTab() {
 	int i;
+	if (numvariable == 0 && numconstraint == 0) {
+		return;
+	}
 	for (i = 0; i <= numconstraint; i++) {
 		delete tableau[i];
 	}

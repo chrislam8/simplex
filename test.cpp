@@ -12,10 +12,14 @@ using namespace std;
 
 void pivotTest();
 void simplTest();
+void negsizeTest();
+void negrowTest();
 
 int main () {
 	pivotTest();
 	simplTest();
+	negsizeTest();
+	negrowTest();
 	return 0;
 }
 
@@ -136,4 +140,37 @@ void simplTest() {
 	delete tableauCheck;
 	tableauCheck = NULL;*/
 	cout << "All good\n";
+}
+
+void negsizeTest() {
+	simpl* test = new simpl(-1, -1);
+	test->prTableau();
+	delete test;
+	test = NULL;
+	cout << "Negative size test complete" << endl;
+}
+
+void negrowTest() {
+	simpl* test = new simpl(NUMROW,NUMCOL);
+	if (test->changeValue(10.0, -1, 2)) {
+		cout << "changeValue with negative row value test failed" << endl;
+	}
+	else {
+		cout << "changeValue with negative row value test passed" << endl;
+	}
+	if (test->changeValue(10.0, 2, -1)) {
+		cout << "changeValue with negative column value test failed" << endl;
+	}
+	else {
+		cout << "changeValue with negative column value test passed" << endl;
+	}
+	if (test->changeValue(-10.0, 2, 2)) {
+		cout << "changeValue with negative value test passed" << endl;
+	}
+	else {
+		cout << "changeValue with negative value test failed" << endl;
+	}
+	delete test;
+	test = NULL;
+	cout << "Negative input test (other than size) complete" << endl;
 }
