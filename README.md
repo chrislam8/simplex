@@ -1,6 +1,8 @@
 # simplex
 # This project is meant to be able to complete the simplex algorithm for canonical linear programming problems.
 
+Update July 16, 2019: Added tests for unbounded LP problems and infeasible LP problems
+
 Update July 11, 2019: Added tests for negative inputs
 
 Update July 5, 2019: Testing of the simplex algorithm has begun, ahead of projected date. No issues found so far.
