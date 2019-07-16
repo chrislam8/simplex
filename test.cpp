@@ -14,12 +14,16 @@ void pivotTest();
 void simplTest();
 void negsizeTest();
 void negrowTest();
+void unboundedTest();
+void infeasibleTest();
 
 int main () {
 	pivotTest();
 	simplTest();
 	negsizeTest();
 	negrowTest();
+	unboundedTest();
+	infeasibleTest();
 	return 0;
 }
 
@@ -173,4 +177,65 @@ void negrowTest() {
 	delete test;
 	test = NULL;
 	cout << "Negative input test (other than size) complete" << endl;
+}
+
+void unboundedTest() {
+	simpl* test = new simpl(2, 2);
+	float* xRes = new float[2];
+	float optVal = -1;
+	bool testSuccess = true;
+	test->changeValue(1.0, 1, 1);
+	test->changeValue(-2.0, 1, 2);
+	test->changeValue(-1.0, 1, 3);
+	test->changeValue(-1.0, 2, 1);
+	test->changeValue(1.0, 2, 2);
+	test->changeValue(-1.0, 2, 3);
+	test->changeValue(1.0, 3, 1);
+	test->changeValue(1.0, 3, 2);
+	test->changeValue(0.0, 3, 3);
+	test->prTableau();
+	if (test->simplex(xRes, &optVal) != 2) {
+		testSuccess = false;
+	}
+	test->prTableau();
+	delete test;
+	test = NULL;
+	if (testSuccess) {
+		cout << "Unbounded test successful" << endl;
+	}
+	else {
+		cout << "Unbounded test failed" << endl;
+	}
+	cout << "Unbounded test complete" << endl;
+}
+
+
+void infeasibleTest() {
+	simpl* test = new simpl(2, 2);
+	float* xRes = new float[2];
+	float optVal = -1;
+	bool testSuccess = true;
+	test->changeValue(-1.0, 1, 1);
+	test->changeValue(2.0, 1, 2);
+	test->changeValue(-5.0, 1, 3);
+	test->changeValue(1.0, 2, 1);
+	test->changeValue(-1.0, 2, 2);
+	test->changeValue(-5.0, 2, 3);
+	test->changeValue(1.0, 3, 1);
+	test->changeValue(1.0, 3, 2);
+	test->changeValue(0.0, 3, 3);
+	test->prTableau();
+	if (test->simplex(xRes, &optVal) != 1) {
+		testSuccess = false;
+	}
+	test->prTableau();
+	delete test;
+	test = NULL;
+	if (testSuccess) {
+		cout << "Infeasible test successful" << endl;
+	}
+	else {
+		cout << "Infeasible test failed" << endl;
+	}
+	cout << "Infeasible test complete" << endl;
 }

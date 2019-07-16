@@ -58,10 +58,10 @@ bool simpl::prTableau() {
 		if (i == (numconstraint - 1)) {
 			cout << "=";
 			if (depVar[i].indep) {
-				cout << "x";
+				cout << "-x";
 			}
 			else {
-				cout << "t";
+				cout << "-t";
 			}
 			cout << depVar[i].number;
 			cout << endl;
@@ -74,10 +74,10 @@ bool simpl::prTableau() {
 		else if (i < numconstraint) {
 			cout << "=";
 			if (depVar[i].indep) {
-				cout << "x";
+				cout << "-x";
 			}
 			else {
-				cout << "t";
+				cout << "-t";
 			}
 			cout << depVar[i].number;
 			cout << endl;
