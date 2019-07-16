@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void pivotTest();
+void pivotTest(); //This test no longer works due to change from public to private
 void simplTest();
 void negsizeTest();
 void negrowTest();
@@ -18,7 +18,7 @@ void unboundedTest();
 void infeasibleTest();
 
 int main () {
-	pivotTest();
+	//pivotTest();
 	simplTest();
 	negsizeTest();
 	negrowTest();
@@ -111,8 +111,6 @@ void simplTest() {
 	test->changeValue(200.0, 4, 1);
 	test->changeValue(150.0, 4, 2);
 	test->changeValue(0.0, 4, 3);
-	//looking at the values in the tableau
-	test->prTableau();
 	/*for (i = 0; i < NUMROW; i++) {
 		for (j = 0; j < NUMCOL; j++) {
 			cout << "Value in row " << (i+1) << " and column " << (j+1) << " is " << tableauCheck[i][j] << endl;
@@ -120,8 +118,6 @@ void simplTest() {
 	}*/
 	//simplex testing
 	test->simplex(testxVal, &testNum);
-	//looking at the values in the tableau after pivoting
-	test->prTableau();
 	/*for (i = 0; i < NUMROW; i++) {
 		for (j = 0; j < NUMCOL; j++) {
 			cout << "Value in row " << (i+1) << " and column " << (j+1) << " is " << tableauCheck[i][j] << endl;
@@ -148,7 +144,6 @@ void simplTest() {
 
 void negsizeTest() {
 	simpl* test = new simpl(-1, -1);
-	test->prTableau();
 	delete test;
 	test = NULL;
 	cout << "Negative size test complete" << endl;
@@ -193,11 +188,9 @@ void unboundedTest() {
 	test->changeValue(1.0, 3, 1);
 	test->changeValue(1.0, 3, 2);
 	test->changeValue(0.0, 3, 3);
-	test->prTableau();
 	if (test->simplex(xRes, &optVal) != 2) {
 		testSuccess = false;
 	}
-	test->prTableau();
 	delete test;
 	test = NULL;
 	if (testSuccess) {
@@ -224,11 +217,9 @@ void infeasibleTest() {
 	test->changeValue(1.0, 3, 1);
 	test->changeValue(1.0, 3, 2);
 	test->changeValue(0.0, 3, 3);
-	test->prTableau();
 	if (test->simplex(xRes, &optVal) != 1) {
 		testSuccess = false;
 	}
-	test->prTableau();
 	delete test;
 	test = NULL;
 	if (testSuccess) {
