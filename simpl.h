@@ -11,14 +11,14 @@ struct variableName {
 class simpl {
 public:
 	simpl(); //basic constructor
-	simpl(int numvar, int numconstr); //custom constructor
+	simpl(int numvar, int numconstr, bool minimizationLPval); //custom constructor
 	~simpl(); //destructor
 	bool changeValue(float value, int row, int col);
 	//This method is intended for users to be able to see the tableau (mainly for debugging purposes)
 	bool prTableau();	
 	bool pivot(int row, int col);
 	//This method is not yet fully tested
-	int simplex(float* xValuePtr, float* optimalValue); 
+	int simplex(float* xValuePtr, float* optimalValue, bool* xNegative, bool* equationOfConstraint); 
 	/* xValuePtr is meant as a pointer to return the optimal x values for the problem
 	optimalValue is meant as a pointer to where the optimal value will be placed 
 	return values:
@@ -34,6 +34,7 @@ private:
 	int numconstraint; //also numrows - 1
 	int numvariable; //also numcols - 1
 	bool canchangevalue;
+	bool minimizationLP;
 	//private methods
 	void constructTab(const int numvar,const int numconstr);
 	void destroyTab();

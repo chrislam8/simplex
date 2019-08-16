@@ -5,11 +5,13 @@
 //public methods
 
 simpl::simpl() {
+	minimizationLP = false;
 	constructTab(2, 1);
 }
 
-simpl::simpl(int numvar, int numconstr) {
+simpl::simpl(int numvar, int numconstr, bool minimizationLPval) {
 	constructTab(numvar, numconstr);
+	minimizationLP = minimizationLPval;
 }
 
 simpl::~simpl() {
@@ -36,6 +38,10 @@ bool simpl::prTableau() {
 	if (numvariable == 0) {
 		cout << "Attempting to print blank tableau" << endl;
 		return false;
+	}
+	if (minimizationLP) {
+		cout << "Method for printing minimization LP tableau not complete" << endl;
+		cout << "Printing tableau as if it was a maximization LP tableau" << endl << endl;
 	}
 	for (j = 0; j < numvariable; j++) {
 		if (indepVar[j].indep) {
@@ -149,7 +155,7 @@ bool simpl::pivot(int row, int col) {
 	return true;
 }
 
-int simpl::simplex(float* xValuePtr, float* optimalValue) {
+int simpl::simplex(float* xValuePtr, float* optimalValue, bool* xNegative, bool* equationOfConstraint) {
 	bool simplexdone = false;
 	int i, j;
 	int colnum;
@@ -158,6 +164,9 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 	float tempval;
 	if (xValuePtr == NULL || optimalValue == NULL) {
 		return 3;
+	}
+	if (minimizationLP) {
+		//negative transposition
 	}
 	//This first loop is to check for feasibility (are there any possible solutions?)
 	while (!simplexdone) {
