@@ -38,5 +38,6 @@ private:
 	//private methods
 	void constructTab(const int numvar,const int numconstr);
 	void destroyTab();
+	void negativeTranspose();
 };
 

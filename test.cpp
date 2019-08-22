@@ -16,6 +16,7 @@ void negsizeTest();
 void negrowTest();
 void unboundedTest();
 void infeasibleTest();
+void minimizationTest();
 
 int main () {
 	pivotTest();
@@ -24,11 +25,12 @@ int main () {
 	negrowTest();
 	unboundedTest();
 	infeasibleTest();
+	minimizationTest();
 	return 0;
 }
 
 void pivotTest() {
-	simpl* test = new simpl(NUMVAR, NUMCONSTR);
+	simpl* test = new simpl(NUMVAR, NUMCONSTR, false);
 	bool isErr = false;
 	//float** tableauCheck = new float*[NUMROW];
 	int i, j;
@@ -89,7 +91,7 @@ void pivotTest() {
 }
 
 void simplTest() {
-	simpl* test = new simpl(NUMVAR, NUMCONSTR);
+	simpl* test = new simpl(NUMVAR, NUMCONSTR,false);
 	bool isErr = false;
 	//float** tableauCheck = new float*[NUMROW];
 	int i, j;
@@ -119,7 +121,7 @@ void simplTest() {
 		}
 	}*/
 	//simplex testing
-	test->simplex(testxVal, &testNum);
+	test->simplex(testxVal, &testNum, NULL, NULL);
 	//looking at the values in the tableau after pivoting
 	test->prTableau();
 	/*for (i = 0; i < NUMROW; i++) {
@@ -147,7 +149,7 @@ void simplTest() {
 }
 
 void negsizeTest() {
-	simpl* test = new simpl(-1, -1);
+	simpl* test = new simpl(-1, -1, false);
 	test->prTableau();
 	delete test;
 	test = NULL;
@@ -155,7 +157,7 @@ void negsizeTest() {
 }
 
 void negrowTest() {
-	simpl* test = new simpl(NUMROW,NUMCOL);
+	simpl* test = new simpl(NUMROW,NUMCOL,false);
 	if (test->changeValue(10.0, -1, 2)) {
 		cout << "changeValue with negative row value test failed" << endl;
 	}
@@ -180,7 +182,7 @@ void negrowTest() {
 }
 
 void unboundedTest() {
-	simpl* test = new simpl(2, 2);
+	simpl* test = new simpl(2, 2, false);
 	float* xRes = new float[2];
 	float optVal = -1;
 	bool testSuccess = true;
@@ -194,7 +196,7 @@ void unboundedTest() {
 	test->changeValue(1.0, 3, 2);
 	test->changeValue(0.0, 3, 3);
 	test->prTableau();
-	if (test->simplex(xRes, &optVal) != 2) {
+	if (test->simplex(xRes, &optVal,NULL,NULL) != 2) {
 		testSuccess = false;
 	}
 	test->prTableau();
@@ -211,7 +213,7 @@ void unboundedTest() {
 
 
 void infeasibleTest() {
-	simpl* test = new simpl(2, 2);
+	simpl* test = new simpl(2, 2,false);
 	float* xRes = new float[2];
 	float optVal = -1;
 	bool testSuccess = true;
@@ -225,7 +227,7 @@ void infeasibleTest() {
 	test->changeValue(1.0, 3, 2);
 	test->changeValue(0.0, 3, 3);
 	test->prTableau();
-	if (test->simplex(xRes, &optVal) != 1) {
+	if (test->simplex(xRes, &optVal, NULL, NULL) != 1) {
 		testSuccess = false;
 	}
 	test->prTableau();
@@ -238,4 +240,36 @@ void infeasibleTest() {
 		cout << "Infeasible test failed" << endl;
 	}
 	cout << "Infeasible test complete" << endl;
+}
+
+void minimizationTest() {
+	simpl* test = new simpl(2, 2, true);
+	float* xRes = new float[2];
+	float optVal = -1;
+	bool testSuccess = true;
+	int testVal = 0;
+	test->changeValue(20.0, 1, 1);
+	test->changeValue(25.0, 1, 2);
+	test->changeValue(300.0, 1, 3);
+	test->changeValue(40.0, 2, 1);
+	test->changeValue(20.0, 2, 2);
+	test->changeValue(500.0, 2, 3);
+	test->changeValue(1000.0, 3, 1);
+	test->changeValue(800.0, 3, 2);
+	test->changeValue(0.0, 3, 3);
+	test->prTableau();
+	testVal = test->simplex(xRes, &optVal, NULL, NULL);
+	if (testVal != 0) {
+		testSuccess = false;
+	}
+	test->prTableau();
+	delete test;
+	test = NULL;
+	if (testSuccess) {
+		cout << "Minimization test successful" << endl;
+	}
+	else {
+		cout << "Minimization test failed" << endl;
+	}
+	cout << "Minimization test complete" << endl;
 }

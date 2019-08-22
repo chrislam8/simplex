@@ -157,6 +157,7 @@ bool simpl::pivot(int row, int col) {
 
 int simpl::simplex(float* xValuePtr, float* optimalValue, bool* xNegative, bool* equationOfConstraint) {
 	bool simplexdone = false;
+	bool simplexmin = false;
 	int i, j;
 	int colnum;
 	int rownum;
@@ -166,7 +167,8 @@ int simpl::simplex(float* xValuePtr, float* optimalValue, bool* xNegative, bool*
 		return 3;
 	}
 	if (minimizationLP) {
-		//negative transposition
+		simplexmin = true;
+		negativeTranspose();
 	}
 	//This first loop is to check for feasibility (are there any possible solutions?)
 	while (!simplexdone) {
@@ -216,7 +218,12 @@ int simpl::simplex(float* xValuePtr, float* optimalValue, bool* xNegative, bool*
 		}
 		if (simplexdone) {
 			//an optimal solution has been found
-			*optimalValue = -1*tableau[numconstraint][numvariable];
+			if (simplexmin) {
+				*optimalValue = tableau[numconstraint][numvariable];
+			}
+			else {
+				*optimalValue = -1 * tableau[numconstraint][numvariable];
+			}
 			for (i = 0; i < numvariable; i++) {
 				xValuePtr[i] = -1;
 			}
@@ -307,11 +314,42 @@ void simpl::destroyTab() {
 	}
 	delete tableau;
 	tableau = NULL;
-	delete[]indepVar;
+	delete[] indepVar;
 	indepVar = NULL;
-	delete[]depVar;
+	delete[] depVar;
 	depVar = NULL;
 }
 
-
+void simpl::negativeTranspose() {
+	int newconstraint = numvariable;
+	int newvariable = numconstraint;
+	float** temptableau = tableau;
+	int i, j;
+	float tempvalue = 0;
+	tableau = NULL;
+	constructTab(newvariable, newconstraint);
+	for (i = 0; i <= newvariable; i++) {
+		for (j = 0; j <= newconstraint; j++) {
+			tempvalue = temptableau[i][j];
+			tempvalue = -1 * tempvalue;
+			if (!(changeValue(tempvalue, j + 1, i + 1))) {
+				cout << "negative transpose fail for i = " << i << " and j = " << j << endl;
+				//undo partial negative transpose and exit method
+				constructTab(newconstraint, newvariable);
+				for (i = 0; i <= numconstraint; i++) {
+					delete tableau[i];
+				}
+				delete tableau;
+				tableau = temptableau;
+				return;
+			}
+		}
+	}
+	if (minimizationLP) {
+		minimizationLP = false;
+	}
+	else {
+		minimizationLP = true;
+	}
+}
 
