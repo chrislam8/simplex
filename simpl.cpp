@@ -158,17 +158,59 @@ bool simpl::pivot(int row, int col) {
 int simpl::simplex(float* xValuePtr, float* optimalValue, bool* xNegative, bool* equationOfConstraint) {
 	bool simplexdone = false;
 	bool simplexmin = false;
-	int i, j;
+	int i, j, k;
 	int colnum;
 	int rownum;
 	float minval;
 	float tempval;
+	float** temptableau = NULL;
+	variableName* tempdepVar = NULL;
 	if (xValuePtr == NULL || optimalValue == NULL) {
 		return 3;
 	}
 	if (minimizationLP) {
 		simplexmin = true;
 		negativeTranspose();
+	}
+	if (xNegative != NULL) {
+		for (i = 0; i < numvariable; i++) {
+			if (xNegative[i] == true) {
+				for (j = 0; j < numconstraint; j++) {
+					if (tableau[i][j] != 0) {
+						if (!(pivot(i + 1, j + 1))) {
+							return 4;
+						}
+						temptableau = tableau;
+						tableau = NULL;
+						tableau = new float* [numconstraint];
+						for (k = 0; k <= numconstraint; k++) {
+							if (k < j) {
+								tableau[k] = temptableau[k];
+							}
+							else if (k > j) {
+								tableau[k - 1] = temptableau[k];
+							}
+						}
+						delete temptableau[j];
+						delete temptableau;
+						tempdepVar = depVar;
+						depVar = NULL;
+						depVar = new variableName[numconstraint];
+						for (k = 0; k <= numconstraint; k++) {
+							if (k < j) {
+								depVar[k] = tempdepVar[k];
+							}
+							else if (k > j) {
+								depVar[k - 1] = tempdepVar[k];
+							}
+						}
+						delete tempdepVar;
+						numconstraint--;
+						break;
+					}
+				}
+			}
+		}
 	}
 	//This first loop is to check for feasibility (are there any possible solutions?)
 	while (!simplexdone) {
