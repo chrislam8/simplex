@@ -21,6 +21,10 @@
   <ItemGroup>
     <ClInclude Include="simpl.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="simpl.cpp" />
+    <ClCompile Include="test.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{0C651AAE-DBDF-48F6-A713-FBEDD45C1970}</ProjectGuid>
