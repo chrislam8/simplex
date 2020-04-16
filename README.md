@@ -1,6 +1,8 @@
 # simplex
 # This project is meant to be able to complete the simplex algorithm for canonical linear programming problems.
 
+Update April 16, 2020: Move files into visual studio solution
+
 Update July 16, 2019: Added tests for unbounded LP problems and infeasible LP problems
 
 Update July 11, 2019: Added tests for negative inputs
