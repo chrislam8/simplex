@@ -20,8 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simpl.h" />
+    <ClInclude Include="test.h" />
+    <ClInclude Include="testErrorCodes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="simpl.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
