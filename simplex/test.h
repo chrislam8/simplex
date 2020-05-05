@@ -14,7 +14,7 @@ enum testList {
 
 class allTests {
 public:
-	testErrorCodes runAllTests();
+	testResultCodes runAllTests();
 
 private:
 	testErrorCodes simplTest();

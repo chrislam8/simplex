@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 enum testErrorCodes {
 	TEST_SUCCESS,
 	TEST_INCORRECT_VALUE,
@@ -7,3 +9,5 @@ enum testErrorCodes {
 	TEST_UNEXPECTED_VALUE
 
 };
+
+#define testResultCodes std::pair<testList, testErrorCodes>

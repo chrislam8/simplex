@@ -11,27 +11,34 @@
 
 using namespace std;
 
-testErrorCodes allTests::runAllTests () {
-	testErrorCodes result = TEST_SUCCESS;
+testResultCodes allTests::runAllTests () {
+	testErrorCodes errorCode = TEST_SUCCESS;
+	testResultCodes result;
 	for (int testNumber = 0; testNumber < NUMBER_OF_TESTS; testNumber++)
 	{
 		switch (testNumber)
 		{
 		case SIMPL_TEST:
-			result = simplTest();
+			errorCode = simplTest();
 			break;
 		case NEG_SIZE_TEST:
-			result = negsizeTest();
+			errorCode = negsizeTest();
 			break;
 		case NEGROW_TEST:
-			result = negrowTest();
+			errorCode = negrowTest();
 			break;
 		case UNBOUNDED_TEST:
-			result = unboundedTest();
+			errorCode = unboundedTest();
 			break;
 		case INFEASIBLE_TEST:
-			result = infeasibleTest();
+			errorCode = infeasibleTest();
 			break;
+		}
+		result.first = static_cast<testList>(testNumber);
+		result.second = errorCode;
+		if (errorCode != TEST_SUCCESS)
+		{
+			return result;
 		}
 	}
 	return result;
