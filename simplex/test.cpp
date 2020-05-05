@@ -3,7 +3,6 @@
 #include "simpl.h"
 #include "test.h"
 
-
 #define NUMVAR 2
 #define NUMCONSTR 3
 #define NUMCOL 3
@@ -45,10 +44,15 @@ testResultCodes allTests::runAllTests () {
 }
 
 testErrorCodes allTests::simplTest() {
+	float* correctxValues = new float[NUMVAR];
+	correctxValues[0] = 10.0;
+	correctxValues[1] = 5.0;
+	float correctOptimalValue = 2750.0;
+	testErrorCodes result = TEST_SUCCESS;
+
 	simpl* test = new simpl(NUMVAR, NUMCONSTR);
-	bool isErr = false;
 	int variableIter;
-	float testNum = -8.2;
+	float optimalValue = -8.2;
 	float* testxVal = new float[NUMVAR];
 	test->changeValue(1.0, 1, 1);
 	test->changeValue(2.0, 1, 2);
@@ -64,20 +68,28 @@ testErrorCodes allTests::simplTest() {
 	test->changeValue(0.0, 4, 3);
 
 	//simplex testing
-	test->simplex(testxVal, &testNum);
+	test->simplex(testxVal, &optimalValue);
 	for (variableIter = 0; variableIter < NUMVAR; variableIter++) {
-		cout << "x #" << (variableIter + 1) << " is " << testxVal[variableIter] << endl;
+		if (testxVal[variableIter] != correctxValues[variableIter])
+		{
+			result = TEST_INCORRECT_VALUE;
+		}
 	}
-	cout << "The optimal value is " << testNum << endl;
-	if (!isErr) {
-		cout << "All tests successfully passed" << endl;
+	
+	if (optimalValue != correctOptimalValue)
+	{
+		result = TEST_INCORRECT_OPTIMAL_VALUE;
 	}
+
 	//free all dynamic memory used
 	delete test;
 	test = NULL;
+	delete [] testxVal;
+	testxVal = NULL;
+	delete [] correctxValues;
+	correctxValues = NULL;
 
-	cout << "All good\n";
-	return TEST_SUCCESS;
+	return result;
 }
 
 testErrorCodes allTests::negsizeTest() {
