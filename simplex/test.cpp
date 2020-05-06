@@ -89,41 +89,31 @@ testErrorCodes allTests::negsizeTest() {
 	simpl* test = new simpl(-1, -1);
 	delete test;
 	test = NULL;
-	cout << "Negative size test complete" << endl;
 	return TEST_SUCCESS;
 }
 
 testErrorCodes allTests::negrowTest() {
 	simpl* test = new simpl(NUMROW,NUMCOL);
+	testErrorCodes result = TEST_SUCCESS;
 	if (test->changeValue(10.0, -1, 2)) {
-		cout << "changeValue with negative row value test failed" << endl;
-	}
-	else {
-		cout << "changeValue with negative row value test passed" << endl;
+		result = TEST_INCORRECT_OPERATION;
 	}
 	if (test->changeValue(10.0, 2, -1)) {
-		cout << "changeValue with negative column value test failed" << endl;
+		result = TEST_INCORRECT_OPERATION;
 	}
-	else {
-		cout << "changeValue with negative column value test passed" << endl;
-	}
-	if (test->changeValue(-10.0, 2, 2)) {
-		cout << "changeValue with negative value test passed" << endl;
-	}
-	else {
-		cout << "changeValue with negative value test failed" << endl;
+	if (!(test->changeValue(-10.0, 2, 2))) {
+		result = TEST_BLOCKED_CORRECT_OPERATION;
 	}
 	delete test;
 	test = NULL;
-	cout << "Negative input test (other than size) complete" << endl;
-	return TEST_SUCCESS;
+	return result;
 }
 
 testErrorCodes allTests::unboundedTest() {
 	simpl* test = new simpl(2, 2);
 	float* xRes = new float[2];
 	float optVal = -1;
-	bool testSuccess = true;
+	testErrorCodes result = TEST_SUCCESS;
 	test->changeValue(1.0, 1, 1);
 	test->changeValue(-2.0, 1, 2);
 	test->changeValue(-1.0, 1, 3);
@@ -134,18 +124,11 @@ testErrorCodes allTests::unboundedTest() {
 	test->changeValue(1.0, 3, 2);
 	test->changeValue(0.0, 3, 3);
 	if (test->simplex(xRes, &optVal) != 2) {
-		testSuccess = false;
+		result = TEST_INCORRECT_OPERATION;
 	}
 	delete test;
 	test = NULL;
-	if (testSuccess) {
-		cout << "Unbounded test successful" << endl;
-	}
-	else {
-		cout << "Unbounded test failed" << endl;
-	}
-	cout << "Unbounded test complete" << endl;
-	return TEST_SUCCESS;
+	return result;
 }
 
 
@@ -153,7 +136,7 @@ testErrorCodes allTests::infeasibleTest() {
 	simpl* test = new simpl(2, 2);
 	float* xRes = new float[2];
 	float optVal = -1;
-	bool testSuccess = true;
+	testErrorCodes result = TEST_SUCCESS;
 	test->changeValue(-1.0, 1, 1);
 	test->changeValue(2.0, 1, 2);
 	test->changeValue(-5.0, 1, 3);
@@ -164,16 +147,9 @@ testErrorCodes allTests::infeasibleTest() {
 	test->changeValue(1.0, 3, 2);
 	test->changeValue(0.0, 3, 3);
 	if (test->simplex(xRes, &optVal) != 1) {
-		testSuccess = false;
+		result = TEST_INCORRECT_OPERATION;
 	}
 	delete test;
 	test = NULL;
-	if (testSuccess) {
-		cout << "Infeasible test successful" << endl;
-	}
-	else {
-		cout << "Infeasible test failed" << endl;
-	}
-	cout << "Infeasible test complete" << endl;
-	return TEST_SUCCESS;
+	return result;
 }
