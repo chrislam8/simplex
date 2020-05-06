@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClInclude Include="simpl.h" />
     <ClInclude Include="test.h" />
-    <ClInclude Include="testErrorCodes.h" />
+    <ClInclude Include="testEnums.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

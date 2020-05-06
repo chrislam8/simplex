@@ -21,7 +21,7 @@
     <ClInclude Include="test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="testErrorCodes.h">
+    <ClInclude Include="testEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
