@@ -3,13 +3,6 @@
 #include "simpl.h"
 #include "test.h"
 
-#define NUMVAR 2
-#define NUMCONSTR 3
-#define NUMCOL 3
-#define NUMROW 4
-
-using namespace std;
-
 testResultCodes allTests::runAllTests () {
 	testErrorCodes errorCode = TEST_SUCCESS;
 	testResultCodes result;
