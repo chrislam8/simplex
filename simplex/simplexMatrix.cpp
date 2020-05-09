@@ -168,13 +168,13 @@ checkValue simplexMatrix::unboundedSolutionCheck(int colNumber)
 	int rowNumber = -1;
 	matrixLocation pivotLocation = std::make_pair(rowNumber, colNumber);
 	checkValue result = std::make_pair(unboundedSolution, pivotLocation);
-	int minValue = -1;
+	float minValue = -1;
 	for (int rowNum = 0; rowNum < numberOfConstraints; rowNum++)
 	{
 		if (valueMatrix[rowNum][colNumber] > 0)
 		{
 			unboundedSolution = false;
-			int tempValue = valueMatrix[rowNum][numberOfVariables] / valueMatrix[rowNum][colNumber];
+			float tempValue = valueMatrix[rowNum][numberOfVariables] / valueMatrix[rowNum][colNumber];
 			if (rowNum == 0)
 			{
 				minValue = tempValue;
