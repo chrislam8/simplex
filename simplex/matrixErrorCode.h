@@ -10,4 +10,4 @@ enum matrixErrorCode {
 };
 
 #define matrixLocation std::pair<int, int>
-#define feasibilityCheckValue std::pair<bool, matrixLocation>
+#define checkValue std::pair<bool, matrixLocation>

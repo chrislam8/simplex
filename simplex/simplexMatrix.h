@@ -11,7 +11,12 @@ public:
 	matrixErrorCode changeValue(float value, int row, int col);
 	matrixErrorCode pivot(int row, int col);
 
-	feasibilityCheckValue feasibleSolutionsCheck();
+	checkValue feasibleSolutionsCheck();
+	checkValue optimalSolutionCheck();
+	checkValue unboundedSolutionCheck(int colNumber);
+
+	float getOptimalValue();
+	float getVariableValue(int row);
 
 private:
 	float** valueMatrix;

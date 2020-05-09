@@ -98,13 +98,13 @@ matrixErrorCode simplexMatrix::pivot(int row, int col)
 	return SUCCESS;
 }
 
-feasibilityCheckValue simplexMatrix::feasibleSolutionsCheck()
+checkValue simplexMatrix::feasibleSolutionsCheck()
 {
 	bool feasibleSolutions = true;
 	int rowNumber = -1;
 	int colNumber = -1;
 	matrixLocation pivotLocation = std::make_pair(rowNumber, colNumber);
-	feasibilityCheckValue result = std::make_pair(feasibleSolutions, pivotLocation);
+	checkValue result = std::make_pair(feasibleSolutions, pivotLocation);
 	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
 	{
 		if (valueMatrix[rowNum][numberOfVariables] < 0)
@@ -137,6 +137,72 @@ feasibilityCheckValue simplexMatrix::feasibleSolutionsCheck()
 	pivotLocation = std::make_pair(rowNumber, colNumber);
 	result = std::make_pair(feasibleSolutions, pivotLocation);
 	return result;
+}
+
+checkValue simplexMatrix::optimalSolutionCheck()
+{
+	bool optimalSolution = true;
+	int rowNumber = -1;
+	int colNumber = -1;
+	matrixLocation pivotLocation = std::make_pair(rowNumber, colNumber);
+	checkValue result = std::make_pair(optimalSolution, pivotLocation);
+	for (int colNum = 0; colNum < numberOfVariables; colNum++)
+	{
+		if (valueMatrix[numberOfConstraints][colNum] > 0)
+		{
+			optimalSolution = false;
+			colNumber = colNum;
+		}
+	}
+	if (!optimalSolution)
+	{
+		pivotLocation = std::make_pair(rowNumber, colNumber);
+		result = std::make_pair(optimalSolution, pivotLocation);
+	}
+	return result;
+}
+
+checkValue simplexMatrix::unboundedSolutionCheck(int colNumber)
+{
+	bool unboundedSolution = true;
+	int rowNumber = -1;
+	matrixLocation pivotLocation = std::make_pair(rowNumber, colNumber);
+	checkValue result = std::make_pair(unboundedSolution, pivotLocation);
+	int minValue = -1;
+	for (int rowNum = 0; rowNum < numberOfConstraints; rowNum++)
+	{
+		if (valueMatrix[rowNum][colNumber] > 0)
+		{
+			unboundedSolution = false;
+			int tempValue = valueMatrix[rowNum][numberOfVariables] / valueMatrix[rowNum][colNumber];
+			if (rowNum == 0)
+			{
+				minValue = tempValue;
+				rowNumber = rowNum;
+			}
+			else if (minValue > tempValue)
+			{
+				minValue = tempValue;
+				rowNumber = rowNum;
+			}
+		}
+	}
+	if (!unboundedSolution)
+	{
+		pivotLocation = std::make_pair(rowNumber, colNumber);
+		result = std::make_pair(unboundedSolution, pivotLocation);
+	}
+	return result;
+}
+
+float simplexMatrix::getOptimalValue()
+{
+	return -1 * valueMatrix[numberOfConstraints][numberOfVariables];
+}
+
+float simplexMatrix::getVariableValue(int row)
+{
+	return valueMatrix[row][numberOfVariables];
 }
 
 void simplexMatrix::constructMatrix(int numVar, int numConstr) 
