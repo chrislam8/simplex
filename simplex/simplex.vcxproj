@@ -22,8 +22,11 @@
     <ClInclude Include="matrixErrorCode.h" />
     <ClInclude Include="simpl.h" />
     <ClInclude Include="simplexMatrix.h" />
+    <ClInclude Include="test.h" />
+    <ClInclude Include="testEnums.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="simpl.cpp" />
     <ClCompile Include="simplexMatrix.cpp" />
     <ClCompile Include="test.cpp" />
