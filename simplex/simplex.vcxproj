@@ -19,10 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="matrixErrorCode.h" />
     <ClInclude Include="simpl.h" />
+    <ClInclude Include="simplexMatrix.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simpl.cpp" />
+    <ClCompile Include="simplexMatrix.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
