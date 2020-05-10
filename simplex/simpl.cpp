@@ -54,28 +54,6 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 	}
 	//This first loop is to check for feasibility (are there any possible solutions?)
 	while (!simplexdone) {
-		simplexdone = true;
-		/*
-		for (i = 0; i < numconstraint; i++) {
-			if (tableau[i][numvariable] < 0) {
-				simplexdone = false;
-				rownum = i;
-			}
-		}
-		if (simplexdone) {
-			break; //there are feasible solutions
-		}
-		simplexdone = true;
-		for (i = 0; i < numvariable; i++) {
-			if (tableau[rownum][i] < 0) {
-				simplexdone = false;
-				colnum = i;
-			}
-		}
-		if (simplexdone) {
-			return 1; //no feasible solution
-		}
-		*/
 		checkValue feasibilityCheck = tableau->feasibleSolutionsCheck();
 		if (feasibilityCheck.first)
 		{
@@ -88,21 +66,6 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 		{
 			return 1; //no feasible solution
 		}
-		//determine where to pivot
-		/*
-		if (rownum < (numconstraint - 1)) {
-			minval = tableau[rownum][colnum];
-			for (i = rownum; i < numconstraint; i++) {
-				if (tableau[i][colnum] < minval) {
-					minval = tableau[i][colnum];
-					rownum = i;
-				}
-			}
-		}
-		if (!(pivot((rownum + 1), (colnum + 1)))) {
-			return 4; //pivot failed for some reason (presumed to be a logic bug)
-		}
-		*/
 		matrixErrorCode errorCode = tableau->pivotFeasibility(feasibilityCheck);
 		if (errorCode != SUCCESS)
 		{
@@ -113,14 +76,6 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 	//This second loop is to actually solve the problem
 	while (!simplexdone) {
 		simplexdone = true;
-		/*
-		for (j = 0; j < numvariable; j++) {
-			if (tableau[numconstraint][j] > 0) {
-				simplexdone = false;
-				colnum = j;
-			}
-		}
-		*/
 		checkValue optimalCheck = tableau->optimalSolutionCheck();
 		simplexdone = optimalCheck.first;
 		colnum = (optimalCheck.second).second;
@@ -150,23 +105,6 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 			return 0; //success
 		}
 		simplexdone = true;
-		/*
-		minval = -1;
-		for (i = 0; i < numconstraint; i++) {
-			if (tableau[i][colnum] > 0) {
-				simplexdone = false;
-				tempval = tableau[i][numvariable] / tableau[i][colnum];
-				if (minval < 0) {
-					minval = tempval;
-					rownum = i;
-				}
-				if (minval > tempval) {
-					minval = tempval;
-					rownum = i;
-				}
-			}
-		}
-		*/
 		checkValue unboundedCheck = tableau->unboundedSolutionCheck(colnum);
 		rownum = (unboundedCheck.second).first;
 		simplexdone = unboundedCheck.first;
