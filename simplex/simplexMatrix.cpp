@@ -77,6 +77,12 @@ matrixErrorCode simplexMatrix::pivot(int row, int col)
 	int colNum = 0;
 	float newValue = pivotValue;
 
+	pivotMatrix = new float* [numberOfConstraints + 1];
+	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
+	{
+		pivotMatrix[rowNum] = new float[numberOfVariables + 1];
+	}
+
 	if (pivotValue == 0)
 	{
 		return PIVOT_VALUE_CANNOT_BE_ZERO;
@@ -94,7 +100,7 @@ matrixErrorCode simplexMatrix::pivot(int row, int col)
 				}
 				float slotValue = valueMatrix[actualRow][colNum];
 				float newValue = slotValue / pivotValue;
-				valueMatrix[rowNum][colNum] = newValue;
+				pivotMatrix[rowNum][colNum] = newValue;
 			}
 			continue;
 		}
@@ -111,11 +117,25 @@ matrixErrorCode simplexMatrix::pivot(int row, int col)
 			{
 				newValue = (slotValue * pivotValue - rowValue * colValue) / pivotValue;
 			}
-			valueMatrix[rowNum][colNum] = newValue;
+			pivotMatrix[rowNum][colNum] = newValue;
 		}
 	}
 	newValue = 1 / pivotValue;
-	valueMatrix[actualRow][actualCol] = newValue;
+	pivotMatrix[actualRow][actualCol] = newValue;
+	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
+	{
+		for (int colNum = 0; colNum <= numberOfVariables; colNum++)
+		{
+			valueMatrix[rowNum][colNum] = pivotMatrix[rowNum][colNum];
+		}
+	}
+	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
+	{
+		delete pivotMatrix[rowNum];
+		pivotMatrix[rowNum] = nullptr;
+	}
+	delete pivotMatrix;
+	pivotMatrix = nullptr;
 	return SUCCESS;
 }
 
