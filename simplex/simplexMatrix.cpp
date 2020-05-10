@@ -132,7 +132,7 @@ checkValue simplexMatrix::feasibleSolutionsCheck()
 	int colNumber = -1;
 	matrixLocation pivotLocation = std::make_pair(rowNumber, colNumber);
 	checkValue result = std::make_pair(feasibleSolutions, pivotLocation);
-	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
+	for (int rowNum = 0; rowNum < numberOfConstraints; rowNum++)
 	{
 		if (valueMatrix[rowNum][numberOfVariables] < 0)
 		{
@@ -144,7 +144,7 @@ checkValue simplexMatrix::feasibleSolutionsCheck()
 	{
 		return result;
 	}
-	for (int colNum = 0; colNum <= numberOfVariables; colNum++)
+	for (int colNum = 0; colNum < numberOfVariables; colNum++)
 	{
 		if (valueMatrix[rowNumber][colNum] < 0)
 		{
@@ -202,12 +202,12 @@ checkValue simplexMatrix::unboundedSolutionCheck(int colNumber)
 		{
 			unboundedSolution = false;
 			float tempValue = valueMatrix[rowNum][numberOfVariables] / valueMatrix[rowNum][colNumber];
-			if (rowNum == 0)
+			if (minValue < 0)
 			{
 				minValue = tempValue;
 				rowNumber = rowNum;
 			}
-			else if (minValue > tempValue)
+			if (minValue > tempValue)
 			{
 				minValue = tempValue;
 				rowNumber = rowNum;
