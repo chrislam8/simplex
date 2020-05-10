@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "simplexMatrix.h"
+#include "simplexTableau.h"
 
 using namespace std;
 
@@ -26,7 +26,7 @@ public:
 		other - error in algorithm
 	*/
 private:
-	simplexMatrix* tableau;
+	simplexTableau* tableau;
 	variableName* indepVar;
 	variableName* depVar;
 	int numconstraint; //also numrows - 1

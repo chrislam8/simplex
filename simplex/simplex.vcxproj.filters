@@ -18,16 +18,16 @@
     <ClInclude Include="simpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="simplexMatrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="matrixErrorCode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="testEnums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simplexTableau.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="simplexTableauEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,10 +38,10 @@
     <ClCompile Include="test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="simplexMatrix.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="simplexTableau.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

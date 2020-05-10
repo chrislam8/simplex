@@ -2,7 +2,7 @@
 
 #include <utility>
 
-enum matrixErrorCode {
+enum tableauErrorCode {
 	SUCCESS,
 	INVALID_COLUMN_NUMBER,
 	INVALID_ROW_NUMBER,

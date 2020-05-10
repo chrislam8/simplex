@@ -17,18 +17,18 @@ simpl::~simpl() {
 }
 
 bool simpl::changeValue(float value, int row, int col) {
-	matrixErrorCode errorCode = tableau->changeValue(value, row, col);
+	tableauErrorCode errorCode = tableau->changeValue(value, row, col);
 	return (errorCode == SUCCESS);
 }
 
 bool simpl::prTableau() {
-	matrixErrorCode errorCode = tableau->printMatrix();
+	tableauErrorCode errorCode = tableau->printMatrix();
 	return (errorCode == SUCCESS);
 }
 
 bool simpl::pivot(int row, int col) {
 	variableName tempVar;
-	matrixErrorCode errorCode = tableau->pivot(row, col);
+	tableauErrorCode errorCode = tableau->pivot(row, col);
 	if ((indepVar[col - 1]).indep && !((depVar[row - 1]).indep)) {
 		(indepVar[col - 1]).indep = false;
 		(depVar[row - 1]).indep = true;
@@ -66,7 +66,7 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 		{
 			return 1; //no feasible solution
 		}
-		matrixErrorCode errorCode = tableau->pivotFeasibility(feasibilityCheck);
+		tableauErrorCode errorCode = tableau->pivotFeasibility(feasibilityCheck);
 		if (errorCode != SUCCESS)
 		{
 			return 4;
@@ -135,7 +135,7 @@ void simpl::constructTab(const int numvar, const int numconstr) {
 	numconstraint = numconstr;
 	indepVar = new variableName[numvar];
 	depVar = new variableName[numconstr];
-	tableau = new simplexMatrix(numvar, numconstr);
+	tableau = new simplexTableau(numvar, numconstr);
 	for (i = 0; i < numvar; i++) {
 		(indepVar[i]).indep = true;
 		(indepVar[i]).number = (i + 1);

@@ -1,16 +1,16 @@
-#include "simplexMatrix.h"
+#include "simplexTableau.h"
 
-simplexMatrix::simplexMatrix() 
+simplexTableau::simplexTableau() 
 {
 	constructMatrix(2, 1);
 }
 
-simplexMatrix::simplexMatrix(int numVar, int numConstr) 
+simplexTableau::simplexTableau(int numVar, int numConstr) 
 {
 	constructMatrix(numVar, numConstr);
 }
 
-simplexMatrix::~simplexMatrix() 
+simplexTableau::~simplexTableau() 
 {
 	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++) 
 	{
@@ -21,7 +21,7 @@ simplexMatrix::~simplexMatrix()
 	valueMatrix = nullptr;
 }
 
-matrixErrorCode simplexMatrix::changeValue(float value, int row, int col)
+tableauErrorCode simplexTableau::changeValue(float value, int row, int col)
 {
 	if (row > numberOfConstraints + 1 || row <= 0)
 	{
@@ -37,7 +37,7 @@ matrixErrorCode simplexMatrix::changeValue(float value, int row, int col)
 	return SUCCESS;
 }
 
-matrixErrorCode simplexMatrix::pivotFeasibility(checkValue feasibilityCheck)
+tableauErrorCode simplexTableau::pivotFeasibility(checkValue feasibilityCheck)
 {
 	matrixLocation pivotLocation = feasibilityCheck.second;
 	int rowNumber = pivotLocation.first;
@@ -58,7 +58,7 @@ matrixErrorCode simplexMatrix::pivotFeasibility(checkValue feasibilityCheck)
 	return pivot(rowNumber, colNumber);
 }
 
-matrixErrorCode simplexMatrix::pivot(int row, int col) 
+tableauErrorCode simplexTableau::pivot(int row, int col) 
 {
 	if (row > numberOfConstraints || row <= 0)
 	{
@@ -139,12 +139,12 @@ matrixErrorCode simplexMatrix::pivot(int row, int col)
 	return SUCCESS;
 }
 
-matrixErrorCode simplexMatrix::printMatrix()
+tableauErrorCode simplexTableau::printMatrix()
 {
 	return FUNCTION_NOT_IMPLEMENTED;
 }
 
-checkValue simplexMatrix::feasibleSolutionsCheck()
+checkValue simplexTableau::feasibleSolutionsCheck()
 {
 	bool feasibleSolutions = true;
 	bool noFeasibleSolutions = true;
@@ -186,7 +186,7 @@ checkValue simplexMatrix::feasibleSolutionsCheck()
 	return result;
 }
 
-checkValue simplexMatrix::optimalSolutionCheck()
+checkValue simplexTableau::optimalSolutionCheck()
 {
 	bool optimalSolution = true;
 	int rowNumber = -1;
@@ -209,7 +209,7 @@ checkValue simplexMatrix::optimalSolutionCheck()
 	return result;
 }
 
-checkValue simplexMatrix::unboundedSolutionCheck(int colNumber)
+checkValue simplexTableau::unboundedSolutionCheck(int colNumber)
 {
 	bool unboundedSolution = true;
 	int rowNumber = -1;
@@ -242,17 +242,17 @@ checkValue simplexMatrix::unboundedSolutionCheck(int colNumber)
 	return result;
 }
 
-float simplexMatrix::getOptimalValue()
+float simplexTableau::getOptimalValue()
 {
 	return -1 * valueMatrix[numberOfConstraints][numberOfVariables];
 }
 
-float simplexMatrix::getVariableValue(int row)
+float simplexTableau::getVariableValue(int row)
 {
 	return valueMatrix[row][numberOfVariables];
 }
 
-void simplexMatrix::constructMatrix(int numVar, int numConstr) 
+void simplexTableau::constructMatrix(int numVar, int numConstr) 
 {
 	valueMatrix = new float* [numConstr + 1];
 	for (int rowNum = 0; rowNum <= numConstr; rowNum++) 

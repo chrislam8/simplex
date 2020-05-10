@@ -19,16 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="matrixErrorCode.h" />
+    <ClInclude Include="simplexTableauEnums.h" />
     <ClInclude Include="simpl.h" />
-    <ClInclude Include="simplexMatrix.h" />
+    <ClInclude Include="simplexTableau.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="testEnums.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="simpl.cpp" />
-    <ClCompile Include="simplexMatrix.cpp" />
+    <ClCompile Include="simplexTableau.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

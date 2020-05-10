@@ -1,17 +1,17 @@
 #pragma once
 
-#include "matrixErrorCode.h"
+#include "simplexTableauEnums.h"
 
-class simplexMatrix {
+class simplexTableau {
 public:
-	simplexMatrix();
-	simplexMatrix(int numVar, int numConstr);
-	~simplexMatrix();
+	simplexTableau();
+	simplexTableau(int numVar, int numConstr);
+	~simplexTableau();
 
-	matrixErrorCode changeValue(float value, int row, int col);
-	matrixErrorCode pivotFeasibility(checkValue feasibilityCheck);
-	matrixErrorCode pivot(int row, int col);
-	matrixErrorCode printMatrix();
+	tableauErrorCode changeValue(float value, int row, int col);
+	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
+	tableauErrorCode pivot(int row, int col);
+	tableauErrorCode printMatrix();
 
 	checkValue feasibleSolutionsCheck();
 	checkValue optimalSolutionCheck();
