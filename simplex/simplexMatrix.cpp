@@ -77,7 +77,7 @@ matrixErrorCode simplexMatrix::pivot(int row, int col)
 	int colNum = 0;
 	float newValue = pivotValue;
 
-	pivotMatrix = new float* [numberOfConstraints + 1];
+	float** pivotMatrix = new float* [numberOfConstraints + 1];
 	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
 	{
 		pivotMatrix[rowNum] = new float[numberOfVariables + 1];

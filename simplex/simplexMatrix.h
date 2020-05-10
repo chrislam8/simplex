@@ -22,7 +22,6 @@ public:
 
 private:
 	float** valueMatrix;
-	float** pivotMatrix;
 	void constructMatrix(int numVar, int numConstr);
 
 	int numberOfVariables;
