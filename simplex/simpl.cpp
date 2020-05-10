@@ -17,136 +17,29 @@ simpl::~simpl() {
 }
 
 bool simpl::changeValue(float value, int row, int col) {
-	int actualrow;
-	int actualcol;
-	if (row > numconstraint + 1 || col > numvariable + 1 || row <= 0 || col <= 0) {
-		return false;
-	}
-	if (!canchangevalue) {
-		return false;
-	}
-	actualrow = row - 1;
-	actualcol = col - 1;
-	tableau[actualrow][actualcol] = value;
-	return true;
+	tableauErrorCode errorCode = tableau->changeValue(value, row, col);
+	return (errorCode == SUCCESS);
 }
 
 bool simpl::prTableau() {
-	int i, j;
-	if (numvariable == 0) {
-		cout << "Attempting to print blank tableau" << endl;
-		return false;
-	}
-	for (j = 0; j < numvariable; j++) {
-		if (indepVar[j].indep) {
-			cout << "x";
-		}
-		else {
-			cout << "t";
-		}
-		cout << indepVar[j].number << "\t";
-	}
-	cout << endl;
-	for (i = 0; i <= numconstraint; i++) {
-		for (j = 0; j <= numvariable; j++) {
-			printf("%.2f\t",tableau[i][j]);
-			if (j == (numvariable - 1)) {
-				cout << "|\t";
-			}
-		}
-		
-		if (i == (numconstraint - 1)) {
-			cout << "=";
-			if (depVar[i].indep) {
-				cout << "-x";
-			}
-			else {
-				cout << "-t";
-			}
-			cout << depVar[i].number;
-			cout << endl;
-			for (j = 0; j <= (numvariable+1); j++) {
-				cout << "-----\t";
-			}
-			cout << endl;
-			
-		}
-		else if (i < numconstraint) {
-			cout << "=";
-			if (depVar[i].indep) {
-				cout << "-x";
-			}
-			else {
-				cout << "-t";
-			}
-			cout << depVar[i].number;
-			cout << endl;
-		}
-		else {
-			cout << endl;
-		}
-		
-	}
-	cout << "Tableau printed" << endl << endl;
-	return true;
+	tableauErrorCode errorCode = tableau->printMatrix();
+	return (errorCode == SUCCESS);
 }
 
 bool simpl::pivot(int row, int col) {
-	int i, j;
-	float pivotval;
-	float rowval;
-	float colval;
-	float slotval;
-	float newval;
 	variableName tempVar;
-	if (row <= 0 || row > numconstraint || col <= 0 || col > numvariable) {
-		return false;
-	}
-	pivotval = tableau[row - 1][col - 1];
-	for (i = 0; i <= numconstraint; i++) {
-		for (j = 0; j <= numvariable; j++) {
-			if (i != (row - 1) && j != (col - 1)) {
-				rowval = tableau[row - 1][j];
-				colval = tableau[i][col - 1];
-				slotval = tableau[i][j];
-				newval = (slotval * pivotval - rowval * colval) / pivotval;
-				tableau[i][j] = newval;
-			}
-		}
-	}
-	for (i = 0; i <= numconstraint; i++) {
-		if (i != (row - 1)) {
-			slotval = tableau[i][col - 1];
-			newval = -1 * slotval / pivotval;
-			tableau[i][col - 1] = newval;
-		}
-	}
-	for (j = 0; j <= numvariable; j++) {
-		if (j != (col - 1)) {
-			slotval = tableau[row - 1][j];
-			newval = slotval / pivotval;
-			tableau[row - 1][j] = newval;
-		}
-	}
-	newval = 1 / pivotval;
-	tableau[row - 1][col - 1] = newval;
+	tableauErrorCode errorCode = tableau->pivot(row, col);
 	if ((indepVar[col - 1]).indep && !((depVar[row - 1]).indep)) {
-		cout << "changing indep variables" << endl;
 		(indepVar[col - 1]).indep = false;
 		(depVar[row - 1]).indep = true;
 	} else if (!((indepVar[col - 1]).indep) && (depVar[row - 1]).indep) {
-		cout << "changing indep variables 2" << endl;
 		(indepVar[col - 1]).indep = true;
 		(depVar[row - 1]).indep = false;
 	}
-	//tempVar.indep = (indepVar[col - 1]).indep;
 	tempVar.number = (indepVar[col - 1]).number;
-	//(indepVar[col - 1]).indep = (depVar[row - 1]).indep;
 	(indepVar[col - 1]).number = (depVar[row - 1]).number;
-	//(depVar[row - 1]).indep = tempVar.indep;
 	(depVar[row - 1]).number = tempVar.number;
-	canchangevalue = false;
-	return true;
+	return (errorCode == SUCCESS);
 }
 
 int simpl::simplex(float* xValuePtr, float* optimalValue) {
@@ -161,53 +54,34 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 	}
 	//This first loop is to check for feasibility (are there any possible solutions?)
 	while (!simplexdone) {
-		simplexdone = true;
-		for (i = 0; i < numconstraint; i++) {
-			if (tableau[i][numvariable] < 0) {
-				simplexdone = false;
-				rownum = i;
+		checkValue feasibilityCheck = tableau->feasibleSolutionsCheck();
+		if (feasibilityCheck.first)
+		{
+			if (feasibilityCheck.second == std::make_pair(-1, -1)) //there are feasible solutions
+			{
+				break;
 			}
 		}
-		if (simplexdone) {
-			break; //there are feasible solutions
-		}
-		simplexdone = true;
-		for (i = 0; i < numvariable; i++) {
-			if (tableau[rownum][i] < 0) {
-				simplexdone = false;
-				colnum = i;
-			}
-		}
-		if (simplexdone) {
+		else
+		{
 			return 1; //no feasible solution
 		}
-		//determine where to pivot
-		if (rownum < (numconstraint - 1)) {
-			minval = tableau[rownum][colnum];
-			for (i = rownum; i < numconstraint; i++) {
-				if (tableau[i][colnum] < minval) {
-					minval = tableau[i][colnum];
-					rownum = i;
-				}
-			}
-		}
-		if (!(pivot((rownum + 1), (colnum + 1)))) {
-			return 4; //pivot failed for some reason (presumed to be a logic bug)
+		tableauErrorCode errorCode = tableau->pivotFeasibility(feasibilityCheck);
+		if (errorCode != SUCCESS)
+		{
+			return 4;
 		}
 	}
 	simplexdone = false;
 	//This second loop is to actually solve the problem
 	while (!simplexdone) {
 		simplexdone = true;
-		for (j = 0; j < numvariable; j++) {
-			if (tableau[numconstraint][j] > 0) {
-				simplexdone = false;
-				colnum = j;
-			}
-		}
+		checkValue optimalCheck = tableau->optimalSolutionCheck();
+		simplexdone = optimalCheck.first;
+		colnum = (optimalCheck.second).second;
 		if (simplexdone) {
 			//an optimal solution has been found
-			*optimalValue = -1*tableau[numconstraint][numvariable];
+			*optimalValue = tableau->getOptimalValue();
 			for (i = 0; i < numvariable; i++) {
 				xValuePtr[i] = -1;
 			}
@@ -220,7 +94,7 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 			for (i = 0; i < numconstraint; i++) {
 				if ((depVar[i]).indep) {
 					j = (depVar[i]).number;
-					xValuePtr[j - 1] = tableau[i][numvariable];
+					xValuePtr[j - 1] = tableau->getVariableValue(i);
 				}
 			}
 			for (i = 0; i < numvariable; i++) {
@@ -231,25 +105,13 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 			return 0; //success
 		}
 		simplexdone = true;
-		minval = -1;
-		for (i = 0; i < numconstraint; i++) {
-			if (tableau[i][colnum] > 0) {
-				simplexdone = false;
-				tempval = tableau[i][numvariable] / tableau[i][colnum];
-				if (minval < 0) {
-					minval = tempval;
-					rownum = i;
-				}
-				if (minval > tempval) {
-					minval = tempval;
-					rownum = i;
-				}
-			}
-		}
+		checkValue unboundedCheck = tableau->unboundedSolutionCheck(colnum);
+		rownum = (unboundedCheck.second).first;
+		simplexdone = unboundedCheck.first;
 		if (simplexdone) {
 			return 2; //problem is unbounded
 		}
-		if (!(pivot((rownum + 1), (colnum + 1)))) {
+		if (!(pivot((rownum+1), (colnum+1)))) {
 			return 4; //pivot failed for some reason (presumed to be a logic bug)
 		}
 	}
@@ -273,10 +135,7 @@ void simpl::constructTab(const int numvar, const int numconstr) {
 	numconstraint = numconstr;
 	indepVar = new variableName[numvar];
 	depVar = new variableName[numconstr];
-	tableau = new float* [numconstr + 1];
-	for (i = 0; i <= numconstr; i++) {
-		tableau[i] = new float[numvar + 1];
-	}
+	tableau = new simplexTableau(numvar, numconstr);
 	for (i = 0; i < numvar; i++) {
 		(indepVar[i]).indep = true;
 		(indepVar[i]).number = (i + 1);
@@ -292,9 +151,6 @@ void simpl::destroyTab() {
 	int i;
 	if (numvariable == 0 && numconstraint == 0) {
 		return;
-	}
-	for (i = 0; i <= numconstraint; i++) {
-		delete tableau[i];
 	}
 	delete tableau;
 	tableau = NULL;
