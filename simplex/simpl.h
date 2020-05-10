@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 
+#include "simplexMatrix.h"
+
 using namespace std;
 
 struct variableName {
@@ -24,7 +26,7 @@ public:
 		other - error in algorithm
 	*/
 private:
-	float** tableau;
+	simplexMatrix* tableau;
 	variableName* indepVar;
 	variableName* depVar;
 	int numconstraint; //also numrows - 1

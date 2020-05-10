@@ -9,7 +9,9 @@ public:
 	~simplexMatrix();
 
 	matrixErrorCode changeValue(float value, int row, int col);
+	matrixErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	matrixErrorCode pivot(int row, int col);
+	matrixErrorCode printMatrix();
 
 	checkValue feasibleSolutionsCheck();
 	checkValue optimalSolutionCheck();

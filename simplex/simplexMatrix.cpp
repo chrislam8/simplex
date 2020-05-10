@@ -37,6 +37,27 @@ matrixErrorCode simplexMatrix::changeValue(float value, int row, int col)
 	return SUCCESS;
 }
 
+matrixErrorCode simplexMatrix::pivotFeasibility(checkValue feasibilityCheck)
+{
+	matrixLocation pivotLocation = feasibilityCheck.second;
+	int rowNumber = pivotLocation.first;
+	int colNumber = pivotLocation.second;
+	if (rowNumber < (numberOfConstraints - 1))
+	{
+		float minValue = valueMatrix[rowNumber][colNumber];
+		for (int rowNum = rowNumber; rowNum < numberOfConstraints; rowNum++)
+		{
+			float currentValue = valueMatrix[rowNum][colNumber];
+			if (currentValue < minValue)
+			{
+				minValue = currentValue;
+				rowNumber = rowNum;
+			}
+		}
+	}
+	return pivot(rowNumber, colNumber);
+}
+
 matrixErrorCode simplexMatrix::pivot(int row, int col) 
 {
 	if (row > numberOfConstraints || row <= 0)
@@ -98,9 +119,15 @@ matrixErrorCode simplexMatrix::pivot(int row, int col)
 	return SUCCESS;
 }
 
+matrixErrorCode simplexMatrix::printMatrix()
+{
+	return FUNCTION_NOT_IMPLEMENTED;
+}
+
 checkValue simplexMatrix::feasibleSolutionsCheck()
 {
 	bool feasibleSolutions = true;
+	bool noFeasibleSolutions = true;
 	int rowNumber = -1;
 	int colNumber = -1;
 	matrixLocation pivotLocation = std::make_pair(rowNumber, colNumber);
@@ -121,11 +148,11 @@ checkValue simplexMatrix::feasibleSolutionsCheck()
 	{
 		if (valueMatrix[rowNumber][colNum] < 0)
 		{
-			feasibleSolutions = false;
+			noFeasibleSolutions = false;
 			colNumber = colNum;
 		}
 	}
-	if (feasibleSolutions)
+	if (noFeasibleSolutions)
 	{
 		rowNumber = -1;
 	}
@@ -135,7 +162,7 @@ checkValue simplexMatrix::feasibleSolutionsCheck()
 		++colNumber;
 	}
 	pivotLocation = std::make_pair(rowNumber, colNumber);
-	result = std::make_pair(feasibleSolutions, pivotLocation);
+	result = std::make_pair(!(noFeasibleSolutions), pivotLocation);
 	return result;
 }
 
