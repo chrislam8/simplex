@@ -42,13 +42,13 @@ bool simpl::pivot(int row, int col) {
 	return (errorCode == TABLEAU_SUCCESS);
 }
 
-int simpl::simplex(float* xValuePtr, float* optimalValue) {
+simplexErrorCode simpl::simplex(float* xValuePtr, float* optimalValue) {
 	bool simplexdone = false;
 	int i, j;
 	int colnum;
 	int rownum;
 	if (xValuePtr == NULL || optimalValue == NULL) {
-		return 3;
+		return NULL_POINTER_ENCOUNTERED;
 	}
 	//This first loop is to check for feasibility (are there any possible solutions?)
 	while (!simplexdone) {
@@ -62,12 +62,12 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 		}
 		else
 		{
-			return 1; //no feasible solution
+			return NO_FEASIBLE_SOLUTION; //no feasible solution
 		}
 		tableauErrorCode errorCode = tableau->pivotFeasibility(feasibilityCheck);
 		if (errorCode != TABLEAU_SUCCESS)
 		{
-			return 4;
+			return PIVOT_ERROR;
 		}
 	}
 	simplexdone = false;
@@ -97,23 +97,23 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 			}
 			for (i = 0; i < numvariable; i++) {
 				if (xValuePtr[i] < -0.5) {
-					return 5; //some logic error caused a variable to be negative
+					return ALGORITHM_ERROR; //some logic error caused a variable to be negative
 				}
 			}
-			return 0; //success
+			return SIMPLEX_SUCCESS; //success
 		}
 		simplexdone = true;
 		checkValue unboundedCheck = tableau->unboundedSolutionCheck(colnum);
 		rownum = (unboundedCheck.second).first;
 		simplexdone = unboundedCheck.first;
 		if (simplexdone) {
-			return 2; //problem is unbounded
+			return UNBOUNDED_PROBLEM; //problem is unbounded
 		}
 		if (!(pivot((rownum+1), (colnum+1)))) {
-			return 4; //pivot failed for some reason (presumed to be a logic bug)
+			return PIVOT_ERROR; //pivot failed for some reason (presumed to be a logic bug)
 		}
 	}
-	return 0;
+	return ALGORITHM_ERROR;
 }
 //private methods
 
