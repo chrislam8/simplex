@@ -2,6 +2,7 @@
 #include <string>
 
 #include "simplexTableau.h"
+#include "simplexEnums.h"
 
 using namespace std;
 

@@ -18,12 +18,12 @@ simpl::~simpl() {
 
 bool simpl::changeValue(float value, int row, int col) {
 	tableauErrorCode errorCode = tableau->changeValue(value, row, col);
-	return (errorCode == SUCCESS);
+	return (errorCode == TABLEAU_SUCCESS);
 }
 
 bool simpl::prTableau() {
 	tableauErrorCode errorCode = tableau->printMatrix();
-	return (errorCode == SUCCESS);
+	return (errorCode == TABLEAU_SUCCESS);
 }
 
 bool simpl::pivot(int row, int col) {
@@ -39,7 +39,7 @@ bool simpl::pivot(int row, int col) {
 	tempVar.number = (indepVar[col - 1]).number;
 	(indepVar[col - 1]).number = (depVar[row - 1]).number;
 	(depVar[row - 1]).number = tempVar.number;
-	return (errorCode == SUCCESS);
+	return (errorCode == TABLEAU_SUCCESS);
 }
 
 int simpl::simplex(float* xValuePtr, float* optimalValue) {
@@ -47,8 +47,6 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 	int i, j;
 	int colnum;
 	int rownum;
-	float minval;
-	float tempval;
 	if (xValuePtr == NULL || optimalValue == NULL) {
 		return 3;
 	}
@@ -67,7 +65,7 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 			return 1; //no feasible solution
 		}
 		tableauErrorCode errorCode = tableau->pivotFeasibility(feasibilityCheck);
-		if (errorCode != SUCCESS)
+		if (errorCode != TABLEAU_SUCCESS)
 		{
 			return 4;
 		}
@@ -148,7 +146,6 @@ void simpl::constructTab(const int numvar, const int numconstr) {
 }
 
 void simpl::destroyTab() {
-	int i;
 	if (numvariable == 0 && numconstraint == 0) {
 		return;
 	}
