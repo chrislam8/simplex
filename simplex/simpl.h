@@ -2,13 +2,9 @@
 #include <string>
 
 #include "simplexTableau.h"
+#include "variableName.h"
 
 using namespace std;
-
-struct variableName {
-	bool indep;
-	int number;
-};
 
 class simpl {
 public:

@@ -29,16 +29,16 @@ bool simpl::prTableau() {
 bool simpl::pivot(int row, int col) {
 	variableName tempVar;
 	tableauErrorCode errorCode = tableau->pivot(row, col);
-	if ((indepVar[col - 1]).indep && !((depVar[row - 1]).indep)) {
-		(indepVar[col - 1]).indep = false;
-		(depVar[row - 1]).indep = true;
-	} else if (!((indepVar[col - 1]).indep) && (depVar[row - 1]).indep) {
-		(indepVar[col - 1]).indep = true;
-		(depVar[row - 1]).indep = false;
+	if ((indepVar[col - 1]).getIndep() && !((depVar[row - 1]).getIndep())) {
+		(indepVar[col - 1]).setIndep(false);
+		(depVar[row - 1]).setIndep(true);
+	} else if (!((indepVar[col - 1]).getIndep()) && (depVar[row - 1]).getIndep()) {
+		(indepVar[col - 1]).setIndep(true);
+		(depVar[row - 1]).setIndep(false);
 	}
-	tempVar.number = (indepVar[col - 1]).number;
-	(indepVar[col - 1]).number = (depVar[row - 1]).number;
-	(depVar[row - 1]).number = tempVar.number;
+	tempVar.setNumber((indepVar[col - 1]).getNumber());
+	(indepVar[col - 1]).setNumber((depVar[row - 1]).getNumber());
+	(depVar[row - 1]).setNumber(tempVar.getNumber());
 	return (errorCode == SUCCESS);
 }
 
@@ -86,14 +86,14 @@ int simpl::simplex(float* xValuePtr, float* optimalValue) {
 				xValuePtr[i] = -1;
 			}
 			for (i = 0; i < numvariable; i++) {
-				if ((indepVar[i]).indep) {
-					j = (indepVar[i]).number;
+				if ((indepVar[i]).getIndep()) {
+					j = (indepVar[i]).getNumber();
 					xValuePtr[j - 1] = 0;
 				}
 			}
 			for (i = 0; i < numconstraint; i++) {
-				if ((depVar[i]).indep) {
-					j = (depVar[i]).number;
+				if ((depVar[i]).getIndep()) {
+					j = (depVar[i]).getNumber();
 					xValuePtr[j - 1] = tableau->getVariableValue(i);
 				}
 			}
@@ -137,12 +137,12 @@ void simpl::constructTab(const int numvar, const int numconstr) {
 	depVar = new variableName[numconstr];
 	tableau = new simplexTableau(numvar, numconstr);
 	for (i = 0; i < numvar; i++) {
-		(indepVar[i]).indep = true;
-		(indepVar[i]).number = (i + 1);
+		(indepVar[i]).setIndep(true);
+		(indepVar[i]).setNumber(i+1);
 	}
 	for (i = 0; i < numconstr; i++) {
-		(depVar[i]).indep = false;
-		(depVar[i]).number = (i + 1);
+		(depVar[i]).setIndep(false);
+		(depVar[i]).setNumber(i+1);
 	}
 	canchangevalue = true;
 }

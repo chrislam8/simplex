@@ -30,6 +30,9 @@
     <ClInclude Include="simplexTableauEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="variableName.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simpl.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="simplexTableau.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="variableName.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -24,12 +24,14 @@
     <ClInclude Include="simplexTableau.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="testEnums.h" />
+    <ClInclude Include="variableName.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="simpl.cpp" />
     <ClCompile Include="simplexTableau.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="variableName.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
