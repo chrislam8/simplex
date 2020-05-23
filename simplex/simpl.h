@@ -2,6 +2,7 @@
 #include <string>
 
 #include "simplexTableau.h"
+#include "simplexEnums.h"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ public:
 	simpl(int numvar, int numconstr); //custom constructor
 	~simpl(); //destructor
 	bool changeValue(float value, int row, int col);
-	int simplex(float* xValuePtr, float* optimalValue); 
+	simplexErrorCode simplex(float* xValuePtr, float* optimalValue); 
 	/* xValuePtr is meant as a pointer to return the optimal x values for the problem
 	optimalValue is meant as a pointer to where the optimal value will be placed 
 	return values:
