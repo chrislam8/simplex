@@ -34,7 +34,7 @@ tableauErrorCode simplexTableau::changeValue(float value, int row, int col)
 	}
 
 	valueMatrix[row - 1][col - 1] = value;
-	return SUCCESS;
+	return TABLEAU_SUCCESS;
 }
 
 tableauErrorCode simplexTableau::pivotFeasibility(checkValue feasibilityCheck)
@@ -136,7 +136,7 @@ tableauErrorCode simplexTableau::pivot(int row, int col)
 	}
 	delete pivotMatrix;
 	pivotMatrix = nullptr;
-	return SUCCESS;
+	return TABLEAU_SUCCESS;
 }
 
 tableauErrorCode simplexTableau::printMatrix()

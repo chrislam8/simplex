@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="simplexEnums.h" />
     <ClInclude Include="simplexTableauEnums.h" />
     <ClInclude Include="simpl.h" />
     <ClInclude Include="simplexTableau.h" />

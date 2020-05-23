@@ -61,7 +61,11 @@ testErrorCodes allTests::simplTest() {
 	test->changeValue(0.0, 4, 3);
 
 	//simplex testing
-	test->simplex(testxVal, &optimalValue);
+	if (test->simplex(testxVal, &optimalValue) != SIMPLEX_SUCCESS)
+	{
+		result = TEST_SIMPLEX_ERROR;
+	}
+
 	for (variableIter = 0; variableIter < NUMVAR; variableIter++) {
 		if (testxVal[variableIter] != correctxValues[variableIter])
 		{
@@ -123,7 +127,7 @@ testErrorCodes allTests::unboundedTest() {
 	test->changeValue(1.0, 3, 1);
 	test->changeValue(1.0, 3, 2);
 	test->changeValue(0.0, 3, 3);
-	if (test->simplex(xRes, &optVal) != 2) {
+	if (test->simplex(xRes, &optVal) != UNBOUNDED_PROBLEM) {
 		result = TEST_INCORRECT_OPERATION;
 	}
 	delete test;
@@ -146,7 +150,7 @@ testErrorCodes allTests::infeasibleTest() {
 	test->changeValue(1.0, 3, 1);
 	test->changeValue(1.0, 3, 2);
 	test->changeValue(0.0, 3, 3);
-	if (test->simplex(xRes, &optVal) != 1) {
+	if (test->simplex(xRes, &optVal) != NO_FEASIBLE_SOLUTION) {
 		result = TEST_INCORRECT_OPERATION;
 	}
 	delete test;
