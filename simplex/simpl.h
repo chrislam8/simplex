@@ -14,13 +14,9 @@ public:
 	~simpl(); //destructor
 	bool changeValue(float value, int row, int col);
 	simplexErrorCode simplex(float* xValuePtr, float* optimalValue); 
-	/* xValuePtr is meant as a pointer to return the optimal x values for the problem
+	/* 
+	xValuePtr is meant as a pointer to return the optimal x values for the problem
 	optimalValue is meant as a pointer to where the optimal value will be placed 
-	return values:
-		0 - successful
-		1 - no feasible solution
-		2 - unbounded problem (no optimal solution)
-		other - error in algorithm
 	*/
 private:
 	simplexTableau* tableau;
