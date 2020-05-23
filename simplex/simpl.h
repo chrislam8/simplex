@@ -24,7 +24,7 @@ private:
 	variableName* depVar;
 	int numconstraint; //also numrows - 1
 	int numvariable; //also numcols - 1
-	bool canchangevalue;
+	bool canChangeValue;
 	//private methods
 	void constructTab(const int numvar,const int numconstr);
 	void destroyTab();

@@ -17,8 +17,15 @@ simpl::~simpl() {
 }
 
 bool simpl::changeValue(float value, int row, int col) {
-	tableauErrorCode errorCode = tableau->changeValue(value, row, col);
-	return (errorCode == TABLEAU_SUCCESS);
+	if (canChangeValue)
+	{
+		tableauErrorCode errorCode = tableau->changeValue(value, row, col);
+		return (errorCode == TABLEAU_SUCCESS);
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool simpl::prTableau() {
@@ -50,6 +57,7 @@ simplexErrorCode simpl::simplex(float* xValuePtr, float* optimalValue) {
 	if (xValuePtr == NULL || optimalValue == NULL) {
 		return NULL_POINTER_ENCOUNTERED;
 	}
+	canChangeValue = false;
 	//This first loop is to check for feasibility (are there any possible solutions?)
 	while (!simplexdone) {
 		checkValue feasibilityCheck = tableau->feasibleSolutionsCheck();
@@ -125,7 +133,7 @@ void simpl::constructTab(const int numvar, const int numconstr) {
 		depVar = NULL;
 		numvariable = 0;
 		numconstraint = 0;
-		canchangevalue = false;
+		canChangeValue = false;
 		return;
 	}
 
@@ -142,7 +150,7 @@ void simpl::constructTab(const int numvar, const int numconstr) {
 		(depVar[i]).setIndep(false);
 		(depVar[i]).setNumber(i+1);
 	}
-	canchangevalue = true;
+	canChangeValue = true;
 }
 
 void simpl::destroyTab() {
