@@ -80,18 +80,19 @@ simplexErrorCode simpl::simplex(float* xValuePtr, float* optimalValue) {
 			for (i = 0; i < numvariable; i++) {
 				xValuePtr[i] = -1;
 			}
+			variableNumValue variableNum;
 			for (i = 0; i < numvariable; i++) {
-				j = tableau->getIndepVariableNum(i);
-				if (j > 0)
+				variableNum = tableau->getIndepVariableNum(i);
+				if (variableNum.second == TABLEAU_SUCCESS)
 				{
-					xValuePtr[j - 1] = 0;
+					xValuePtr[variableNum.first - 1] = 0;
 				}
 			}
 			for (i = 0; i < numconstraint; i++) {
-				j = tableau->getDepVariableNum(i);
-				if (j > 0)
+				variableNum = tableau->getDepVariableNum(i);
+				if (variableNum.second == TABLEAU_SUCCESS)
 				{
-					xValuePtr[j - 1] = tableau->getVariableValue(i);
+					xValuePtr[variableNum.first - 1] = tableau->getVariableValue(i);
 				}
 			}
 			for (i = 0; i < numvariable; i++) {

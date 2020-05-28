@@ -7,8 +7,10 @@ enum tableauErrorCode {
 	INVALID_COLUMN_NUMBER,
 	INVALID_ROW_NUMBER,
 	PIVOT_VALUE_CANNOT_BE_ZERO,
-	FUNCTION_NOT_IMPLEMENTED
+	FUNCTION_NOT_IMPLEMENTED,
+	VARIABLE_NOT_INDEPENDENT
 };
 
 #define matrixLocation std::pair<int, int>
 #define checkValue std::pair<bool, matrixLocation>
+#define variableNumValue std::pair<int,tableauErrorCode>

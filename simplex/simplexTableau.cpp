@@ -259,12 +259,12 @@ float simplexTableau::getVariableValue(int row)
 	return valueMatrix[row][numberOfVariables];
 }
 
-int simplexTableau::getIndepVariableNum(int colNum)
+variableNumValue simplexTableau::getIndepVariableNum(int colNum)
 {
 	return getVariableNum(true, colNum);
 }
 
-int simplexTableau::getDepVariableNum(int rowNum)
+variableNumValue simplexTableau::getDepVariableNum(int rowNum)
 {
 	return getVariableNum(false, rowNum);
 }
@@ -308,15 +308,19 @@ void simplexTableau::destroyMatrix()
 	depVar = NULL;
 }
 
-int simplexTableau::getVariableNum(bool indep, int number)
+variableNumValue simplexTableau::getVariableNum(bool indep, int number)
 {
+	int variableNum;
+	variableNumValue result = std::make_pair(-1, VARIABLE_NOT_INDEPENDENT);
 	if (indep && indepVar[number].getIndep())
 	{
-		return indepVar[number].getNumber();
+		variableNum = indepVar[number].getNumber();
+		result = std::make_pair(variableNum, TABLEAU_SUCCESS);
 	}
 	else if (!indep && depVar[number].getIndep())
 	{
-		return depVar[number].getNumber();
+		variableNum = depVar[number].getNumber();
+		result = std::make_pair(variableNum, TABLEAU_SUCCESS);
 	}
-	return -1;
+	return result;
 }

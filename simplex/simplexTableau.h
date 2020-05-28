@@ -21,8 +21,8 @@ public:
 	float getOptimalValue();
 	float getVariableValue(int row);
 
-	int getIndepVariableNum(int colNum);
-	int getDepVariableNum(int rowNum);
+	variableNumValue getIndepVariableNum(int colNum);
+	variableNumValue getDepVariableNum(int rowNum);
 
 private:
 	float** valueMatrix;
@@ -30,7 +30,7 @@ private:
 	variableName* depVar;
 	void constructMatrix(int numVar, int numConstr);
 	void destroyMatrix();
-	int getVariableNum(bool indep, int number);
+	variableNumValue getVariableNum(bool indep, int number);
 
 	int numberOfVariables;
 	int numberOfConstraints;
