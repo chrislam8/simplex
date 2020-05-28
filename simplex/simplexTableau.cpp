@@ -261,12 +261,12 @@ float simplexTableau::getVariableValue(int row)
 
 int simplexTableau::getIndepVariableNum(int colNum)
 {
-	return -1;
+	return getVariableNum(true, colNum);
 }
 
 int simplexTableau::getDepVariableNum(int rowNum)
 {
-	return -1;
+	return getVariableNum(false, rowNum);
 }
 
 void simplexTableau::constructMatrix(int numVar, int numConstr) 
@@ -306,4 +306,17 @@ void simplexTableau::destroyMatrix()
 	indepVar = NULL;
 	delete[]depVar;
 	depVar = NULL;
+}
+
+int simplexTableau::getVariableNum(bool indep, int number)
+{
+	if (indep && indepVar[number].getIndep())
+	{
+		return indepVar[number].getNumber();
+	}
+	else if (!indep && depVar[number].getIndep())
+	{
+		return depVar[number].getNumber();
+	}
+	return -1;
 }

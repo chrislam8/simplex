@@ -30,6 +30,7 @@ private:
 	variableName* depVar;
 	void constructMatrix(int numVar, int numConstr);
 	void destroyMatrix();
+	int getVariableNum(bool indep, int number);
 
 	int numberOfVariables;
 	int numberOfConstraints;
