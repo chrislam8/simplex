@@ -40,7 +40,7 @@ bool simpl::pivot(int row, int col) {
 
 simplexErrorCode simpl::simplex(float* xValuePtr, float* optimalValue) {
 	bool simplexdone = false;
-	int i, j;
+	int i;
 	int colnum;
 	int rownum;
 	if (xValuePtr == NULL || optimalValue == NULL) {

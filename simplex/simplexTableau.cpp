@@ -312,7 +312,20 @@ variableNumValue simplexTableau::getVariableNum(bool indep, int number)
 {
 	int variableNum;
 	variableNumValue result = std::make_pair(-1, VARIABLE_NOT_INDEPENDENT);
-	if (indep && indepVar[number].getIndep())
+	if (number < 0 || (number >= numberOfConstraints && number >= numberOfVariables))
+	{
+		tableauErrorCode errorCode;
+		if (indep)
+		{
+			errorCode = INVALID_COLUMN_NUMBER;
+		}
+		else
+		{
+			errorCode = INVALID_ROW_NUMBER;
+		}
+		result = std::make_pair(-1, errorCode);
+	}
+	else if (indep && indepVar[number].getIndep())
 	{
 		variableNum = indepVar[number].getNumber();
 		result = std::make_pair(variableNum, TABLEAU_SUCCESS);
