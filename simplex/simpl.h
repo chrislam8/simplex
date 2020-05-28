@@ -3,7 +3,6 @@
 
 #include "simplexTableau.h"
 #include "simplexEnums.h"
-#include "variableName.h"
 
 using namespace std;
 
@@ -20,8 +19,6 @@ public:
 	*/
 private:
 	simplexTableau* tableau;
-	variableName* indepVar;
-	variableName* depVar;
 	int numconstraint; //also numrows - 1
 	int numvariable; //also numcols - 1
 	bool canChangeValue;

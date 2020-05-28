@@ -1,6 +1,7 @@
 #pragma once
 
 #include "simplexTableauEnums.h"
+#include "variableName.h"
 
 class simplexTableau {
 public:
@@ -20,9 +21,15 @@ public:
 	float getOptimalValue();
 	float getVariableValue(int row);
 
+	int getIndepVariableNum(int colNum);
+	int getDepVariableNum(int rowNum);
+
 private:
 	float** valueMatrix;
+	variableName* indepVar;
+	variableName* depVar;
 	void constructMatrix(int numVar, int numConstr);
+	void destroyMatrix();
 
 	int numberOfVariables;
 	int numberOfConstraints;

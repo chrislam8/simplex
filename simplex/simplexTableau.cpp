@@ -12,13 +12,7 @@ simplexTableau::simplexTableau(int numVar, int numConstr)
 
 simplexTableau::~simplexTableau() 
 {
-	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++) 
-	{
-		delete valueMatrix[rowNum];
-		valueMatrix[rowNum] = nullptr;
-	}
-	delete valueMatrix;
-	valueMatrix = nullptr;
+	destroyMatrix();
 }
 
 tableauErrorCode simplexTableau::changeValue(float value, int row, int col)
@@ -136,11 +130,24 @@ tableauErrorCode simplexTableau::pivot(int row, int col)
 	}
 	delete pivotMatrix;
 	pivotMatrix = nullptr;
+	variableName tempVar;
+	if ((indepVar[col - 1]).getIndep() && !((depVar[row - 1]).getIndep())) {
+		(indepVar[col - 1]).setIndep(false);
+		(depVar[row - 1]).setIndep(true);
+	}
+	else if (!((indepVar[col - 1]).getIndep()) && (depVar[row - 1]).getIndep()) {
+		(indepVar[col - 1]).setIndep(true);
+		(depVar[row - 1]).setIndep(false);
+	}
+	tempVar.setNumber((indepVar[col - 1]).getNumber());
+	(indepVar[col - 1]).setNumber((depVar[row - 1]).getNumber());
+	(depVar[row - 1]).setNumber(tempVar.getNumber());
 	return TABLEAU_SUCCESS;
 }
 
 tableauErrorCode simplexTableau::printMatrix()
 {
+
 	return FUNCTION_NOT_IMPLEMENTED;
 }
 
@@ -252,6 +259,16 @@ float simplexTableau::getVariableValue(int row)
 	return valueMatrix[row][numberOfVariables];
 }
 
+int simplexTableau::getIndepVariableNum(int colNum)
+{
+	return -1;
+}
+
+int simplexTableau::getDepVariableNum(int rowNum)
+{
+	return -1;
+}
+
 void simplexTableau::constructMatrix(int numVar, int numConstr) 
 {
 	valueMatrix = new float* [numConstr + 1];
@@ -262,4 +279,31 @@ void simplexTableau::constructMatrix(int numVar, int numConstr)
 	
 	numberOfVariables = numVar;
 	numberOfConstraints = numConstr;
+
+	indepVar = new variableName[numVar];
+	depVar = new variableName[numConstr];
+	int i;
+	for (i = 0; i < numVar; i++) {
+		(indepVar[i]).setIndep(true);
+		(indepVar[i]).setNumber(i + 1);
+	}
+	for (i = 0; i < numConstr; i++) {
+		(depVar[i]).setIndep(false);
+		(depVar[i]).setNumber(i + 1);
+	}
+}
+
+void simplexTableau::destroyMatrix()
+{
+	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
+	{
+		delete valueMatrix[rowNum];
+		valueMatrix[rowNum] = nullptr;
+	}
+	delete valueMatrix;
+	valueMatrix = nullptr;
+	delete[]indepVar;
+	indepVar = NULL;
+	delete[]depVar;
+	depVar = NULL;
 }
