@@ -28,8 +28,8 @@ bool simpl::changeValue(float value, int row, int col) {
 	}
 }
 
-bool simpl::prTableau() {
-	tableauErrorCode errorCode = tableau->printMatrix();
+bool simpl::exportTableau() {
+	tableauErrorCode errorCode = tableau->exportMatrix();
 	return (errorCode == TABLEAU_SUCCESS);
 }
 

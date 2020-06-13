@@ -5,6 +5,7 @@
 class allTests {
 public:
 	testResultCodes runAllTests();
+	void exportTest();
 
 private:
 	testErrorCodes simplTest();

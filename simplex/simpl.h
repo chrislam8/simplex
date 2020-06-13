@@ -17,6 +17,7 @@ public:
 	xValuePtr is meant as a pointer to return the optimal x values for the problem
 	optimalValue is meant as a pointer to where the optimal value will be placed 
 	*/
+	bool exportTableau();
 private:
 	simplexTableau* tableau;
 	int numconstraint; //also numrows - 1
@@ -25,7 +26,6 @@ private:
 	//private methods
 	void constructTab(const int numvar,const int numconstr);
 	void destroyTab();
-	bool prTableau();	
 	bool pivot(int row, int col);
 	
 };

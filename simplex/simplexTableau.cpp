@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "simplexTableau.h"
 
 simplexTableau::simplexTableau() 
@@ -145,9 +147,12 @@ tableauErrorCode simplexTableau::pivot(int row, int col)
 	return TABLEAU_SUCCESS;
 }
 
-tableauErrorCode simplexTableau::printMatrix()
+tableauErrorCode simplexTableau::exportMatrix()
 {
-
+	std::fstream coutStream;
+	coutStream.open("output.csv", std::fstream::out);
+	coutStream << "Hi";
+	coutStream.close();
 	return FUNCTION_NOT_IMPLEMENTED;
 }
 

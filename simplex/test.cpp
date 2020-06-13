@@ -157,3 +157,23 @@ testErrorCodes allTests::infeasibleTest() {
 	test = NULL;
 	return result;
 }
+
+void allTests::exportTest()
+{
+	simpl* test = new simpl(NUMVAR, NUMCONSTR);
+	float optimalValue = -8.2;
+	float* testxVal = new float[NUMVAR];
+	test->changeValue(1.0, 1, 1);
+	test->changeValue(2.0, 1, 2);
+	test->changeValue(20.0, 1, 3);
+	test->changeValue(2.0, 2, 1);
+	test->changeValue(2.0, 2, 2);
+	test->changeValue(30.0, 2, 3);
+	test->changeValue(2.0, 3, 1);
+	test->changeValue(1.0, 3, 2);
+	test->changeValue(25.0, 3, 3);
+	test->changeValue(200.0, 4, 1);
+	test->changeValue(150.0, 4, 2);
+	test->changeValue(0.0, 4, 3);
+	test->exportTableau();
+}

@@ -12,7 +12,7 @@ public:
 	tableauErrorCode changeValue(float value, int row, int col);
 	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	tableauErrorCode pivot(int row, int col);
-	tableauErrorCode printMatrix();
+	tableauErrorCode exportMatrix();
 
 	checkValue feasibleSolutionsCheck();
 	checkValue optimalSolutionCheck();
