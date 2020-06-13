@@ -25,6 +25,9 @@ testResultCodes allTests::runAllTests () {
 		case INFEASIBLE_TEST:
 			errorCode = infeasibleTest();
 			break;
+		case EXPORT_TEST:
+			errorCode = exportTest();
+			break;
 		}
 		result.first = static_cast<testList>(testNumber);
 		result.second = errorCode;
@@ -158,7 +161,7 @@ testErrorCodes allTests::infeasibleTest() {
 	return result;
 }
 
-void allTests::exportTest()
+testErrorCodes allTests::exportTest()
 {
 	simpl* test = new simpl(NUMVAR, NUMCONSTR);
 	float optimalValue = -8.2;
@@ -176,4 +179,6 @@ void allTests::exportTest()
 	test->changeValue(150.0, 4, 2);
 	test->changeValue(0.0, 4, 3);
 	test->exportTableau();
+
+	return TEST_SUCCESS;
 }

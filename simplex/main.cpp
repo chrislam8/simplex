@@ -7,7 +7,7 @@ int main() {
 	testResultCodes testResult = testSeq.runAllTests();
 	if (testResult.second != TEST_SUCCESS)
 	{
-		std::cout << "Test number #" << testResult.first << " failed";
+		std::cout << "Test number #" << testResult.first << " failed with code " << testResult.second;
 	}
 	else
 	{
