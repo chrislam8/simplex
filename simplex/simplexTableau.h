@@ -8,7 +8,7 @@ public:
 	simplexTableau(int numVar, int numConstr);
 	~simplexTableau();
 
-	tableauErrorCode changeValue(float value, int row, int col);
+	tableauErrorCode changeValue(double value, int row, int col);
 	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	tableauErrorCode pivot(int row, int col);
 	tableauErrorCode printMatrix();
@@ -17,11 +17,11 @@ public:
 	checkValue optimalSolutionCheck();
 	checkValue unboundedSolutionCheck(int colNumber);
 
-	float getOptimalValue();
-	float getVariableValue(int row);
+	double getOptimalValue();
+	double getVariableValue(int row);
 
 private:
-	float** valueMatrix;
+	double** valueMatrix;
 	void constructMatrix(int numVar, int numConstr);
 
 	int numberOfVariables;
