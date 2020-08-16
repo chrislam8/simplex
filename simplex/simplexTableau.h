@@ -20,6 +20,8 @@ public:
 	float getOptimalValue();
 	float getVariableValue(int row);
 
+	simplexTableau& operator=(const simplexTableau& copy);
+
 private:
 	float** valueMatrix;
 	void constructMatrix(int numVar, int numConstr);

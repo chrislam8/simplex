@@ -252,6 +252,30 @@ float simplexTableau::getVariableValue(int row)
 	return valueMatrix[row][numberOfVariables];
 }
 
+simplexTableau& simplexTableau::operator=(const simplexTableau& copy)
+{
+	if (&copy == this)
+	{
+		return *this;
+	}
+	numberOfConstraints = copy.numberOfConstraints;
+	numberOfVariables = copy.numberOfVariables;
+	valueMatrix = new float* [numberOfConstraints + 1];
+	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
+	{
+		valueMatrix[rowNum] = new float[numberOfVariables + 1];
+	}
+	int i, j;
+	for (i = 0; i <= numberOfConstraints; i++)
+	{
+		for (j = 0; j <= numberOfVariables; j++)
+		{
+			valueMatrix[i][j] = copy.valueMatrix[i][j];
+		}
+	}
+	return *this;
+}
+
 void simplexTableau::constructMatrix(int numVar, int numConstr) 
 {
 	valueMatrix = new float* [numConstr + 1];
