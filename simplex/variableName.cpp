@@ -39,7 +39,7 @@ void variableName::setIndep(bool newIndep)
 
 void variableName::setNumber(int newNumber)
 {
-	if (number >= 0)
+	if (newNumber >= 0)
 	{
 		number = newNumber;
 	}
