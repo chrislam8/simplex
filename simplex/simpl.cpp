@@ -30,7 +30,7 @@ bool simpl::changeValue(float value, int row, int col) {
 
 bool simpl::exportTableau() {
 	tableauErrorCode errorCode = tableau->exportMatrix();
-	return (errorCode == TABLEAU_SUCCESS);
+	return (errorCode == EXPORT_SUCCESS);
 }
 
 bool simpl::pivot(int row, int col) {

@@ -151,9 +151,49 @@ tableauErrorCode simplexTableau::exportMatrix()
 {
 	std::fstream coutStream;
 	coutStream.open("output.csv", std::fstream::out);
-	coutStream << "Hi";
+	int i, j;
+	char variableChar;
+	int variableNum;
+	for (i = 0; i < numberOfVariables; ++i)
+	{
+		if (indepVar[i].getIndep())
+		{
+			variableChar = 'x';
+		}
+		else
+		{
+			variableChar = 't';
+		}
+		variableNum = indepVar[i].getNumber();
+		coutStream << variableChar << variableNum << ",";
+	}
+	coutStream << "-1" << std::endl;
+	for (i = 0; i <= numberOfConstraints; ++i)
+	{
+		for (j = 0; j <= numberOfVariables; j++)
+		{
+			coutStream << valueMatrix[i][j] << ",";
+		}
+		if (depVar[i].getIndep())
+		{
+			variableChar = 'x';
+		}
+		else
+		{
+			variableChar = 't';
+		}
+		if (i != numberOfConstraints)
+		{
+			variableNum = depVar[i].getNumber();
+			coutStream << " = -" << variableChar << variableNum << std::endl;
+		}
+		else
+		{
+			coutStream << " = f" << std::endl;
+		}
+	}
 	coutStream.close();
-	return FUNCTION_NOT_IMPLEMENTED;
+	return EXPORT_SUCCESS;
 }
 
 checkValue simplexTableau::feasibleSolutionsCheck()
