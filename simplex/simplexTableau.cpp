@@ -156,16 +156,7 @@ tableauErrorCode simplexTableau::exportMatrix()
 	int variableNum;
 	for (i = 0; i < numberOfVariables; ++i)
 	{
-		if (indepVar[i].getIndep())
-		{
-			variableChar = 'x';
-		}
-		else
-		{
-			variableChar = 't';
-		}
-		variableNum = indepVar[i].getNumber();
-		coutStream << variableChar << variableNum << ",";
+		coutStream << indepVar[i].getString() << ",";
 	}
 	coutStream << "-1" << std::endl;
 	for (i = 0; i <= numberOfConstraints; ++i)
@@ -174,18 +165,9 @@ tableauErrorCode simplexTableau::exportMatrix()
 		{
 			coutStream << valueMatrix[i][j] << ",";
 		}
-		if (depVar[i].getIndep())
-		{
-			variableChar = 'x';
-		}
-		else
-		{
-			variableChar = 't';
-		}
 		if (i != numberOfConstraints)
 		{
-			variableNum = depVar[i].getNumber();
-			coutStream << " = -" << variableChar << variableNum << std::endl;
+			coutStream << " = -" << depVar[i].getString() << std::endl;
 		}
 		else
 		{

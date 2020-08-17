@@ -15,9 +15,12 @@ public:
 	//getters
 	bool getIndep();
 	int getNumber();
+	std::string getString();
 
 private:
 	bool indep;
 	int number;
 	std::string stringRepresentation;
+
+	void setStringRepresentation();
 };

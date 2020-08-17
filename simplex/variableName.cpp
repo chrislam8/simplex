@@ -4,6 +4,7 @@ variableName::variableName()
 {
 	this->indep = false;
 	this->number = -1;
+	setStringRepresentation();
 }
 
 variableName::variableName(bool indep, int number)
@@ -17,15 +18,7 @@ variableName::variableName(bool indep, int number)
 	{
 		this->number = -1;
 	}
-	if (indep)
-	{
-		stringRepresentation = "x";
-	}
-	else
-	{
-		stringRepresentation = "t";
-	}
-	stringRepresentation = stringRepresentation + std::to_string(this->number);
+	setStringRepresentation();
 }
 
 variableName::~variableName()
@@ -35,6 +28,7 @@ variableName::~variableName()
 void variableName::setIndep(bool newIndep)
 {
 	indep = newIndep;
+	setStringRepresentation();
 }
 
 void variableName::setNumber(int newNumber)
@@ -47,6 +41,7 @@ void variableName::setNumber(int newNumber)
 	{
 		number = -1;
 	}
+	setStringRepresentation();
 }
 
 bool variableName::getIndep()
@@ -57,4 +52,22 @@ bool variableName::getIndep()
 int variableName::getNumber()
 {
 	return number;
+}
+
+std::string variableName::getString()
+{
+	return stringRepresentation;
+}
+
+void variableName::setStringRepresentation()
+{
+	if (indep)
+	{
+		stringRepresentation = "x";
+	}
+	else
+	{
+		stringRepresentation = "t";
+	}
+	stringRepresentation = stringRepresentation + std::to_string(number);
 }
