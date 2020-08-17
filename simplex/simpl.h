@@ -16,8 +16,8 @@ public:
 	simpl(); //basic constructor
 	simpl(int numvar, int numconstr); //custom constructor
 	~simpl(); //destructor
-	bool changeValue(float value, int row, int col);
-	simplexErrorCode simplex(float* xValuePtr, float* optimalValue); 
+	bool changeValue(double value, int row, int col);
+	simplexErrorCode simplex(double* xValuePtr, double* optimalValue); 
 	/* xValuePtr is meant as a pointer to return the optimal x values for the problem
 	optimalValue is meant as a pointer to where the optimal value will be placed 
 	return values:

@@ -16,7 +16,7 @@ simpl::~simpl() {
 	destroyTab();
 }
 
-bool simpl::changeValue(float value, int row, int col) {
+bool simpl::changeValue(double value, int row, int col) {
 	tableauErrorCode errorCode = tableau->changeValue(value, row, col);
 	return (errorCode == TABLEAU_SUCCESS);
 }
@@ -42,7 +42,7 @@ bool simpl::pivot(int row, int col) {
 	return (errorCode == TABLEAU_SUCCESS);
 }
 
-simplexErrorCode simpl::simplex(float* xValuePtr, float* optimalValue) {
+simplexErrorCode simpl::simplex(double* xValuePtr, double* optimalValue) {
 	bool simplexdone = false;
 	int i, j;
 	int colnum;
