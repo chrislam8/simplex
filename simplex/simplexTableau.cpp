@@ -130,7 +130,7 @@ tableauErrorCode simplexTableau::pivot(int row, int col)
 		delete pivotMatrix[rowNum];
 		pivotMatrix[rowNum] = nullptr;
 	}
-	delete pivotMatrix;
+	delete [] pivotMatrix;
 	pivotMatrix = nullptr;
 	variableName tempVar;
 	if ((indepVar[col - 1]).getIndep() && !((depVar[row - 1]).getIndep())) {
