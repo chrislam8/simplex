@@ -17,7 +17,7 @@ simplexTableau::~simplexTableau()
 	destroyMatrix();
 }
 
-tableauErrorCode simplexTableau::changeValue(float value, int row, int col)
+tableauErrorCode simplexTableau::changeValue(double value, int row, int col)
 {
 	if (row > numberOfConstraints + 1 || row <= 0)
 	{
@@ -40,10 +40,10 @@ tableauErrorCode simplexTableau::pivotFeasibility(checkValue feasibilityCheck)
 	int colNumber = pivotLocation.second;
 	if (rowNumber < (numberOfConstraints - 1))
 	{
-		float minValue = valueMatrix[rowNumber][colNumber];
+		double minValue = valueMatrix[rowNumber][colNumber];
 		for (int rowNum = rowNumber; rowNum < numberOfConstraints; rowNum++)
 		{
-			float currentValue = valueMatrix[rowNum][colNumber];
+			double currentValue = valueMatrix[rowNum][colNumber];
 			if (currentValue < minValue)
 			{
 				minValue = currentValue;
@@ -68,15 +68,15 @@ tableauErrorCode simplexTableau::pivot(int row, int col)
 
 	int actualRow = row - 1;
 	int actualCol = col - 1;
-	float pivotValue = valueMatrix[actualRow][actualCol];
+	double pivotValue = valueMatrix[actualRow][actualCol];
 	int rowNum = 0;
 	int colNum = 0;
-	float newValue = pivotValue;
+	double newValue = pivotValue;
 
-	float** pivotMatrix = new float* [numberOfConstraints + 1];
+	double** pivotMatrix = new double* [numberOfConstraints + 1];
 	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
 	{
-		pivotMatrix[rowNum] = new float[numberOfVariables + 1];
+		pivotMatrix[rowNum] = new double[numberOfVariables + 1];
 	}
 
 	if (pivotValue == 0)
@@ -94,17 +94,17 @@ tableauErrorCode simplexTableau::pivot(int row, int col)
 				{
 					continue;
 				}
-				float slotValue = valueMatrix[actualRow][colNum];
-				float newValue = slotValue / pivotValue;
+				double slotValue = valueMatrix[actualRow][colNum];
+				double newValue = slotValue / pivotValue;
 				pivotMatrix[rowNum][colNum] = newValue;
 			}
 			continue;
 		}
-		float colValue = valueMatrix[rowNum][actualCol];
+		double colValue = valueMatrix[rowNum][actualCol];
 		for (colNum = 0; colNum <= numberOfVariables; colNum++)
 		{
-			float rowValue = valueMatrix[actualRow][colNum];
-			float slotValue = valueMatrix[rowNum][colNum];
+			double rowValue = valueMatrix[actualRow][colNum];
+			double slotValue = valueMatrix[rowNum][colNum];
 			if (colNum == actualCol)
 			{
 				newValue = -1 * slotValue / pivotValue;
@@ -152,8 +152,6 @@ tableauErrorCode simplexTableau::exportMatrix()
 	std::fstream coutStream;
 	coutStream.open("output.csv", std::fstream::out);
 	int i, j;
-	char variableChar;
-	int variableNum;
 	for (i = 0; i < numberOfVariables; ++i)
 	{
 		coutStream << indepVar[i].getString() << ",";
@@ -249,13 +247,13 @@ checkValue simplexTableau::unboundedSolutionCheck(int colNumber)
 	int rowNumber = -1;
 	matrixLocation pivotLocation = std::make_pair(rowNumber, colNumber);
 	checkValue result = std::make_pair(unboundedSolution, pivotLocation);
-	float minValue = -1;
+	double minValue = -1;
 	for (int rowNum = 0; rowNum < numberOfConstraints; rowNum++)
 	{
 		if (valueMatrix[rowNum][colNumber] > 0)
 		{
 			unboundedSolution = false;
-			float tempValue = valueMatrix[rowNum][numberOfVariables] / valueMatrix[rowNum][colNumber];
+			double tempValue = valueMatrix[rowNum][numberOfVariables] / valueMatrix[rowNum][colNumber];
 			if (minValue < 0)
 			{
 				minValue = tempValue;
@@ -276,12 +274,12 @@ checkValue simplexTableau::unboundedSolutionCheck(int colNumber)
 	return result;
 }
 
-float simplexTableau::getOptimalValue()
+double simplexTableau::getOptimalValue()
 {
 	return -1 * valueMatrix[numberOfConstraints][numberOfVariables];
 }
 
-float simplexTableau::getVariableValue(int row)
+double simplexTableau::getVariableValue(int row)
 {
 	return valueMatrix[row][numberOfVariables];
 }
@@ -298,10 +296,10 @@ variableNumValue simplexTableau::getDepVariableNum(int rowNum)
 
 void simplexTableau::constructMatrix(int numVar, int numConstr) 
 {
-	valueMatrix = new float* [numConstr + 1];
+	valueMatrix = new double* [numConstr + 1];
 	for (int rowNum = 0; rowNum <= numConstr; rowNum++) 
 	{
-		valueMatrix[rowNum] = new float[numVar + 1];
+		valueMatrix[rowNum] = new double[numVar + 1];
 	}
 	
 	numberOfVariables = numVar;
