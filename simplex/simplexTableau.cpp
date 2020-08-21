@@ -1,4 +1,5 @@
 #include <fstream>
+#include <sstream>
 
 #include "simplexTableau.h"
 
@@ -178,6 +179,41 @@ tableauErrorCode simplexTableau::exportMatrix()
 
 tableauErrorCode simplexTableau::importMatrix()
 {
+	std::fstream cinStream;
+	cinStream.open("input.csv", std::fstream::in);
+	std::string currentLine;
+	int rowNumber = 0;
+	int numberOfColumns = 0;
+	int columnNumber = 0;
+	while (std::getline(cinStream, currentLine))
+	{
+		std::stringstream ss(currentLine);
+		std::string currentEntry;
+		while (std::getline(ss, currentEntry, ','))
+		{
+			if (rowNumber == 0)
+			{
+				//independent variables
+				++numberOfColumns;
+			}
+			else
+			{
+				if (columnNumber < numberOfColumns)
+				{
+					//add to matrix
+				}
+				else
+				{
+					//dependent variable
+				}
+			}
+		}
+		++rowNumber;
+		columnNumber = 0;
+	}
+	numberOfConstraints = rowNumber - 1;
+	numberOfVariables = numberOfColumns - 1;
+	cinStream.close();
 	return FUNCTION_NOT_IMPLEMENTED;
 }
 
