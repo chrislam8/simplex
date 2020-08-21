@@ -12,6 +12,7 @@ private:
 	testErrorCodes negrowTest();
 	testErrorCodes unboundedTest();
 	testErrorCodes infeasibleTest();
+	testErrorCodes exportTest();
 	int NUMVAR = 2;
 	int NUMCONSTR = 3;
 	int NUMCOL = NUMVAR + 1;

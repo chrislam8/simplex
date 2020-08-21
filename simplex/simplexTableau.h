@@ -1,6 +1,7 @@
 #pragma once
 
 #include "simplexTableauEnums.h"
+#include "variableName.h"
 
 class simplexTableau {
 public:
@@ -11,7 +12,7 @@ public:
 	tableauErrorCode changeValue(double value, int row, int col);
 	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	tableauErrorCode pivot(int row, int col);
-	tableauErrorCode printMatrix();
+	tableauErrorCode exportMatrix();
 
 	checkValue feasibleSolutionsCheck();
 	checkValue optimalSolutionCheck();
@@ -20,9 +21,16 @@ public:
 	double getOptimalValue();
 	double getVariableValue(int row);
 
+	variableNumValue getIndepVariableNum(int colNum);
+	variableNumValue getDepVariableNum(int rowNum);
+
 private:
 	double** valueMatrix;
+	variableName* indepVar;
+	variableName* depVar;
 	void constructMatrix(int numVar, int numConstr);
+	void destroyMatrix();
+	variableNumValue getVariableNum(bool indep, int number);
 
 	int numberOfVariables;
 	int numberOfConstraints;

@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "simplexTableau.h"
 
 simplexTableau::simplexTableau() 
@@ -12,13 +14,7 @@ simplexTableau::simplexTableau(int numVar, int numConstr)
 
 simplexTableau::~simplexTableau() 
 {
-	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++) 
-	{
-		delete valueMatrix[rowNum];
-		valueMatrix[rowNum] = nullptr;
-	}
-	delete valueMatrix;
-	valueMatrix = nullptr;
+	destroyMatrix();
 }
 
 tableauErrorCode simplexTableau::changeValue(double value, int row, int col)
@@ -134,14 +130,50 @@ tableauErrorCode simplexTableau::pivot(int row, int col)
 		delete pivotMatrix[rowNum];
 		pivotMatrix[rowNum] = nullptr;
 	}
-	delete pivotMatrix;
+	delete [] pivotMatrix;
 	pivotMatrix = nullptr;
+	variableName tempVar;
+	if ((indepVar[col - 1]).getIndep() && !((depVar[row - 1]).getIndep())) {
+		(indepVar[col - 1]).setIndep(false);
+		(depVar[row - 1]).setIndep(true);
+	}
+	else if (!((indepVar[col - 1]).getIndep()) && (depVar[row - 1]).getIndep()) {
+		(indepVar[col - 1]).setIndep(true);
+		(depVar[row - 1]).setIndep(false);
+	}
+	tempVar.setNumber((indepVar[col - 1]).getNumber());
+	(indepVar[col - 1]).setNumber((depVar[row - 1]).getNumber());
+	(depVar[row - 1]).setNumber(tempVar.getNumber());
 	return TABLEAU_SUCCESS;
 }
 
-tableauErrorCode simplexTableau::printMatrix()
+tableauErrorCode simplexTableau::exportMatrix()
 {
-	return FUNCTION_NOT_IMPLEMENTED;
+	std::fstream coutStream;
+	coutStream.open("output.csv", std::fstream::out);
+	int i, j;
+	for (i = 0; i < numberOfVariables; ++i)
+	{
+		coutStream << indepVar[i].getString() << ",";
+	}
+	coutStream << "-1" << std::endl;
+	for (i = 0; i <= numberOfConstraints; ++i)
+	{
+		for (j = 0; j <= numberOfVariables; j++)
+		{
+			coutStream << valueMatrix[i][j] << ",";
+		}
+		if (i != numberOfConstraints)
+		{
+			coutStream << " = -" << depVar[i].getString() << std::endl;
+		}
+		else
+		{
+			coutStream << " = f" << std::endl;
+		}
+	}
+	coutStream.close();
+	return EXPORT_SUCCESS;
 }
 
 checkValue simplexTableau::feasibleSolutionsCheck()
@@ -252,6 +284,16 @@ double simplexTableau::getVariableValue(int row)
 	return valueMatrix[row][numberOfVariables];
 }
 
+variableNumValue simplexTableau::getIndepVariableNum(int colNum)
+{
+	return getVariableNum(true, colNum);
+}
+
+variableNumValue simplexTableau::getDepVariableNum(int rowNum)
+{
+	return getVariableNum(false, rowNum);
+}
+
 void simplexTableau::constructMatrix(int numVar, int numConstr) 
 {
 	valueMatrix = new double* [numConstr + 1];
@@ -262,4 +304,61 @@ void simplexTableau::constructMatrix(int numVar, int numConstr)
 	
 	numberOfVariables = numVar;
 	numberOfConstraints = numConstr;
+
+	indepVar = new variableName[numVar];
+	depVar = new variableName[numConstr];
+	int i;
+	for (i = 0; i < numVar; i++) {
+		(indepVar[i]).setIndep(true);
+		(indepVar[i]).setNumber(i + 1);
+	}
+	for (i = 0; i < numConstr; i++) {
+		(depVar[i]).setIndep(false);
+		(depVar[i]).setNumber(i + 1);
+	}
+}
+
+void simplexTableau::destroyMatrix()
+{
+	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
+	{
+		delete valueMatrix[rowNum];
+		valueMatrix[rowNum] = nullptr;
+	}
+	delete valueMatrix;
+	valueMatrix = nullptr;
+	delete[]indepVar;
+	indepVar = NULL;
+	delete[]depVar;
+	depVar = NULL;
+}
+
+variableNumValue simplexTableau::getVariableNum(bool indep, int number)
+{
+	int variableNum;
+	variableNumValue result = std::make_pair(-1, VARIABLE_NOT_INDEPENDENT);
+	if (number < 0 || (number >= numberOfConstraints && number >= numberOfVariables))
+	{
+		tableauErrorCode errorCode;
+		if (indep)
+		{
+			errorCode = INVALID_COLUMN_NUMBER;
+		}
+		else
+		{
+			errorCode = INVALID_ROW_NUMBER;
+		}
+		result = std::make_pair(-1, errorCode);
+	}
+	else if (indep && indepVar[number].getIndep())
+	{
+		variableNum = indepVar[number].getNumber();
+		result = std::make_pair(variableNum, TABLEAU_SUCCESS);
+	}
+	else if (!indep && depVar[number].getIndep())
+	{
+		variableNum = depVar[number].getNumber();
+		result = std::make_pair(variableNum, TABLEAU_SUCCESS);
+	}
+	return result;
 }
