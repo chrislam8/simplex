@@ -25,6 +25,9 @@ testResultCodes allTests::runAllTests () {
 		case INFEASIBLE_TEST:
 			errorCode = infeasibleTest();
 			break;
+		case EXPORT_TEST:
+			errorCode = exportTest();
+			break;
 		}
 		result.first = static_cast<testList>(testNumber);
 		result.second = errorCode;
@@ -37,16 +40,16 @@ testResultCodes allTests::runAllTests () {
 }
 
 testErrorCodes allTests::simplTest() {
-	float* correctxValues = new float[NUMVAR];
+	double* correctxValues = new double[NUMVAR];
 	correctxValues[0] = 10.0;
 	correctxValues[1] = 5.0;
-	float correctOptimalValue = 2750.0;
+	double correctOptimalValue = 2750.0;
 	testErrorCodes result = TEST_SUCCESS;
 
 	simpl* test = new simpl(NUMVAR, NUMCONSTR);
 	int variableIter;
-	float optimalValue = -8.2;
-	float* testxVal = new float[NUMVAR];
+	double optimalValue = -8.2;
+	double* testxVal = new double[NUMVAR];
 	test->changeValue(1.0, 1, 1);
 	test->changeValue(2.0, 1, 2);
 	test->changeValue(20.0, 1, 3);
@@ -115,8 +118,8 @@ testErrorCodes allTests::negrowTest() {
 
 testErrorCodes allTests::unboundedTest() {
 	simpl* test = new simpl(2, 2);
-	float* xRes = new float[2];
-	float optVal = -1;
+	double* xRes = new double[2];
+	double optVal = -1;
 	testErrorCodes result = TEST_SUCCESS;
 	test->changeValue(1.0, 1, 1);
 	test->changeValue(-2.0, 1, 2);
@@ -138,8 +141,8 @@ testErrorCodes allTests::unboundedTest() {
 
 testErrorCodes allTests::infeasibleTest() {
 	simpl* test = new simpl(2, 2);
-	float* xRes = new float[2];
-	float optVal = -1;
+	double* xRes = new double[2];
+	double optVal = -1;
 	testErrorCodes result = TEST_SUCCESS;
 	test->changeValue(-1.0, 1, 1);
 	test->changeValue(2.0, 1, 2);
@@ -156,4 +159,24 @@ testErrorCodes allTests::infeasibleTest() {
 	delete test;
 	test = NULL;
 	return result;
+}
+
+testErrorCodes allTests::exportTest()
+{
+	simpl* test = new simpl(NUMVAR, NUMCONSTR);
+	test->changeValue(1.0, 1, 1);
+	test->changeValue(2.0, 1, 2);
+	test->changeValue(20.0, 1, 3);
+	test->changeValue(2.0, 2, 1);
+	test->changeValue(2.0, 2, 2);
+	test->changeValue(30.0, 2, 3);
+	test->changeValue(2.0, 3, 1);
+	test->changeValue(1.0, 3, 2);
+	test->changeValue(25.0, 3, 3);
+	test->changeValue(200.0, 4, 1);
+	test->changeValue(150.0, 4, 2);
+	test->changeValue(0.0, 4, 3);
+	test->exportTableau();
+
+	return TEST_SUCCESS;
 }

@@ -16,40 +16,37 @@ simpl::~simpl() {
 	destroyTab();
 }
 
-bool simpl::changeValue(float value, int row, int col) {
-	tableauErrorCode errorCode = tableau->changeValue(value, row, col);
-	return (errorCode == TABLEAU_SUCCESS);
+bool simpl::changeValue(double value, int row, int col) {
+	if (canChangeValue)
+	{
+		tableauErrorCode errorCode = tableau->changeValue(value, row, col);
+		return (errorCode == TABLEAU_SUCCESS);
+	}
+	else
+	{
+		return false;
+	}
 }
 
-bool simpl::prTableau() {
-	tableauErrorCode errorCode = tableau->printMatrix();
-	return (errorCode == TABLEAU_SUCCESS);
+bool simpl::exportTableau() {
+	tableauErrorCode errorCode = tableau->exportMatrix();
+	return (errorCode == EXPORT_SUCCESS);
 }
 
 bool simpl::pivot(int row, int col) {
-	variableName tempVar;
 	tableauErrorCode errorCode = tableau->pivot(row, col);
-	if ((indepVar[col - 1]).indep && !((depVar[row - 1]).indep)) {
-		(indepVar[col - 1]).indep = false;
-		(depVar[row - 1]).indep = true;
-	} else if (!((indepVar[col - 1]).indep) && (depVar[row - 1]).indep) {
-		(indepVar[col - 1]).indep = true;
-		(depVar[row - 1]).indep = false;
-	}
-	tempVar.number = (indepVar[col - 1]).number;
-	(indepVar[col - 1]).number = (depVar[row - 1]).number;
-	(depVar[row - 1]).number = tempVar.number;
 	return (errorCode == TABLEAU_SUCCESS);
 }
 
-simplexErrorCode simpl::simplex(float* xValuePtr, float* optimalValue) {
+simplexErrorCode simpl::simplex(double* xValuePtr, double* optimalValue) {
 	bool simplexdone = false;
-	int i, j;
+	int i;
 	int colnum;
 	int rownum;
 	if (xValuePtr == NULL || optimalValue == NULL) {
 		return NULL_POINTER_ENCOUNTERED;
 	}
+	canChangeValue = false;
 	//This first loop is to check for feasibility (are there any possible solutions?)
 	while (!simplexdone) {
 		checkValue feasibilityCheck = tableau->feasibleSolutionsCheck();
@@ -83,16 +80,19 @@ simplexErrorCode simpl::simplex(float* xValuePtr, float* optimalValue) {
 			for (i = 0; i < numvariable; i++) {
 				xValuePtr[i] = -1;
 			}
+			variableNumValue variableNum;
 			for (i = 0; i < numvariable; i++) {
-				if ((indepVar[i]).indep) {
-					j = (indepVar[i]).number;
-					xValuePtr[j - 1] = 0;
+				variableNum = tableau->getIndepVariableNum(i);
+				if (variableNum.second == TABLEAU_SUCCESS)
+				{
+					xValuePtr[variableNum.first - 1] = 0;
 				}
 			}
 			for (i = 0; i < numconstraint; i++) {
-				if ((depVar[i]).indep) {
-					j = (depVar[i]).number;
-					xValuePtr[j - 1] = tableau->getVariableValue(i);
+				variableNum = tableau->getDepVariableNum(i);
+				if (variableNum.second == TABLEAU_SUCCESS)
+				{
+					xValuePtr[variableNum.first - 1] = tableau->getVariableValue(i);
 				}
 			}
 			for (i = 0; i < numvariable; i++) {
@@ -118,31 +118,19 @@ simplexErrorCode simpl::simplex(float* xValuePtr, float* optimalValue) {
 //private methods
 
 void simpl::constructTab(const int numvar, const int numconstr) {
-	int i;
+
 	if (numvar <= 0 || numconstr <= 0) {
 		tableau = NULL;
-		indepVar = NULL;
-		depVar = NULL;
 		numvariable = 0;
 		numconstraint = 0;
-		canchangevalue = false;
+		canChangeValue = false;
 		return;
 	}
 
 	numvariable = numvar;
 	numconstraint = numconstr;
-	indepVar = new variableName[numvar];
-	depVar = new variableName[numconstr];
 	tableau = new simplexTableau(numvar, numconstr);
-	for (i = 0; i < numvar; i++) {
-		(indepVar[i]).indep = true;
-		(indepVar[i]).number = (i + 1);
-	}
-	for (i = 0; i < numconstr; i++) {
-		(depVar[i]).indep = false;
-		(depVar[i]).number = (i + 1);
-	}
-	canchangevalue = true;
+	canChangeValue = true;
 }
 
 void simpl::destroyTab() {
@@ -151,10 +139,6 @@ void simpl::destroyTab() {
 	}
 	delete tableau;
 	tableau = NULL;
-	delete[]indepVar;
-	indepVar = NULL;
-	delete[]depVar;
-	depVar = NULL;
 }
 
 
