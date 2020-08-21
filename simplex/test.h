@@ -13,6 +13,7 @@ private:
 	testErrorCodes unboundedTest();
 	testErrorCodes infeasibleTest();
 	testErrorCodes exportTest();
+	testErrorCodes importTest();
 	int NUMVAR = 2;
 	int NUMCONSTR = 3;
 	int NUMCOL = NUMVAR + 1;

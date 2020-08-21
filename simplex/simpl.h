@@ -18,6 +18,7 @@ public:
 	optimalValue is meant as a pointer to where the optimal value will be placed 
 	*/
 	bool exportTableau();
+	bool importTableau();
 private:
 	simplexTableau* tableau;
 	int numconstraint; //also numrows - 1

@@ -9,7 +9,8 @@ enum tableauErrorCode {
 	PIVOT_VALUE_CANNOT_BE_ZERO,
 	FUNCTION_NOT_IMPLEMENTED,
 	VARIABLE_NOT_INDEPENDENT,
-	EXPORT_SUCCESS
+	EXPORT_SUCCESS,
+	IMPORT_SUCCESS
 };
 
 #define matrixLocation std::pair<int, int>

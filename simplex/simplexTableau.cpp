@@ -176,6 +176,11 @@ tableauErrorCode simplexTableau::exportMatrix()
 	return EXPORT_SUCCESS;
 }
 
+tableauErrorCode simplexTableau::importMatrix()
+{
+	return FUNCTION_NOT_IMPLEMENTED;
+}
+
 checkValue simplexTableau::feasibleSolutionsCheck()
 {
 	bool feasibleSolutions = true;

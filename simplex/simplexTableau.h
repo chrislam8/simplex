@@ -13,6 +13,7 @@ public:
 	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	tableauErrorCode pivot(int row, int col);
 	tableauErrorCode exportMatrix();
+	tableauErrorCode importMatrix();
 
 	checkValue feasibleSolutionsCheck();
 	checkValue optimalSolutionCheck();

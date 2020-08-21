@@ -28,10 +28,13 @@ testResultCodes allTests::runAllTests () {
 		case EXPORT_TEST:
 			errorCode = exportTest();
 			break;
+		case IMPORT_TEST:
+			errorCode = importTest();
+			break;
 		}
 		result.first = static_cast<testList>(testNumber);
 		result.second = errorCode;
-		if (errorCode != TEST_SUCCESS)
+		if (errorCode != TEST_SUCCESS && errorCode != TEST_NOT_IMPLEMENTED_FUNCTION)
 		{
 			return result;
 		}
@@ -179,4 +182,12 @@ testErrorCodes allTests::exportTest()
 	test->exportTableau();
 
 	return TEST_SUCCESS;
+}
+
+testErrorCodes allTests::importTest()
+{
+	simpl* test = new simpl(NUMVAR, NUMCONSTR);
+	test->importTableau();
+
+	return TEST_NOT_IMPLEMENTED_FUNCTION;
 }

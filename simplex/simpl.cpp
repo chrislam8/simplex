@@ -33,6 +33,11 @@ bool simpl::exportTableau() {
 	return (errorCode == EXPORT_SUCCESS);
 }
 
+bool simpl::importTableau() {
+	tableauErrorCode errorCode = tableau->importMatrix();
+	return (errorCode == IMPORT_SUCCESS);
+}
+
 bool simpl::pivot(int row, int col) {
 	tableauErrorCode errorCode = tableau->pivot(row, col);
 	return (errorCode == TABLEAU_SUCCESS);
