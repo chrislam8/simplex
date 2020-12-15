@@ -292,10 +292,10 @@ simplexTableau& simplexTableau::operator=(const simplexTableau& copy)
 	}
 	numberOfConstraints = copy.numberOfConstraints;
 	numberOfVariables = copy.numberOfVariables;
-	valueMatrix = new float* [numberOfConstraints + 1];
+	valueMatrix = new double* [numberOfConstraints + 1];
 	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
 	{
-		valueMatrix[rowNum] = new float[numberOfVariables + 1];
+		valueMatrix[rowNum] = new double[numberOfVariables + 1];
 	}
 	int i, j;
 	for (i = 0; i <= numberOfConstraints; i++)
