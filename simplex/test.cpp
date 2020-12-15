@@ -187,7 +187,12 @@ testErrorCodes allTests::exportTest()
 testErrorCodes allTests::importTest()
 {
 	simpl* test = new simpl(NUMVAR, NUMCONSTR);
-	test->importTableau();
-
-	return TEST_NOT_IMPLEMENTED_FUNCTION;
+	if (test->importTableau())
+	{
+		return TEST_SUCCESS;
+	}
+	else
+	{
+		return TEST_UNEXPECTED_VALUE;
+	}
 }

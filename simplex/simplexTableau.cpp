@@ -258,7 +258,7 @@ tableauErrorCode simplexTableau::importMatrix()
 	numberOfConstraints = rowNumber - 1;
 	numberOfVariables = numberOfColumns - 1;
 	cinStream.close();
-	return FUNCTION_NOT_IMPLEMENTED;
+	return IMPORT_SUCCESS;
 }
 
 checkValue simplexTableau::feasibleSolutionsCheck()
