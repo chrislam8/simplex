@@ -222,11 +222,32 @@ tableauErrorCode simplexTableau::importMatrix()
 			{
 				if (columnNumber < numberOfColumns)
 				{
-					//add to matrix
+					double number = atof(currentEntry.c_str());
+					valueMatrix[rowNumber - 1][columnNumber] = number;
 				}
 				else
 				{
-					//dependent variable
+					if (currentEntry[0] == 't')
+					{
+						variableInput.setIndep(false);
+					}
+					else if (currentEntry[0] == 'x')
+					{
+						variableInput.setIndep(true);
+					}
+					else
+					{
+						++columnNumber;
+						continue;
+					}
+					currentEntry.erase(0);
+					int variableNum = atoi(currentEntry.c_str());
+					variableInput.setNumber(variableNum);
+					if (rowNumber - 1 >= numberOfConstraints)
+					{
+						increaseSizeVar(false, rowNumber);
+					}
+					indepVar[rowNumber - 1] = variableInput;
 				}
 			}
 			++columnNumber;
