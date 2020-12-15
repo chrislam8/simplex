@@ -66,6 +66,10 @@ std::string variableName::getString()
 
 variableName& variableName::operator=(const variableName& copy)
 {
+	if (&copy == this)
+	{
+		return *this;
+	}
 	copyVariable(copy);
 	return *this;
 }
