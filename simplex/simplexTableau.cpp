@@ -185,6 +185,8 @@ tableauErrorCode simplexTableau::importMatrix()
 	int rowNumber = 0;
 	int numberOfColumns = 0;
 	int columnNumber = 0;
+	variableName variableInput;
+
 	while (std::getline(cinStream, currentLine))
 	{
 		std::stringstream ss(currentLine);
@@ -193,8 +195,28 @@ tableauErrorCode simplexTableau::importMatrix()
 		{
 			if (rowNumber == 0)
 			{
-				//independent variables
 				++numberOfColumns;
+				if (currentEntry[0] == 't')
+				{
+					variableInput.setIndep(false);
+				}
+				else if (currentEntry[0] == 'x')
+				{
+					variableInput.setIndep(true);
+				}
+				else
+				{
+					++columnNumber;
+					continue;
+				}
+				currentEntry.erase(0);
+				int variableNum = atoi(currentEntry.c_str());
+				variableInput.setNumber(variableNum);
+				if (columnNumber >= numberOfVariables)
+				{
+					increaseSizeVar(true, columnNumber + 1);
+				}
+				indepVar[columnNumber] = variableInput;
 			}
 			else
 			{
@@ -207,6 +229,7 @@ tableauErrorCode simplexTableau::importMatrix()
 					//dependent variable
 				}
 			}
+			++columnNumber;
 		}
 		++rowNumber;
 		columnNumber = 0;
@@ -372,6 +395,45 @@ void simplexTableau::destroyMatrix()
 	indepVar = NULL;
 	delete[]depVar;
 	depVar = NULL;
+}
+
+void simplexTableau::increaseSizeVar(bool indep, int newSize)
+{
+	variableName* tempVar = NULL;
+	variableName* createVar = new variableName[newSize];
+	int oldSize = 0;
+	int minSize = newSize;
+	int i = 0;
+	if (indep)
+	{
+		tempVar = indepVar;
+		oldSize = numberOfVariables;
+	}
+	else
+	{
+		tempVar = depVar;
+		oldSize = numberOfConstraints;
+	}
+	if (oldSize < newSize)
+	{
+		minSize = oldSize;
+	}
+	for (i = 0; i < minSize; ++i)
+	{
+		createVar[i] = tempVar[i];
+	}
+	delete[] tempVar;
+	tempVar = NULL;
+	if (indep)
+	{
+		indepVar = createVar;
+		numberOfVariables = newSize;
+	}
+	else
+	{
+		depVar = createVar;
+		numberOfConstraints = newSize;
+	}
 }
 
 variableNumValue simplexTableau::getVariableNum(bool indep, int number)
