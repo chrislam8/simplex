@@ -17,6 +17,8 @@ public:
 	int getNumber();
 	std::string getString();
 
+	variableName& operator=(const variableName& copy);
+
 private:
 	bool indep;
 	int number;

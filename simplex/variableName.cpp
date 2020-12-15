@@ -59,6 +59,14 @@ std::string variableName::getString()
 	return stringRepresentation;
 }
 
+variableName& variableName::operator=(const variableName& copy)
+{
+	indep = copy.indep;
+	number = copy.number;
+	setStringRepresentation();
+	return *this;
+}
+
 void variableName::setStringRepresentation()
 {
 	if (indep)
