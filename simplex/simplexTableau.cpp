@@ -12,6 +12,11 @@ simplexTableau::simplexTableau(int numVar, int numConstr)
 	constructMatrix(numVar, numConstr);
 }
 
+simplexTableau::simplexTableau(const simplexTableau& copy)
+{
+	copyMatrix(copy);
+}
+
 simplexTableau::~simplexTableau() 
 {
 	destroyMatrix();
@@ -290,21 +295,7 @@ simplexTableau& simplexTableau::operator=(const simplexTableau& copy)
 	{
 		return *this;
 	}
-	numberOfConstraints = copy.numberOfConstraints;
-	numberOfVariables = copy.numberOfVariables;
-	valueMatrix = new double* [numberOfConstraints + 1];
-	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
-	{
-		valueMatrix[rowNum] = new double[numberOfVariables + 1];
-	}
-	int i, j;
-	for (i = 0; i <= numberOfConstraints; i++)
-	{
-		for (j = 0; j <= numberOfVariables; j++)
-		{
-			valueMatrix[i][j] = copy.valueMatrix[i][j];
-		}
-	}
+	copyMatrix(copy);
 	return *this;
 }
 
@@ -355,6 +346,25 @@ void simplexTableau::destroyMatrix()
 	indepVar = NULL;
 	delete[]depVar;
 	depVar = NULL;
+}
+
+void simplexTableau::copyMatrix(const simplexTableau& copy)
+{
+	numberOfConstraints = copy.numberOfConstraints;
+	numberOfVariables = copy.numberOfVariables;
+	valueMatrix = new double* [numberOfConstraints + 1];
+	for (int rowNum = 0; rowNum <= numberOfConstraints; rowNum++)
+	{
+		valueMatrix[rowNum] = new double[numberOfVariables + 1];
+	}
+	int i, j;
+	for (i = 0; i <= numberOfConstraints; i++)
+	{
+		for (j = 0; j <= numberOfVariables; j++)
+		{
+			valueMatrix[i][j] = copy.valueMatrix[i][j];
+		}
+	}
 }
 
 variableNumValue simplexTableau::getVariableNum(bool indep, int number)

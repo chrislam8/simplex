@@ -6,6 +6,7 @@ class variableName {
 public:
 	variableName();
 	variableName(bool indep, int number);
+	variableName(const variableName& copy);
 	~variableName();
 
 	//setters
@@ -25,4 +26,5 @@ private:
 	std::string stringRepresentation;
 
 	void setStringRepresentation();
+	void copyVariable(const variableName& copy);
 };

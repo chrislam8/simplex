@@ -21,6 +21,11 @@ variableName::variableName(bool indep, int number)
 	setStringRepresentation();
 }
 
+variableName::variableName(const variableName& copy)
+{
+	copyVariable(copy);
+}
+
 variableName::~variableName()
 {
 }
@@ -61,9 +66,7 @@ std::string variableName::getString()
 
 variableName& variableName::operator=(const variableName& copy)
 {
-	indep = copy.indep;
-	number = copy.number;
-	setStringRepresentation();
+	copyVariable(copy);
 	return *this;
 }
 
@@ -78,4 +81,11 @@ void variableName::setStringRepresentation()
 		stringRepresentation = "t";
 	}
 	stringRepresentation = stringRepresentation + std::to_string(number);
+}
+
+void variableName::copyVariable(const variableName& copy)
+{
+	indep = copy.indep;
+	number = copy.number;
+	setStringRepresentation();
 }
