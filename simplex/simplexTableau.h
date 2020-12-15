@@ -31,7 +31,7 @@ private:
 	variableName* depVar;
 	void constructMatrix(int numVar, int numConstr);
 	void destroyMatrix();
-	void remakeVariableName(bool indep, int newSize);
+	void increaseSizeVar(bool indep, int newSize);
 	variableNumValue getVariableNum(bool indep, int number);
 
 	int numberOfVariables;
