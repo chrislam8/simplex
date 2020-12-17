@@ -28,13 +28,13 @@ bool simpl::changeValue(double value, int row, int col) {
 	}
 }
 
-bool simpl::exportTableau() {
-	tableauErrorCode errorCode = tableau->exportMatrix();
+bool simpl::exportTableau(std::string fileName) {
+	tableauErrorCode errorCode = tableau->exportMatrix(fileName);
 	return (errorCode == EXPORT_SUCCESS);
 }
 
-bool simpl::importTableau() {
-	tableauErrorCode errorCode = tableau->importMatrix();
+bool simpl::importTableau(std::string fileName) {
+	tableauErrorCode errorCode = tableau->importMatrix(fileName);
 	return (errorCode == IMPORT_SUCCESS);
 }
 

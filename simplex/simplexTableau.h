@@ -12,8 +12,8 @@ public:
 	tableauErrorCode changeValue(double value, int row, int col);
 	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	tableauErrorCode pivot(int row, int col);
-	tableauErrorCode exportMatrix();
-	tableauErrorCode importMatrix();
+	tableauErrorCode exportMatrix(std::string fileName);
+	tableauErrorCode importMatrix(std::string fileName);
 
 	checkValue feasibleSolutionsCheck();
 	checkValue optimalSolutionCheck();

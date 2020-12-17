@@ -179,7 +179,7 @@ testErrorCodes allTests::exportTest()
 	test->changeValue(200.0, 4, 1);
 	test->changeValue(150.0, 4, 2);
 	test->changeValue(0.0, 4, 3);
-	test->exportTableau();
+	test->exportTableau("output.csv");
 
 	return TEST_SUCCESS;
 }
@@ -187,7 +187,7 @@ testErrorCodes allTests::exportTest()
 testErrorCodes allTests::importTest()
 {
 	simpl* test = new simpl(NUMVAR, NUMCONSTR);
-	if (test->importTableau())
+	if (test->importTableau("input.csv"))
 	{
 		return TEST_SUCCESS;
 	}

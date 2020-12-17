@@ -148,10 +148,14 @@ tableauErrorCode simplexTableau::pivot(int row, int col)
 	return TABLEAU_SUCCESS;
 }
 
-tableauErrorCode simplexTableau::exportMatrix()
+tableauErrorCode simplexTableau::exportMatrix(std::string fileName)
 {
 	std::fstream coutStream;
-	coutStream.open("output.csv", std::fstream::out);
+	coutStream.open(fileName.c_str(), std::fstream::out);
+	if (coutStream.fail())
+	{
+		return FILE_OPEN_FAILED;
+	}
 	int i, j;
 	for (i = 0; i < numberOfVariables; ++i)
 	{
@@ -177,15 +181,19 @@ tableauErrorCode simplexTableau::exportMatrix()
 	return EXPORT_SUCCESS;
 }
 
-tableauErrorCode simplexTableau::importMatrix()
+tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 {
 	std::fstream cinStream;
-	cinStream.open("input.csv", std::fstream::in);
+	cinStream.open(fileName.c_str(), std::fstream::in);
 	std::string currentLine;
 	int rowNumber = 0;
 	int numberOfColumns = 0;
 	int columnNumber = 0;
 	variableName variableInput;
+	if (cinStream.fail())
+	{
+		return FILE_OPEN_FAILED;
+	}
 
 	while (std::getline(cinStream, currentLine))
 	{

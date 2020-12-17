@@ -10,7 +10,8 @@ enum tableauErrorCode {
 	FUNCTION_NOT_IMPLEMENTED,
 	VARIABLE_NOT_INDEPENDENT,
 	EXPORT_SUCCESS,
-	IMPORT_SUCCESS
+	IMPORT_SUCCESS,
+	FILE_OPEN_FAILED,
 };
 
 #define matrixLocation std::pair<int, int>
