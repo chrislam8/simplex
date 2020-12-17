@@ -158,7 +158,7 @@ void simpl::destroyTab() {
 
 void simpl::copyTab(const simpl& copy)
 {
-	tableau = copy.tableau;
+	tableau = new simplexTableau(*(copy.tableau));
 	numconstraint = copy.numconstraint;
 	numvariable = copy.numvariable;
 	canChangeValue = copy.canChangeValue;
