@@ -12,8 +12,23 @@ simpl::simpl(int numvar, int numconstr) {
 	constructTab(numvar, numconstr);
 }
 
+simpl::simpl(const simpl& copy)
+{
+	copyTab(copy);
+}
+
 simpl::~simpl() {
 	destroyTab();
+}
+
+simpl& simpl::operator=(const simpl& copy)
+{
+	if (&copy == this)
+	{
+		return *this;
+	}
+	copyTab(copy);
+	return *this;
 }
 
 bool simpl::changeValue(double value, int row, int col) {
@@ -139,6 +154,14 @@ void simpl::destroyTab() {
 	}
 	delete tableau;
 	tableau = NULL;
+}
+
+void simpl::copyTab(const simpl& copy)
+{
+	tableau = new simplexTableau(*(copy.tableau));
+	numconstraint = copy.numconstraint;
+	numvariable = copy.numvariable;
+	canChangeValue = copy.canChangeValue;
 }
 
 

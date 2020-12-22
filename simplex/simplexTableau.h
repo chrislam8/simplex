@@ -7,6 +7,7 @@ class simplexTableau {
 public:
 	simplexTableau();
 	simplexTableau(int numVar, int numConstr);
+	simplexTableau(const simplexTableau& copy);
 	~simplexTableau();
 
 	tableauErrorCode changeValue(double value, int row, int col);
@@ -24,12 +25,15 @@ public:
 	variableNumValue getIndepVariableNum(int colNum);
 	variableNumValue getDepVariableNum(int rowNum);
 
+	simplexTableau& operator=(const simplexTableau& copy);
+
 private:
 	double** valueMatrix;
 	variableName* indepVar;
 	variableName* depVar;
 	void constructMatrix(int numVar, int numConstr);
 	void destroyMatrix();
+	void copyMatrix(const simplexTableau& copy);
 	variableNumValue getVariableNum(bool indep, int number);
 
 	int numberOfVariables;

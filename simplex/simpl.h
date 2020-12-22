@@ -10,7 +10,9 @@ class simpl {
 public:
 	simpl(); //basic constructor
 	simpl(int numvar, int numconstr); //custom constructor
+	simpl(const simpl& copy); //copy constructor
 	~simpl(); //destructor
+	simpl& operator=(const simpl& copy);
 	bool changeValue(double value, int row, int col);
 	simplexErrorCode simplex(double* xValuePtr, double* optimalValue); 
 	/* 
@@ -26,6 +28,7 @@ private:
 	//private methods
 	void constructTab(const int numvar,const int numconstr);
 	void destroyTab();
+	void copyTab(const simpl& copy);
 	bool pivot(int row, int col);
 	
 };
