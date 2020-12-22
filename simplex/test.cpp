@@ -185,12 +185,13 @@ testErrorCodes allTests::exportTest()
 testErrorCodes allTests::importTest()
 {
 	simpl* test = new simpl(NUMVAR, NUMCONSTR);
-	if (test->importTableau("input.csv"))
-	{
-		return TEST_SUCCESS;
-	}
-	else
+	double* xValuePointer = new double[NUMVAR];
+	double optimalValue = 0;
+	if (!(test->importTableau("input.csv")))
 	{
 		return TEST_UNEXPECTED_VALUE;
 	}
+	test->simplex(xValuePointer,&optimalValue);
+	test->exportTableau("input_processed.csv");
+	return TEST_SUCCESS;
 }
