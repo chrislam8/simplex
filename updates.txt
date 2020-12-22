@@ -1,3 +1,8 @@
+Update December 21, 2020:
+1. Exporting the finished tableau to a csv file is complete.
+2. Importing a tableau from a csv file is almost complete.
+3. User input now functioning.
+
 Update August 19, 2020: 
 1. Extra precision available by using double precision floating point variables.
 2. Exporting the finished tableau to a csv file is almost complete.
