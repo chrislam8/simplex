@@ -222,7 +222,7 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 					++columnNumber;
 					continue;
 				}
-				currentEntry.erase(0);
+				currentEntry.erase(currentEntry.begin());
 				int variableNum = atoi(currentEntry.c_str());
 				variableInput.setNumber(variableNum);
 				if (columnNumber >= numberOfVariables)
@@ -268,7 +268,7 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 		++rowNumber;
 		columnNumber = 0;
 	}
-	numberOfConstraints = rowNumber - 1;
+	numberOfConstraints = rowNumber - 2;
 	numberOfVariables = numberOfColumns - 1;
 	cinStream.close();
 	return IMPORT_SUCCESS;
