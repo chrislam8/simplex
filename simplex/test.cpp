@@ -41,16 +41,9 @@ testResultCodes allTests::runAllTests () {
 }
 
 testErrorCodes allTests::simplTest() {
-	double* correctxValues = new double[NUMVAR];
-	correctxValues[0] = 10.0;
-	correctxValues[1] = 5.0;
-	double correctOptimalValue = 2750.0;
 	testErrorCodes result = TEST_SUCCESS;
 
 	simpl* test = new simpl(NUMVAR, NUMCONSTR);
-	int variableIter;
-	double optimalValue = -8.2;
-	double* testxVal = new double[NUMVAR];
 	test->changeValue(1.0, 1, 1);
 	test->changeValue(2.0, 1, 2);
 	test->changeValue(20.0, 1, 3);
@@ -64,32 +57,12 @@ testErrorCodes allTests::simplTest() {
 	test->changeValue(150.0, 4, 2);
 	test->changeValue(0.0, 4, 3);
 
-	//simplex testing
-	if (test->simplex(testxVal, &optimalValue) != SIMPLEX_SUCCESS)
-	{
-		result = TEST_SIMPLEX_ERROR;
-	}
-
-	for (variableIter = 0; variableIter < NUMVAR; variableIter++) {
-		if (testxVal[variableIter] != correctxValues[variableIter])
-		{
-			result = TEST_INCORRECT_VALUE;
-		}
-	}
-	
-	if (optimalValue != correctOptimalValue)
-	{
-		result = TEST_INCORRECT_OPTIMAL_VALUE;
-	}
+	result = checkSimplex(test);
 
 	//free all dynamic memory used
 	delete test;
 	test = NULL;
-	delete [] testxVal;
-	testxVal = NULL;
-	delete [] correctxValues;
-	correctxValues = NULL;
-
+	
 	return result;
 }
 
@@ -184,6 +157,7 @@ testErrorCodes allTests::exportTest()
 
 testErrorCodes allTests::importTest()
 {
+	testErrorCodes result = TEST_SUCCESS;
 	simpl* test = new simpl(NUMVAR, NUMCONSTR);
 	double* xValuePointer = new double[NUMVAR];
 	double optimalValue = 0;
@@ -191,7 +165,44 @@ testErrorCodes allTests::importTest()
 	{
 		return TEST_UNEXPECTED_VALUE;
 	}
-	test->simplex(xValuePointer,&optimalValue);
+	result = checkSimplex(test);
 	test->exportTableau("input_processed.csv");
-	return TEST_SUCCESS;
+	return result;
+}
+
+testErrorCodes allTests::checkSimplex(simpl* test)
+{
+	double* correctxValues = new double[NUMVAR];
+	correctxValues[0] = 10.0;
+	correctxValues[1] = 5.0;
+	double correctOptimalValue = 2750.0;
+	double optimalValue = -8.2;
+	double* testxVal = new double[NUMVAR];
+	int variableIter;
+	testErrorCodes result = TEST_SUCCESS;
+
+	//simplex testing
+	if (test->simplex(testxVal, &optimalValue) != SIMPLEX_SUCCESS)
+	{
+		result = TEST_SIMPLEX_ERROR;
+	}
+
+	for (variableIter = 0; variableIter < NUMVAR; variableIter++) {
+		if (testxVal[variableIter] != correctxValues[variableIter])
+		{
+			result = TEST_INCORRECT_VALUE;
+		}
+	}
+
+	if (optimalValue != correctOptimalValue)
+	{
+		result = TEST_INCORRECT_OPTIMAL_VALUE;
+	}
+
+	delete[] testxVal;
+	testxVal = NULL;
+	delete[] correctxValues;
+	correctxValues = NULL;
+
+	return result;
 }
