@@ -5,6 +5,7 @@
 
 void runTests();
 void helpText();
+void about();
 
 int main() 
 {
@@ -35,6 +36,11 @@ int main()
 			helpText();
 			realCommand = true;
 		}
+		if (input == "about the program")
+		{
+			about();
+			realCommand = true;
+		}
 		if (!realCommand)
 		{
 			std::cout << input << " is not a real command. Try again.";
@@ -61,7 +67,16 @@ void runTests()
 void helpText()
 {
 	std::cout << "List of commands:" << std::endl << std::endl;
+	std::cout << "about the program - displays some information about this program" << std::endl;
 	std::cout << "exit - exits the program" << std::endl;
 	std::cout << "help - prints the list of available commands" << std::endl;
 	std::cout << "test - runs all program tests";
+}
+
+void about()
+{
+	std::cout << "Program Name: Linear Programming Calculator" << std::endl;
+	std::cout << "Author: Christopher Lam" << std::endl;
+	std::cout << "Version: 1.0.0.0" << std::endl;
+	std::cout << "Last updated: December 21, 2020" << std::endl;
 }
