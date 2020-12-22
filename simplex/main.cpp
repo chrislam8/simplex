@@ -8,10 +8,12 @@ void runTests();
 int main() 
 {
 	bool continuing = true;
+	std::string input;
 	while (continuing)
 	{
 		std::cout << "What is your command?" << std::endl;
-		std::string input;
+		std::cout << "Command for exiting the program is 'exit'." << std::endl;
+		//std::cout << "Command for help on other commands is 'help'." << std::endl;
 		std::getline(std::cin, input);
 		if (input == "exit")
 		{
