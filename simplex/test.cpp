@@ -152,6 +152,9 @@ testErrorCodes allTests::exportTest()
 	test->changeValue(0.0, 4, 3);
 	test->exportTableau("output.csv");
 
+	delete test;
+	test = NULL;
+
 	return TEST_SUCCESS;
 }
 
@@ -167,6 +170,10 @@ testErrorCodes allTests::importTest()
 	}
 	result = checkSimplex(test);
 	test->exportTableau("input_processed.csv");
+
+	delete test;
+	test = NULL;
+
 	return result;
 }
 
