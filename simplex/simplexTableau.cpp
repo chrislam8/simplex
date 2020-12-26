@@ -208,6 +208,9 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 		{
 			if (rowNumber == 0)
 			{
+				/*
+				This initializes the top row of the tableau which indicates the independent variables.
+				*/
 				++numberOfColumns;
 				if (currentEntry[0] == 't')
 				{
@@ -235,11 +238,17 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 			{
 				if (columnNumber < numberOfColumns)
 				{
+					/*
+					This initializes the values in the main values of the tableau.
+					*/
 					double number = atof(currentEntry.c_str());
 					valueMatrix[rowNumber - 1][columnNumber] = number;
 				}
 				else
 				{
+					/*
+					This initializes the right most column of the tableau which indicates the dependent variables.
+					*/
 					if (currentEntry[0] == 't')
 					{
 						variableInput.setIndep(false);
