@@ -1,6 +1,7 @@
 #pragma once
 
 #include "testEnums.h"
+#include "simpl.h"
 
 class allTests {
 public:

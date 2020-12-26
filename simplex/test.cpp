@@ -1,4 +1,3 @@
-#include "simpl.h"
 #include "test.h"
 
 testResultCodes allTests::runAllTests () {
