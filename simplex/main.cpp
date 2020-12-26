@@ -36,7 +36,7 @@ int main()
 			helpText();
 			realCommand = true;
 		}
-		if (input == "about the program")
+		if (input == "about")
 		{
 			about();
 			realCommand = true;
@@ -67,7 +67,7 @@ void runTests()
 void helpText()
 {
 	std::cout << "List of commands:" << std::endl << std::endl;
-	std::cout << "about the program - displays some information about this program" << std::endl;
+	std::cout << "about - displays some information about this program" << std::endl;
 	std::cout << "exit - exits the program" << std::endl;
 	std::cout << "help - prints the list of available commands" << std::endl;
 	std::cout << "test - runs all program tests";
