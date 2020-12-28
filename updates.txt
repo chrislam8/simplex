@@ -1,3 +1,7 @@
+Update December 27, 2020:
+1. Importing a tableau from a csv file is complete.
+2. Help text added.
+
 Update December 21, 2020:
 1. Exporting the finished tableau to a csv file is complete.
 2. Importing a tableau from a csv file is almost complete.
