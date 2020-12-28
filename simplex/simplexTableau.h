@@ -13,7 +13,8 @@ public:
 	tableauErrorCode changeValue(double value, int row, int col);
 	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	tableauErrorCode pivot(int row, int col);
-	tableauErrorCode exportMatrix();
+	tableauErrorCode exportMatrix(std::string fileName);
+	tableauErrorCode importMatrix(std::string fileName);
 
 	checkValue feasibleSolutionsCheck();
 	checkValue optimalSolutionCheck();
@@ -34,6 +35,7 @@ private:
 	void constructMatrix(int numVar, int numConstr);
 	void destroyMatrix();
 	void copyMatrix(const simplexTableau& copy);
+	void increaseSizeVar(bool indep, int newSize);
 	variableNumValue getVariableNum(bool indep, int number);
 
 	int numberOfVariables;

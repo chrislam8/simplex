@@ -1,4 +1,3 @@
-#include <iostream>
 #include "simpl.h"
 
 
@@ -43,9 +42,14 @@ bool simpl::changeValue(double value, int row, int col) {
 	}
 }
 
-bool simpl::exportTableau() {
-	tableauErrorCode errorCode = tableau->exportMatrix();
+bool simpl::exportTableau(std::string fileName) {
+	tableauErrorCode errorCode = tableau->exportMatrix(fileName);
 	return (errorCode == EXPORT_SUCCESS);
+}
+
+bool simpl::importTableau(std::string fileName) {
+	tableauErrorCode errorCode = tableau->importMatrix(fileName);
+	return (errorCode == IMPORT_SUCCESS);
 }
 
 bool simpl::pivot(int row, int col) {

@@ -1,4 +1,5 @@
 #include <fstream>
+#include <sstream>
 
 #include "simplexTableau.h"
 
@@ -152,10 +153,14 @@ tableauErrorCode simplexTableau::pivot(int row, int col)
 	return TABLEAU_SUCCESS;
 }
 
-tableauErrorCode simplexTableau::exportMatrix()
+tableauErrorCode simplexTableau::exportMatrix(std::string fileName)
 {
 	std::fstream coutStream;
-	coutStream.open("output.csv", std::fstream::out);
+	coutStream.open(fileName.c_str(), std::fstream::out);
+	if (coutStream.fail())
+	{
+		return FILE_OPEN_FAILED;
+	}
 	int i, j;
 	for (i = 0; i < numberOfVariables; ++i)
 	{
@@ -179,6 +184,103 @@ tableauErrorCode simplexTableau::exportMatrix()
 	}
 	coutStream.close();
 	return EXPORT_SUCCESS;
+}
+
+tableauErrorCode simplexTableau::importMatrix(std::string fileName)
+{
+	std::fstream cinStream;
+	cinStream.open(fileName.c_str(), std::fstream::in);
+	std::string currentLine;
+	int rowNumber = 0;
+	int numberOfColumns = 0;
+	int columnNumber = 0;
+	variableName variableInput;
+	if (cinStream.fail())
+	{
+		return FILE_OPEN_FAILED;
+	}
+
+	while (std::getline(cinStream, currentLine))
+	{
+		std::stringstream ss(currentLine);
+		std::string currentEntry;
+		while (std::getline(ss, currentEntry, ','))
+		{
+			if (rowNumber == 0)
+			{
+				/*
+				This initializes the top row of the tableau which indicates the independent variables.
+				*/
+				++numberOfColumns;
+				if (currentEntry[0] == 't')
+				{
+					variableInput.setIndep(false);
+				}
+				else if (currentEntry[0] == 'x')
+				{
+					variableInput.setIndep(true);
+				}
+				else
+				{
+					++columnNumber;
+					continue;
+				}
+				currentEntry.erase(currentEntry.begin());
+				int variableNum = atoi(currentEntry.c_str());
+				variableInput.setNumber(variableNum);
+				if (columnNumber >= numberOfVariables)
+				{
+					increaseSizeVar(true, columnNumber + 1);
+				}
+				indepVar[columnNumber] = variableInput;
+			}
+			else
+			{
+				if (columnNumber < numberOfColumns)
+				{
+					/*
+					This initializes the values in the main values of the tableau.
+					*/
+					double number = atof(currentEntry.c_str());
+					valueMatrix[rowNumber - 1][columnNumber] = number;
+				}
+				else
+				{
+					/*
+					This initializes the right most column of the tableau which indicates the dependent variables.
+					*/
+					if (currentEntry[0] == 't')
+					{
+						variableInput.setIndep(false);
+					}
+					else if (currentEntry[0] == 'x')
+					{
+						variableInput.setIndep(true);
+					}
+					else
+					{
+						++columnNumber;
+						continue;
+					}
+					currentEntry.erase(0);
+					int variableNum = atoi(currentEntry.c_str());
+					variableInput.setNumber(variableNum);
+					if (rowNumber - 1 >= numberOfConstraints)
+					{
+						increaseSizeVar(false, rowNumber);
+					}
+					indepVar[rowNumber - 1] = variableInput;
+				}
+			}
+			++columnNumber;
+		}
+		++rowNumber;
+		columnNumber = 0;
+	}
+	numberOfConstraints = rowNumber - 2;
+	numberOfVariables = numberOfColumns - 1;
+	cinStream.close();
+	return IMPORT_SUCCESS;
 }
 
 checkValue simplexTableau::feasibleSolutionsCheck()
@@ -364,6 +466,45 @@ void simplexTableau::copyMatrix(const simplexTableau& copy)
 		{
 			valueMatrix[i][j] = copy.valueMatrix[i][j];
 		}
+	}
+}
+
+void simplexTableau::increaseSizeVar(bool indep, int newSize)
+{
+	variableName* tempVar = NULL;
+	variableName* createVar = new variableName[newSize];
+	int oldSize = 0;
+	int minSize = newSize;
+	int i = 0;
+	if (indep)
+	{
+		tempVar = indepVar;
+		oldSize = numberOfVariables;
+	}
+	else
+	{
+		tempVar = depVar;
+		oldSize = numberOfConstraints;
+	}
+	if (oldSize < newSize)
+	{
+		minSize = oldSize;
+	}
+	for (i = 0; i < minSize; ++i)
+	{
+		createVar[i] = tempVar[i];
+	}
+	delete[] tempVar;
+	tempVar = NULL;
+	if (indep)
+	{
+		indepVar = createVar;
+		numberOfVariables = newSize;
+	}
+	else
+	{
+		depVar = createVar;
+		numberOfConstraints = newSize;
 	}
 }
 

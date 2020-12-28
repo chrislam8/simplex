@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "simplexTableau.h"
 #include "simplexEnums.h"
 
@@ -18,7 +16,8 @@ public:
 	xValuePtr is meant as a pointer to return the optimal x values for the problem
 	optimalValue is meant as a pointer to where the optimal value will be placed 
 	*/
-	bool exportTableau();
+	bool exportTableau(std::string fileName);
+	bool importTableau(std::string fileName);
 private:
 	simplexTableau* tableau;
 	int numconstraint; //also numrows - 1
