@@ -4,6 +4,8 @@
 #include "test.h"
 
 void runTests();
+void helpText();
+void about();
 
 int main() 
 {
@@ -11,17 +13,37 @@ int main()
 	std::string input;
 	while (continuing)
 	{
+		bool realCommand = false;
 		std::cout << "What is your command?" << std::endl;
-		std::cout << "Command for exiting the program is 'exit'." << std::endl;
-		//std::cout << "Command for help on other commands is 'help'." << std::endl;
+		std::cout << "The command 'help' prints out the available commands." << std::endl;
 		std::getline(std::cin, input);
 		if (input == "exit")
 		{
 			continuing = false;
+			realCommand = true;
+		}
+		else
+		{
+			std::cout << std::endl;
 		}
 		if (input == "test")
 		{
 			runTests();
+			realCommand = true;
+		}
+		if (input == "help")
+		{
+			helpText();
+			realCommand = true;
+		}
+		if (input == "about")
+		{
+			about();
+			realCommand = true;
+		}
+		if (!realCommand)
+		{
+			std::cout << input << " is not a real command. Try again.";
 		}
 		std::cout << std::endl << std::endl;
 	}
@@ -40,4 +62,21 @@ void runTests()
 	{
 		std::cout << "All tests succeeded";
 	}
+}
+
+void helpText()
+{
+	std::cout << "List of commands:" << std::endl << std::endl;
+	std::cout << "about - displays some information about this program" << std::endl;
+	std::cout << "exit - exits the program" << std::endl;
+	std::cout << "help - prints the list of available commands" << std::endl;
+	std::cout << "test - runs all program tests";
+}
+
+void about()
+{
+	std::cout << "Program Name: Linear Programming Calculator" << std::endl;
+	std::cout << "Author: Christopher Lam" << std::endl;
+	std::cout << "Version: 1.0.0.0" << std::endl;
+	std::cout << "Last updated: December 21, 2020" << std::endl;
 }
