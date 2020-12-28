@@ -11,12 +11,20 @@ int main()
 {
 	bool continuing = true;
 	std::string input;
+	std::string inputFile, inputCheckOne, inputCheckTwo;
+	simpl* instance = new simpl;
 	while (continuing)
 	{
 		bool realCommand = false;
 		std::cout << "What is your command?" << std::endl;
 		std::cout << "The command 'help' prints out the available commands." << std::endl;
 		std::getline(std::cin, input);
+		inputFile = input;
+		inputFile.erase(inputFile.begin(), inputFile.begin()+7);
+		inputCheckOne = input;
+		inputCheckOne.erase(inputCheckOne.begin() + 6, inputCheckOne.end());
+		inputCheckTwo = inputFile;
+		inputCheckTwo.erase(inputCheckTwo.begin(), inputCheckTwo.end() - 4);
 		if (input == "exit")
 		{
 			continuing = false;
@@ -41,12 +49,24 @@ int main()
 			about();
 			realCommand = true;
 		}
+		if (inputCheckOne == "import" && inputCheckTwo == ".csv")
+		{
+			if (instance->importTableau(inputFile))
+			{
+				std::cout << inputFile << " successfully imported." << std::endl;
+			}
+			else
+			{
+				std::cout << inputFile << " failed to import properly." << std::endl;
+			}
+		}
 		if (!realCommand)
 		{
 			std::cout << input << " is not a real command. Try again.";
 		}
 		std::cout << std::endl << std::endl;
 	}
+	delete instance;
 	return 0;
 }
 
@@ -70,7 +90,8 @@ void helpText()
 	std::cout << "about - displays some information about this program" << std::endl;
 	std::cout << "exit - exits the program" << std::endl;
 	std::cout << "help - prints the list of available commands" << std::endl;
-	std::cout << "test - runs all program tests";
+	std::cout << "test - runs all program tests" << std::endl;
+	std::cout << "import file.csv - imports file.csv to the program" << std::endl;
 }
 
 void about()
