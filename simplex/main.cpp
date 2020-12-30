@@ -19,12 +19,21 @@ int main()
 		std::cout << "What is your command?" << std::endl;
 		std::cout << "The command 'help' prints out the available commands." << std::endl;
 		std::getline(std::cin, input);
-		inputFile = input;
-		inputFile.erase(inputFile.begin(), inputFile.begin()+7);
-		inputCheckOne = input;
-		inputCheckOne.erase(inputCheckOne.begin() + 6, inputCheckOne.end());
-		inputCheckTwo = inputFile;
-		inputCheckTwo.erase(inputCheckTwo.begin(), inputCheckTwo.end() - 4);
+		if (input.length() >= 7)
+		{
+			inputFile = input;
+			inputFile.erase(inputFile.begin(), inputFile.begin() + 7);
+			inputCheckOne = input;
+			inputCheckOne.erase(inputCheckOne.begin() + 6, inputCheckOne.end());
+			inputCheckTwo = inputFile;
+			inputCheckTwo.erase(inputCheckTwo.begin(), inputCheckTwo.end() - 4);
+		}
+		else
+		{
+			inputFile = "";
+			inputCheckOne = "";
+			inputCheckTwo = "";
+		}
 		if (input == "exit")
 		{
 			continuing = false;
