@@ -253,11 +253,11 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 					/*
 					This initializes the right most column of the tableau which indicates the dependent variables.
 					*/
-					if (currentEntry[1] == 't')
+					if (currentEntry[4] == 't')
 					{
 						variableInput.setIndep(false);
 					}
-					else if (currentEntry[1] == 'x')
+					else if (currentEntry[4] == 'x')
 					{
 						variableInput.setIndep(true);
 					}
@@ -266,7 +266,7 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 						++columnNumber;
 						continue;
 					}
-					currentEntry.erase(0);
+					currentEntry.erase(currentEntry.begin(), currentEntry.begin() + 5);
 					int variableNum = atoi(currentEntry.c_str());
 					variableInput.setNumber(variableNum);
 					if (rowNumber - 1 >= numberOfConstraints)
