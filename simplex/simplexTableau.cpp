@@ -253,11 +253,11 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 					/*
 					This initializes the right most column of the tableau which indicates the dependent variables.
 					*/
-					if (currentEntry[0] == 't')
+					if (currentEntry[1] == 't')
 					{
 						variableInput.setIndep(false);
 					}
-					else if (currentEntry[0] == 'x')
+					else if (currentEntry[1] == 'x')
 					{
 						variableInput.setIndep(true);
 					}
@@ -273,7 +273,7 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 					{
 						increaseSizeVar(false, rowNumber);
 					}
-					indepVar[rowNumber - 1] = variableInput;
+					depVar[rowNumber - 1] = variableInput;
 				}
 			}
 			++columnNumber;
