@@ -70,6 +70,18 @@ int main()
 			}
 			realCommand = true;
 		}
+		if (inputCheckOne == "export" && inputCheckTwo == ".csv")
+		{
+			if (instance->exportTableau(inputFile))
+			{
+				std::cout << "The tableau was successfully exported to " << inputFile << std::endl;
+			}
+			else
+			{
+				std::cout << "The tableau failed to be exported to " << inputFile << std::endl;
+			}
+			realCommand = true;
+		}
 		if (!realCommand)
 		{
 			std::cout << input << " is not a real command. Try again.";
