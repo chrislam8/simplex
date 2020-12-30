@@ -68,6 +68,7 @@ int main()
 			{
 				std::cout << inputFile << " failed to import properly." << std::endl;
 			}
+			realCommand = true;
 		}
 		if (!realCommand)
 		{
