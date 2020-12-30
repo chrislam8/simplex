@@ -242,7 +242,7 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 					This initializes the values in the main values of the tableau.
 					*/
 					double number = atof(currentEntry.c_str());
-					if (rowNumber > numberOfConstraints + 1)
+					if (rowNumber >= numberOfConstraints + 1)
 					{
 						increaseSizeMatrix(rowNumber, numberOfColumns);
 					}
@@ -269,7 +269,7 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 					currentEntry.erase(currentEntry.begin(), currentEntry.begin() + 5);
 					int variableNum = atoi(currentEntry.c_str());
 					variableInput.setNumber(variableNum);
-					if (rowNumber - 1 >= numberOfConstraints)
+					if (rowNumber >= numberOfConstraints)
 					{
 						increaseSizeVar(false, rowNumber);
 					}
@@ -544,14 +544,14 @@ variableNumValue simplexTableau::getVariableNum(bool indep, int number)
 
 void simplexTableau::increaseSizeMatrix(int newRows, int newColumns)
 {
-	double** newMatrix = new double* [newRows];
+	double** newMatrix = new double* [newRows+1];
 	double** oldMatrix = valueMatrix;
 	int numRow, numColumn = 0;
 	for (numRow = 0; numRow < newRows; ++numRow)
 	{
 		newMatrix[numRow] = new double[newColumns];
 	}
-	for (numRow = 0; numRow <= numberOfConstraints; ++numRow)
+	for (numRow = 0; numRow < numberOfConstraints; ++numRow)
 	{
 		for (numColumn = 0; numColumn <= numberOfVariables; ++numColumn)
 		{
@@ -559,13 +559,13 @@ void simplexTableau::increaseSizeMatrix(int newRows, int newColumns)
 		}
 	}
 	valueMatrix = newMatrix;
-	for (numRow = 0; numRow <= numberOfConstraints; ++numRow)
+	for (numRow = 0; numRow < numberOfConstraints; ++numRow)
 	{
 		delete[] oldMatrix[numRow];
 		oldMatrix[numRow] = NULL;
 	}
-	numberOfConstraints = newRows - 1;
-	numberOfVariables = newColumns - 1;
+	numberOfConstraints = newRows;
+	numberOfVariables = newColumns;
 	delete[] oldMatrix;
 	oldMatrix = NULL;
 }
