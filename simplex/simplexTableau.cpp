@@ -246,7 +246,7 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 					{
 						increaseSizeMatrix(rowNumber, numberOfColumns);
 					}
-p					valueMatrix[rowNumber - 1][columnNumber] = number;
+					valueMatrix[rowNumber - 1][columnNumber] = number;
 				}
 				else
 				{
@@ -555,7 +555,7 @@ void simplexTableau::increaseSizeMatrix(int newRows, int newColumns)
 	{
 		for (numColumn = 0; numColumn <= numberOfVariables; ++numColumn)
 		{
-			newMatrix[numRow][numColumn] = oldMatrix[numRow][numColumn]
+			newMatrix[numRow][numColumn] = oldMatrix[numRow][numColumn];
 		}
 	}
 	valueMatrix = newMatrix;
@@ -568,5 +568,4 @@ void simplexTableau::increaseSizeMatrix(int newRows, int newColumns)
 	numberOfVariables = newColumns - 1;
 	delete[] oldMatrix;
 	oldMatrix = NULL;
-
 }
