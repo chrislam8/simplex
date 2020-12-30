@@ -97,7 +97,7 @@ simplexErrorCode simpl::simplex(double* xValuePtr, double* optimalValue) {
 			//an optimal solution has been found
 			*optimalValue = tableau->getOptimalValue();
 			for (i = 0; i < numvariable; i++) {
-				xValuePtr[i] = -1;
+				xValuePtr[i] = -0.25;
 			}
 			variableNumValue variableNum;
 			for (i = 0; i < numvariable; i++) {
