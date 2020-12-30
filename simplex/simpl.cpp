@@ -134,6 +134,12 @@ simplexErrorCode simpl::simplex(double* xValuePtr, double* optimalValue) {
 	}
 	return ALGORITHM_ERROR;
 }
+
+int simpl::getNumberOfVariables()
+{
+	return numvariable;
+}
+
 //private methods
 
 void simpl::constructTab(const int numvar, const int numconstr) {

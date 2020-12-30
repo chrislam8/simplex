@@ -82,6 +82,30 @@ int main()
 			}
 			realCommand = true;
 		}
+		if (input == "perform simplex")
+		{
+			int numvar = instance->getNumberOfVariables();
+			double* xValues = new double[numvar];
+			double optimalValue = 0;
+			simplexErrorCode simplexCode = instance->simplex(xValues, &optimalValue);
+			if (simplexCode == SIMPLEX_SUCCESS)
+			{
+				std::cout << "Simplex successful." << std::endl;
+				std::cout << "The optimal value for this problem is " << -1 * optimalValue << std::endl;
+				std::cout << "The optimal x values for this problem are " << std::endl;
+				int index = 0;
+				for (index = 0; index < numvar; ++index)
+				{
+					std::cout << "x" << index + 1 << " = " << xValues[index] << "," << std::endl;
+				}
+			}
+			else
+			{
+				std::cout << "Simplex failed." << std::endl;
+			}
+			delete[] xValues;
+			realCommand = true;
+		}
 		if (!realCommand)
 		{
 			std::cout << input << " is not a real command. Try again.";
