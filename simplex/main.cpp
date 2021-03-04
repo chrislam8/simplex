@@ -96,7 +96,7 @@ int main()
 				int index = 0;
 				for (index = 0; index < numvar; ++index)
 				{
-					std::cout << "x" << index + 1 << " = " << xValues[index] << "," << std::endl;
+					std::cout << "x[" << index + 1 << "] = " << xValues[index] << "," << std::endl;
 				}
 			}
 			else
@@ -138,6 +138,7 @@ void helpText()
 	std::cout << "help - prints the list of available commands" << std::endl;
 	std::cout << "test - runs all program tests" << std::endl;
 	std::cout << "import file.csv - imports file.csv to the program" << std::endl;
+	std::cout << "export file.csv - exports tableau to file.csv" << std::endl;
 }
 
 void about()
