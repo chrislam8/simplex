@@ -11,7 +11,7 @@ int main()
 {
 	bool continuing = true;
 	std::string input;
-	std::string inputFile, inputCheckOne, inputCheckTwo;
+	std::string inputFile, inputCheck, inputExtension;
 	simpl* instance = new simpl;
 	while (continuing)
 	{
@@ -23,16 +23,16 @@ int main()
 		{
 			inputFile = input;
 			inputFile.erase(inputFile.begin(), inputFile.begin() + 7);
-			inputCheckOne = input;
-			inputCheckOne.erase(inputCheckOne.begin() + 6, inputCheckOne.end());
-			inputCheckTwo = inputFile;
-			inputCheckTwo.erase(inputCheckTwo.begin(), inputCheckTwo.end() - 4);
+			inputCheck = input;
+			inputCheck.erase(inputCheck.begin() + 6, inputCheck.end());
+			inputExtension = inputFile;
+			inputExtension.erase(inputExtension.begin(), inputExtension.end() - 4);
 		}
 		else
 		{
 			inputFile = "";
-			inputCheckOne = "";
-			inputCheckTwo = "";
+			inputCheck = "";
+			inputExtension = "";
 		}
 		if (input == "exit")
 		{
@@ -58,7 +58,7 @@ int main()
 			about();
 			realCommand = true;
 		}
-		if (inputCheckOne == "import" && inputCheckTwo == ".csv")
+		if (inputCheck == "import" && inputExtension == ".csv")
 		{
 			if (instance->importTableau(inputFile))
 			{
@@ -70,7 +70,7 @@ int main()
 			}
 			realCommand = true;
 		}
-		if (inputCheckOne == "export" && inputCheckTwo == ".csv")
+		if (inputCheck == "export" && inputExtension == ".csv")
 		{
 			if (instance->exportTableau(inputFile))
 			{
