@@ -4,11 +4,11 @@
 //public methods
 
 simpl::simpl() {
-	constructTab(2, 1);
+	constructTab(2, 1,false);
 }
 
-simpl::simpl(int numvar, int numconstr) {
-	constructTab(numvar, numconstr);
+simpl::simpl(int numvar, int numconstr, bool miniTableau) {
+	constructTab(numvar, numconstr,miniTableau);
 }
 
 simpl::simpl(const simpl& copy)
@@ -47,8 +47,8 @@ bool simpl::exportTableau(std::string fileName) {
 	return (errorCode == EXPORT_SUCCESS);
 }
 
-bool simpl::importTableau(std::string fileName) {
-	tableauErrorCode errorCode = tableau->importMatrix(fileName);
+bool simpl::importTableau(std::string fileName, bool miniTableau) {
+	tableauErrorCode errorCode = tableau->importMatrix(fileName,miniTableau);
 	return (errorCode == IMPORT_SUCCESS);
 }
 
@@ -136,7 +136,7 @@ simplexErrorCode simpl::simplex(double* xValuePtr, double* optimalValue) {
 }
 //private methods
 
-void simpl::constructTab(const int numvar, const int numconstr) {
+void simpl::constructTab(const int numvar, const int numconstr, const bool miniTableau) {
 
 	if (numvar <= 0 || numconstr <= 0) {
 		tableau = NULL;
@@ -148,7 +148,7 @@ void simpl::constructTab(const int numvar, const int numconstr) {
 
 	numvariable = numvar;
 	numconstraint = numconstr;
-	tableau = new simplexTableau(numvar, numconstr);
+	tableau = new simplexTableau(numvar, numconstr,miniTableau);
 	canChangeValue = true;
 }
 

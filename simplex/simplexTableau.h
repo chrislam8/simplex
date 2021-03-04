@@ -6,7 +6,7 @@
 class simplexTableau {
 public:
 	simplexTableau();
-	simplexTableau(int numVar, int numConstr);
+	simplexTableau(int numVar, int numConstr,bool miniTableau);
 	simplexTableau(const simplexTableau& copy);
 	~simplexTableau();
 
@@ -14,7 +14,7 @@ public:
 	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	tableauErrorCode pivot(int row, int col);
 	tableauErrorCode exportMatrix(std::string fileName);
-	tableauErrorCode importMatrix(std::string fileName);
+	tableauErrorCode importMatrix(std::string fileName,bool miniTableau);
 
 	checkValue feasibleSolutionsCheck();
 	checkValue optimalSolutionCheck();
@@ -32,7 +32,8 @@ private:
 	double** valueMatrix;
 	variableName* indepVar;
 	variableName* depVar;
-	void constructMatrix(int numVar, int numConstr);
+	bool minTableau;
+	void constructMatrix(int numVar, int numConstr, bool miniTableau);
 	void destroyMatrix();
 	void copyMatrix(const simplexTableau& copy);
 	void increaseSizeVar(bool indep, int newSize);

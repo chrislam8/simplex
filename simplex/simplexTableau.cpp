@@ -5,12 +5,12 @@
 
 simplexTableau::simplexTableau() 
 {
-	constructMatrix(2, 1);
+	constructMatrix(2, 1, false);
 }
 
-simplexTableau::simplexTableau(int numVar, int numConstr) 
+simplexTableau::simplexTableau(int numVar, int numConstr, bool miniTableau) 
 {
-	constructMatrix(numVar, numConstr);
+	constructMatrix(numVar, numConstr, miniTableau);
 }
 
 simplexTableau::simplexTableau(const simplexTableau& copy)
@@ -186,7 +186,7 @@ tableauErrorCode simplexTableau::exportMatrix(std::string fileName)
 	return EXPORT_SUCCESS;
 }
 
-tableauErrorCode simplexTableau::importMatrix(std::string fileName)
+tableauErrorCode simplexTableau::importMatrix(std::string fileName, bool miniTableau)
 {
 	std::fstream cinStream;
 	cinStream.open(fileName.c_str(), std::fstream::in);
@@ -280,6 +280,7 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 	numberOfConstraints = rowNumber - 2;
 	numberOfVariables = numberOfColumns - 1;
 	cinStream.close();
+	minTableau = miniTableau;
 	return IMPORT_SUCCESS;
 }
 
@@ -411,7 +412,7 @@ variableNumValue simplexTableau::getDepVariableNum(int rowNum)
 	return getVariableNum(false, rowNum);
 }
 
-void simplexTableau::constructMatrix(int numVar, int numConstr) 
+void simplexTableau::constructMatrix(int numVar, int numConstr, bool miniTableau) 
 {
 	valueMatrix = new double* [numConstr + 1];
 	for (int rowNum = 0; rowNum <= numConstr; rowNum++) 
@@ -433,6 +434,7 @@ void simplexTableau::constructMatrix(int numVar, int numConstr)
 		(depVar[i]).setIndep(false);
 		(depVar[i]).setNumber(i + 1);
 	}
+	minTableau = miniTableau;
 }
 
 void simplexTableau::destroyMatrix()
