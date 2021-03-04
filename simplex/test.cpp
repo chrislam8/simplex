@@ -42,7 +42,7 @@ testResultCodes allTests::runAllTests () {
 testErrorCodes allTests::simplTest() {
 	testErrorCodes result = TEST_SUCCESS;
 
-	simpl* test = new simpl(NUMVAR, NUMCONSTR);
+	simpl* test = new simpl(NUMVAR, NUMCONSTR,false);
 	test->changeValue(1.0, 1, 1);
 	test->changeValue(2.0, 1, 2);
 	test->changeValue(20.0, 1, 3);
@@ -66,14 +66,14 @@ testErrorCodes allTests::simplTest() {
 }
 
 testErrorCodes allTests::negsizeTest() {
-	simpl* test = new simpl(-1, -1);
+	simpl* test = new simpl(-1, -1,false);
 	delete test;
 	test = NULL;
 	return TEST_SUCCESS;
 }
 
 testErrorCodes allTests::negrowTest() {
-	simpl* test = new simpl(NUMROW,NUMCOL);
+	simpl* test = new simpl(NUMROW,NUMCOL,false);
 	testErrorCodes result = TEST_SUCCESS;
 	if (test->changeValue(10.0, -1, 2)) {
 		result = TEST_INCORRECT_OPERATION;
@@ -90,7 +90,7 @@ testErrorCodes allTests::negrowTest() {
 }
 
 testErrorCodes allTests::unboundedTest() {
-	simpl* test = new simpl(2, 2);
+	simpl* test = new simpl(2, 2,false);
 	double* xRes = new double[2];
 	double optVal = -1;
 	testErrorCodes result = TEST_SUCCESS;
@@ -113,7 +113,7 @@ testErrorCodes allTests::unboundedTest() {
 
 
 testErrorCodes allTests::infeasibleTest() {
-	simpl* test = new simpl(2, 2);
+	simpl* test = new simpl(2, 2,false);
 	double* xRes = new double[2];
 	double optVal = -1;
 	testErrorCodes result = TEST_SUCCESS;
@@ -136,7 +136,7 @@ testErrorCodes allTests::infeasibleTest() {
 
 testErrorCodes allTests::exportTest()
 {
-	simpl* test = new simpl(NUMVAR, NUMCONSTR);
+	simpl* test = new simpl(NUMVAR, NUMCONSTR, false);
 	test->changeValue(1.0, 1, 1);
 	test->changeValue(2.0, 1, 2);
 	test->changeValue(20.0, 1, 3);
@@ -160,10 +160,10 @@ testErrorCodes allTests::exportTest()
 testErrorCodes allTests::importTest()
 {
 	testErrorCodes result = TEST_SUCCESS;
-	simpl* test = new simpl(NUMVAR, NUMCONSTR);
+	simpl* test = new simpl(NUMVAR, NUMCONSTR, false);
 	double* xValuePointer = new double[NUMVAR];
 	double optimalValue = 0;
-	if (!(test->importTableau("input.csv")))
+	if (!(test->importTableau("input.csv",false)))
 	{
 		return TEST_UNEXPECTED_VALUE;
 	}
