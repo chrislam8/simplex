@@ -97,7 +97,7 @@ simplexErrorCode simpl::simplex(double* xValuePtr, double* optimalValue) {
 			//an optimal solution has been found
 			*optimalValue = tableau->getOptimalValue();
 			for (i = 0; i < numvariable; i++) {
-				xValuePtr[i] = -1;
+				xValuePtr[i] = -0.25;
 			}
 			variableNumValue variableNum;
 			for (i = 0; i < numvariable; i++) {
@@ -134,6 +134,12 @@ simplexErrorCode simpl::simplex(double* xValuePtr, double* optimalValue) {
 	}
 	return ALGORITHM_ERROR;
 }
+
+int simpl::getNumberOfVariables()
+{
+	return numvariable;
+}
+
 //private methods
 
 void simpl::constructTab(const int numvar, const int numconstr, const bool miniTableau) {
