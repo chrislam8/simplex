@@ -242,6 +242,10 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 					This initializes the values in the main values of the tableau.
 					*/
 					double number = atof(currentEntry.c_str());
+					if (rowNumber >= numberOfConstraints + 1)
+					{
+						increaseSizeMatrix(rowNumber, numberOfColumns);
+					}
 					valueMatrix[rowNumber - 1][columnNumber] = number;
 				}
 				else
@@ -249,11 +253,11 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 					/*
 					This initializes the right most column of the tableau which indicates the dependent variables.
 					*/
-					if (currentEntry[0] == 't')
+					if (currentEntry[4] == 't')
 					{
 						variableInput.setIndep(false);
 					}
-					else if (currentEntry[0] == 'x')
+					else if (currentEntry[4] == 'x')
 					{
 						variableInput.setIndep(true);
 					}
@@ -262,14 +266,14 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 						++columnNumber;
 						continue;
 					}
-					currentEntry.erase(0);
+					currentEntry.erase(currentEntry.begin(), currentEntry.begin() + 5);
 					int variableNum = atoi(currentEntry.c_str());
 					variableInput.setNumber(variableNum);
-					if (rowNumber - 1 >= numberOfConstraints)
+					if (rowNumber >= numberOfConstraints)
 					{
 						increaseSizeVar(false, rowNumber);
 					}
-					indepVar[rowNumber - 1] = variableInput;
+					depVar[rowNumber - 1] = variableInput;
 				}
 			}
 			++columnNumber;
@@ -536,4 +540,32 @@ variableNumValue simplexTableau::getVariableNum(bool indep, int number)
 		result = std::make_pair(variableNum, TABLEAU_SUCCESS);
 	}
 	return result;
+}
+
+void simplexTableau::increaseSizeMatrix(int newRows, int newColumns)
+{
+	double** newMatrix = new double* [newRows+1];
+	double** oldMatrix = valueMatrix;
+	int numRow, numColumn = 0;
+	for (numRow = 0; numRow < newRows; ++numRow)
+	{
+		newMatrix[numRow] = new double[newColumns];
+	}
+	for (numRow = 0; numRow < numberOfConstraints; ++numRow)
+	{
+		for (numColumn = 0; numColumn <= numberOfVariables; ++numColumn)
+		{
+			newMatrix[numRow][numColumn] = oldMatrix[numRow][numColumn];
+		}
+	}
+	valueMatrix = newMatrix;
+	for (numRow = 0; numRow < numberOfConstraints; ++numRow)
+	{
+		delete[] oldMatrix[numRow];
+		oldMatrix[numRow] = NULL;
+	}
+	numberOfConstraints = newRows;
+	numberOfVariables = newColumns;
+	delete[] oldMatrix;
+	oldMatrix = NULL;
 }

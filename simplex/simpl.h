@@ -18,6 +18,7 @@ public:
 	*/
 	bool exportTableau(std::string fileName);
 	bool importTableau(std::string fileName);
+	int getNumberOfVariables();
 private:
 	simplexTableau* tableau;
 	int numconstraint; //also numrows - 1

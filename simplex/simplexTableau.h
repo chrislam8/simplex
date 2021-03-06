@@ -36,6 +36,7 @@ private:
 	void destroyMatrix();
 	void copyMatrix(const simplexTableau& copy);
 	void increaseSizeVar(bool indep, int newSize);
+	void increaseSizeMatrix(int newRows, int newColumns);
 	variableNumValue getVariableNum(bool indep, int number);
 
 	int numberOfVariables;
