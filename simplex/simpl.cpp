@@ -47,8 +47,8 @@ bool simpl::exportTableau(std::string fileName) {
 	return (errorCode == EXPORT_SUCCESS);
 }
 
-bool simpl::importTableau(std::string fileName, bool miniTableau) {
-	tableauErrorCode errorCode = tableau->importMatrix(fileName,miniTableau);
+bool simpl::importTableau(std::string fileName) {
+	tableauErrorCode errorCode = tableau->importMatrix(fileName);
 	return (errorCode == IMPORT_SUCCESS);
 }
 
@@ -62,6 +62,10 @@ simplexErrorCode simpl::simplex(double* xValuePtr, double* optimalValue) {
 	int i;
 	int colnum;
 	int rownum;
+	if (tableau->getminTableau())
+	{
+		tableau->negativeTranspose();
+	}
 	if (xValuePtr == NULL || optimalValue == NULL) {
 		return NULL_POINTER_ENCOUNTERED;
 	}

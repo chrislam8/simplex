@@ -186,7 +186,7 @@ tableauErrorCode simplexTableau::exportMatrix(std::string fileName)
 	return EXPORT_SUCCESS;
 }
 
-tableauErrorCode simplexTableau::importMatrix(std::string fileName, bool miniTableau)
+tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 {
 	std::fstream cinStream;
 	cinStream.open(fileName.c_str(), std::fstream::in);
@@ -199,6 +199,8 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName, bool miniTab
 	{
 		return FILE_OPEN_FAILED;
 	}
+
+	minTableau = false;
 
 	while (std::getline(cinStream, currentLine))
 	{
@@ -219,6 +221,11 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName, bool miniTab
 				else if (currentEntry[0] == 'x')
 				{
 					variableInput.setIndep(true);
+				}
+				else if (currentEntry[0] >= '0' && currentEntry[0] <= '9')
+				{
+					//minimization
+					minTableau = true;
 				}
 				else
 				{
@@ -284,8 +291,12 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName, bool miniTab
 	numberOfConstraints = rowNumber - 2;
 	numberOfVariables = numberOfColumns - 1;
 	cinStream.close();
-	minTableau = miniTableau;
 	return IMPORT_SUCCESS;
+}
+
+tableauErrorCode simplexTableau::negativeTranspose()
+{
+	return FUNCTION_NOT_IMPLEMENTED;
 }
 
 checkValue simplexTableau::feasibleSolutionsCheck()
@@ -414,6 +425,11 @@ variableNumValue simplexTableau::getIndepVariableNum(int colNum)
 variableNumValue simplexTableau::getDepVariableNum(int rowNum)
 {
 	return getVariableNum(false, rowNum);
+}
+
+bool simplexTableau::getminTableau()
+{
+	return minTableau;
 }
 
 void simplexTableau::constructMatrix(int numVar, int numConstr, bool miniTableau) 

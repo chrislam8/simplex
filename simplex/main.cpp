@@ -60,7 +60,7 @@ int main()
 		}
 		if (inputCheck == "import" && inputExtension == ".csv")
 		{
-			if (instance->importTableau(inputFile, false))
+			if (instance->importTableau(inputFile))
 			{
 				std::cout << inputFile << " successfully imported." << std::endl;
 			}

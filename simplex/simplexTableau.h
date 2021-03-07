@@ -14,7 +14,8 @@ public:
 	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	tableauErrorCode pivot(int row, int col);
 	tableauErrorCode exportMatrix(std::string fileName);
-	tableauErrorCode importMatrix(std::string fileName,bool miniTableau);
+	tableauErrorCode importMatrix(std::string fileName);
+	tableauErrorCode negativeTranspose();
 
 	checkValue feasibleSolutionsCheck();
 	checkValue optimalSolutionCheck();
@@ -25,6 +26,8 @@ public:
 
 	variableNumValue getIndepVariableNum(int colNum);
 	variableNumValue getDepVariableNum(int rowNum);
+
+	bool getminTableau();
 
 	simplexTableau& operator=(const simplexTableau& copy);
 

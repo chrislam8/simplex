@@ -17,7 +17,7 @@ public:
 	optimalValue is meant as a pointer to where the optimal value will be placed 
 	*/
 	bool exportTableau(std::string fileName);
-	bool importTableau(std::string fileName, bool minimizationTableau);
+	bool importTableau(std::string fileName);
 	int getNumberOfVariables();
 private:
 	simplexTableau* tableau;
