@@ -296,6 +296,18 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 
 tableauErrorCode simplexTableau::negativeTranspose()
 {
+	int rowNum, colNum;
+	float temp;
+	for (rowNum = 0; rowNum < numberOfConstraints; rowNum++)
+	{
+		for (colNum = 0; colNum < rowNum; colNum++)
+		{
+			temp = valueMatrix[rowNum][colNum];
+			valueMatrix[rowNum][colNum] = -1 * valueMatrix[colNum][rowNum];
+			valueMatrix[colNum][rowNum] = -1 * temp;
+		}
+		valueMatrix[rowNum][rowNum] = -1 * valueMatrix[rowNum][rowNum];
+	}
 	return FUNCTION_NOT_IMPLEMENTED;
 }
 
