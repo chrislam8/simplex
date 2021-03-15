@@ -308,6 +308,7 @@ tableauErrorCode simplexTableau::negativeTranspose()
 		}
 		valueMatrix[rowNum][rowNum] = -1 * valueMatrix[rowNum][rowNum];
 	}
+	minTableau = !minTableau;
 	return FUNCTION_NOT_IMPLEMENTED;
 }
 
