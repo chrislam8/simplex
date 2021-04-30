@@ -47,8 +47,8 @@ bool simpl::exportTableau(std::string fileName) {
 	return (errorCode == EXPORT_SUCCESS);
 }
 
-bool simpl::importTableau(std::string fileName) {
-	tableauErrorCode errorCode = tableau->importMatrix(fileName);
+bool simpl::importTableau(std::string fileName, bool minTableau) {
+	tableauErrorCode errorCode = tableau->importMatrix(fileName, minTableau);
 	return (errorCode == IMPORT_SUCCESS);
 }
 

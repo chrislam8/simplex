@@ -206,7 +206,7 @@ tableauErrorCode simplexTableau::exportMatrix(std::string fileName)
 	return EXPORT_SUCCESS;
 }
 
-tableauErrorCode simplexTableau::importMatrix(std::string fileName)
+tableauErrorCode simplexTableau::importMatrix(std::string fileName, bool miniTableau)
 {
 	std::fstream cinStream;
 	cinStream.open(fileName.c_str(), std::fstream::in);
@@ -220,96 +220,104 @@ tableauErrorCode simplexTableau::importMatrix(std::string fileName)
 		return FILE_OPEN_FAILED;
 	}
 
-	minTableau = false;
+	minTableau = miniTableau;
 
-	while (std::getline(cinStream, currentLine))
+	if (minTableau)
 	{
-		std::stringstream ss(currentLine);
-		std::string currentEntry;
-		while (std::getline(ss, currentEntry, ','))
+		cinStream.close();
+		return FUNCTION_NOT_IMPLEMENTED;
+	}
+	else
+	{
+		while (std::getline(cinStream, currentLine))
 		{
-			if (rowNumber == 0)
+			std::stringstream ss(currentLine);
+			std::string currentEntry;
+			while (std::getline(ss, currentEntry, ','))
 			{
-				/*
-				This initializes the top row of the tableau which indicates the independent variables.
-				*/
-				++numberOfColumns;
-				if (currentEntry[0] == 't')
-				{
-					variableInput.setIndep(false);
-				}
-				else if (currentEntry[0] == 'x')
-				{
-					variableInput.setIndep(true);
-				}
-				else if (currentEntry[0] >= '0' && currentEntry[0] <= '9')
-				{
-					//minimization
-					minTableau = true;
-				}
-				else
-				{
-					++columnNumber;
-					continue;
-				}
-				currentEntry.erase(currentEntry.begin());
-				int variableNum = atoi(currentEntry.c_str());
-				variableInput.setNumber(variableNum);
-				if (columnNumber >= numberOfVariables)
-				{
-					increaseSizeVar(true, columnNumber + 1);
-				}
-				indepVar[columnNumber] = variableInput;
-			}
-			else
-			{
-				if (columnNumber < numberOfColumns)
+				if (rowNumber == 0)
 				{
 					/*
-					This initializes the values in the main values of the tableau.
+					This initializes the top row of the tableau which indicates the independent variables.
 					*/
-					double number = atof(currentEntry.c_str());
-					if (rowNumber >= numberOfConstraints + 1)
-					{
-						increaseSizeMatrix(rowNumber, numberOfColumns);
-					}
-					valueMatrix[rowNumber - 1][columnNumber] = number;
-				}
-				else
-				{
-					/*
-					This initializes the right most column of the tableau which indicates the dependent variables.
-					*/
-					if (currentEntry[4] == 't')
+					++numberOfColumns;
+					if (currentEntry[0] == 't')
 					{
 						variableInput.setIndep(false);
 					}
-					else if (currentEntry[4] == 'x')
+					else if (currentEntry[0] == 'x')
 					{
 						variableInput.setIndep(true);
+					}
+					else if (currentEntry[0] >= '0' && currentEntry[0] <= '9')
+					{
+						//minimization
+						minTableau = true;
 					}
 					else
 					{
 						++columnNumber;
 						continue;
 					}
-					currentEntry.erase(currentEntry.begin(), currentEntry.begin() + 5);
+					currentEntry.erase(currentEntry.begin());
 					int variableNum = atoi(currentEntry.c_str());
 					variableInput.setNumber(variableNum);
-					if (rowNumber >= numberOfConstraints)
+					if (columnNumber >= numberOfVariables)
 					{
-						increaseSizeVar(false, rowNumber);
+						increaseSizeVar(true, columnNumber + 1);
 					}
-					depVar[rowNumber - 1] = variableInput;
+					indepVar[columnNumber] = variableInput;
 				}
+				else
+				{
+					if (columnNumber < numberOfColumns)
+					{
+						/*
+						This initializes the values in the main values of the tableau.
+						*/
+						double number = atof(currentEntry.c_str());
+						if (rowNumber >= numberOfConstraints + 1)
+						{
+							increaseSizeMatrix(rowNumber, numberOfColumns);
+						}
+						valueMatrix[rowNumber - 1][columnNumber] = number;
+					}
+					else
+					{
+						/*
+						This initializes the right most column of the tableau which indicates the dependent variables.
+						*/
+						if (currentEntry[4] == 't')
+						{
+							variableInput.setIndep(false);
+						}
+						else if (currentEntry[4] == 'x')
+						{
+							variableInput.setIndep(true);
+						}
+						else
+						{
+							++columnNumber;
+							continue;
+						}
+						currentEntry.erase(currentEntry.begin(), currentEntry.begin() + 5);
+						int variableNum = atoi(currentEntry.c_str());
+						variableInput.setNumber(variableNum);
+						if (rowNumber >= numberOfConstraints)
+						{
+							increaseSizeVar(false, rowNumber);
+						}
+						depVar[rowNumber - 1] = variableInput;
+					}
+				}
+				++columnNumber;
 			}
-			++columnNumber;
+			++rowNumber;
+			columnNumber = 0;
 		}
-		++rowNumber;
-		columnNumber = 0;
+		numberOfConstraints = rowNumber - 2;
+		numberOfVariables = numberOfColumns - 1;
 	}
-	numberOfConstraints = rowNumber - 2;
-	numberOfVariables = numberOfColumns - 1;
 	cinStream.close();
 	return IMPORT_SUCCESS;
 }

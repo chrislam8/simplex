@@ -166,7 +166,7 @@ testErrorCodes allTests::importTest()
 	simpl* test = new simpl(NUMVAR, NUMCONSTR, false);
 	double* xValuePointer = new double[NUMVAR];
 	double optimalValue = 0;
-	if (!(test->importTableau("input.csv")))
+	if (!(test->importTableau("input.csv",false)))
 	{
 		return TEST_UNEXPECTED_VALUE;
 	}

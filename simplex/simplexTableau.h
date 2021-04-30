@@ -14,7 +14,7 @@ public:
 	tableauErrorCode pivotFeasibility(checkValue feasibilityCheck);
 	tableauErrorCode pivot(int row, int col);
 	tableauErrorCode exportMatrix(std::string fileName);
-	tableauErrorCode importMatrix(std::string fileName);
+	tableauErrorCode importMatrix(std::string fileName, bool miniTableau);
 	tableauErrorCode negativeTranspose();
 
 	checkValue feasibleSolutionsCheck();
