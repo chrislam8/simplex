@@ -218,5 +218,22 @@ testErrorCodes allTests::checkSimplex(simpl* test)
 
 testErrorCodes allTests::negativeTranspose()
 {
+	simpl* test = new simpl(NUMVAR, NUMCONSTR, true);
+	test->changeValue(1.0, 1, 1);
+	test->changeValue(2.0, 1, 2);
+	test->changeValue(20.0, 1, 3);
+	test->changeValue(2.0, 2, 1);
+	test->changeValue(2.0, 2, 2);
+	test->changeValue(30.0, 2, 3);
+	test->changeValue(2.0, 3, 1);
+	test->changeValue(1.0, 3, 2);
+	test->changeValue(25.0, 3, 3);
+	test->changeValue(200.0, 4, 1);
+	test->changeValue(150.0, 4, 2);
+	test->changeValue(0.0, 4, 3);
+	test->negativeTranspose();
+	test->exportTableau("negTransposePost.csv");
+	delete test;
+	test = NULL;
 	return TEST_NOT_IMPLEMENTED_FUNCTION;
 }

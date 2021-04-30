@@ -144,6 +144,11 @@ int simpl::getNumberOfVariables()
 	return numvariable;
 }
 
+bool simpl::negativeTranspose()
+{
+	return (tableau->negativeTranspose() == TABLEAU_SUCCESS);
+}
+
 //private methods
 
 void simpl::constructTab(const int numvar, const int numconstr, const bool miniTableau) {

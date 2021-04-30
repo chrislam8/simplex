@@ -298,7 +298,7 @@ tableauErrorCode simplexTableau::negativeTranspose()
 {
 	int rowNum, colNum;
 	float temp;
-	for (rowNum = 0; rowNum < numberOfConstraints; rowNum++)
+	for (rowNum = 0; rowNum < numberOfVariables; rowNum++)
 	{
 		for (colNum = 0; colNum < rowNum; colNum++)
 		{
