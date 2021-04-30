@@ -28,6 +28,9 @@ testResultCodes allTests::runAllTests () {
 		case IMPORT_TEST:
 			errorCode = importTest();
 			break;
+		case NEGATIVE_IMPORT_TEST:
+			errorCode = negativeTranspose();
+			break;
 		}
 		result.first = static_cast<testList>(testNumber);
 		result.second = errorCode;
@@ -211,4 +214,9 @@ testErrorCodes allTests::checkSimplex(simpl* test)
 	correctxValues = NULL;
 
 	return result;
+}
+
+testErrorCodes allTests::negativeTranspose()
+{
+	return TEST_NOT_IMPLEMENTED_FUNCTION;
 }

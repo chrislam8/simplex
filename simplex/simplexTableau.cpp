@@ -309,7 +309,7 @@ tableauErrorCode simplexTableau::negativeTranspose()
 		valueMatrix[rowNum][rowNum] = -1 * valueMatrix[rowNum][rowNum];
 	}
 	minTableau = !minTableau;
-	return FUNCTION_NOT_IMPLEMENTED;
+	return TABLEAU_SUCCESS;
 }
 
 checkValue simplexTableau::feasibleSolutionsCheck()
@@ -447,14 +447,25 @@ bool simplexTableau::getminTableau()
 
 void simplexTableau::constructMatrix(int numVar, int numConstr, bool miniTableau) 
 {
-	valueMatrix = new double* [numConstr + 1];
-	for (int rowNum = 0; rowNum <= numConstr; rowNum++) 
-	{
-		valueMatrix[rowNum] = new double[numVar + 1];
-	}
-	
 	numberOfVariables = numVar;
 	numberOfConstraints = numConstr;
+
+	if (miniTableau)
+	{
+		valueMatrix = new double* [numVar + 1];
+		for (int rowNum = 0; rowNum <= numVar; rowNum++)
+		{
+			valueMatrix[rowNum] = new double[numConstr + 1];
+		}
+	}
+	else
+	{
+		valueMatrix = new double* [numConstr + 1];
+		for (int rowNum = 0; rowNum <= numConstr; rowNum++)
+		{
+			valueMatrix[rowNum] = new double[numVar + 1];
+		}
+	}
 
 	indepVar = new variableName[numVar];
 	depVar = new variableName[numConstr];

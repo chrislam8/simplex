@@ -16,6 +16,7 @@ private:
 	testErrorCodes exportTest();
 	testErrorCodes importTest();
 	testErrorCodes checkSimplex(simpl* test);
+	testErrorCodes negativeTranspose();
 	int NUMVAR = 2;
 	int NUMCONSTR = 3;
 	int NUMCOL = NUMVAR + 1;

@@ -155,10 +155,18 @@ void simpl::constructTab(const int numvar, const int numconstr, const bool miniT
 		canChangeValue = false;
 		return;
 	}
-
-	numvariable = numvar;
-	numconstraint = numconstr;
-	tableau = new simplexTableau(numvar, numconstr,miniTableau);
+	if (miniTableau)
+	{
+		numvariable = numconstr;
+		numconstraint = numvar;
+		tableau = new simplexTableau(numconstr, numvar, true);
+	}
+	else
+	{
+		numvariable = numvar;
+		numconstraint = numconstr;
+		tableau = new simplexTableau(numvar, numconstr, false);
+	}
 	canChangeValue = true;
 }
 
