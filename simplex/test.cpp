@@ -231,6 +231,7 @@ testErrorCodes allTests::negativeTranspose()
 	test->changeValue(200.0, 4, 1);
 	test->changeValue(150.0, 4, 2);
 	test->changeValue(0.0, 4, 3);
+	test->exportTableau("negTransposePre.csv");
 	test->negativeTranspose();
 	test->exportTableau("negTransposePost.csv");
 	delete test;

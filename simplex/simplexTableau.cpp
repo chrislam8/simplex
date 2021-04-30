@@ -162,24 +162,44 @@ tableauErrorCode simplexTableau::exportMatrix(std::string fileName)
 		return FILE_OPEN_FAILED;
 	}
 	int i, j;
-	for (i = 0; i < numberOfVariables; ++i)
+	if (minTableau)
 	{
-		coutStream << indepVar[i].getString() << ",";
+		for (i = 0; i < numberOfVariables; ++i)
+		{
+			coutStream << indepVar[i].getString() << "=,";
+			for (j = 0; j <= numberOfConstraints; ++j)
+			{
+				coutStream << valueMatrix[i][j] << ",";
+			}
+			coutStream << std::endl;
+		}
+		for (i = 0; i <= numberOfConstraints; ++i)
+		{
+			coutStream << depVar[i].getString() << ",";
+		}
+		coutStream << std::endl;
 	}
-	coutStream << "-1" << std::endl;
-	for (i = 0; i <= numberOfConstraints; ++i)
+	else
 	{
-		for (j = 0; j <= numberOfVariables; j++)
+		for (i = 0; i < numberOfVariables; ++i)
 		{
-			coutStream << valueMatrix[i][j] << ",";
+			coutStream << indepVar[i].getString() << ",";
 		}
-		if (i != numberOfConstraints)
+		coutStream << "-1" << std::endl;
+		for (i = 0; i <= numberOfConstraints; ++i)
 		{
-			coutStream << " = -" << depVar[i].getString() << std::endl;
-		}
-		else
-		{
-			coutStream << " = f" << std::endl;
+			for (j = 0; j <= numberOfVariables; j++)
+			{
+				coutStream << valueMatrix[i][j] << ",";
+			}
+			if (i != numberOfConstraints)
+			{
+				coutStream << " = -" << depVar[i].getString() << std::endl;
+			}
+			else
+			{
+				coutStream << " = f" << std::endl;
+			}
 		}
 	}
 	coutStream.close();
